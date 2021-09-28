@@ -64,7 +64,7 @@ it will give you `\chemfig{O=[:137.9]P(-[:47.9]O-[:107.9,0.62]H)(-[:137.9]O-[:19
 -[:275.9,0.62]H)-[:35.9](-[:55.9,0.62]H)(-[:135.9,0.62]H)-[:335.9](%
 -[:235.9,0.62]H)(-[:315.9,0.62]H)-[:35.9]S-[:335.9](=[:275.9]O)-[:35.9](%
 -[:95.9,0.62]H)=[:335.9](-[:35.9](-[:35.9,0.62]H)(-[:125.9,0.62]H)%
--[:305.9,0.62]H)-[:275.9](-[:185.9,0.62]H)(-[:275.9,0.62]H)-[:5.9,0.62]H}` (it's [Coenzyme A, S-(3-methyl-2-butenoate)](https://www.ncbi.nlm.nih.gov/pcsubstance/?term="Coenzyme A%2C S-(3-methyl-2-butenoate)"[CompleteSynonym] AND 99[StandardizedCID]) by the way 😜)
+-[:305.9,0.62]H)-[:275.9](-[:185.9,0.62]H)(-[:275.9,0.62]H)-[:5.9,0.62]H}` (it's [Coenzyme A, S-(3-methyl-2-butenoate)](https://pubchem.ncbi.nlm.nih.gov/compound/99#section=Synonyms) by the way 😜)
 
 ## Document
 
