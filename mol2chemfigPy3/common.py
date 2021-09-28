@@ -1,31 +1,10 @@
+# -*- coding: utf-8 -*-
 """
 common settings and a bit of infrastructure
 """
-# import sys
 from .options import getParser
 
-_debug = False
-
-# _debug_file = sys.stderr
-if _debug:
-    _debug_file = open('/data/code/mol2chemfig/bugs/dbg', 'w')
-
 program_version = '1.4'
-
-
-def debug(*args):
-    if not _debug:
-        return
-    args = [str(a) for a in args]
-    print(" ".join(args), file=_debug_file)
-
-
-class MCFError(Exception):
-    """
-    this flags an anticipated error due to faulty user input.
-    """
-    pass
-
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = r"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%s&disopt=DisplaySDF"
@@ -47,11 +26,6 @@ server and client version may differ.
 For more information, type '%(progname)s --help'.
 '''
 
-
-def version_text(progname='mol2chemfig', version=program_version):
-    return _version_blurb % locals()
-
-
 _help_blurb = '''\
 %(progname)s v. %(version)s,  by Eric Brefo-Mensah and Michael Palmer
 %(progname)s generates chemfig code from molfiles. Usage example:
@@ -62,14 +36,17 @@ Options:
 '''
 
 
-def help_text(progname="mol2chemfig", version=program_version):
+def version_text(progname='mol2chemfig', version=program_version) -> str:
+    return _version_blurb % locals()
+
+
+def help_text(progname="mol2chemfig", version=program_version) -> str:
     msg = _help_blurb % locals()
     msg += getParser().format_help(indent=32, linewidth=75, separator='')
-
     return msg
 
 
-def lua_version_text(progname, client_version):
+def lua_version_text(progname, client_version) -> str:
     server_version = program_version
     return _lua_version_blurb % locals()
 
@@ -96,6 +73,13 @@ settings = dict(
 )
 
 
+class MCFError(Exception):
+    """
+    this flags an anticipated error due to faulty user input.
+    """
+    pass
+
+
 class Counter(object):
     """
     a simple Counter class, just to remove the dependency on version 2.7
@@ -111,7 +95,7 @@ class Counter(object):
 
             self._d[val] += 1
 
-    def most_common(self):
+    def most_common(self) -> any:
         lst = list(self._d.items())
         lst.sort(key=lambda pair: pair[1])
 

@@ -1,14 +1,11 @@
+# -*- coding: utf-8 -*-
 """
 My name is Bond. JAMES Bond.
 """
 
 from copy import deepcopy, copy
 from math import atan, tan, pi
-
 from . import chemfig_mappings as cfm
-# from .common import debug
-
-# bond stereo properties and valences
 from indigo import Indigo
 
 # Indigo.UP : stereo "up" bond

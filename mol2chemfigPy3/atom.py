@@ -1,9 +1,6 @@
-# import math
+# -*- coding: utf-8 -*-
 import string
 from . import chemfig_mappings as cfm
-
-# from .common import debug
-
 # some atoms should carry their hydrogen to the left, rather than
 # to the right. This is applied to solitary atoms, but not to bonded
 # functional groups that contain those elements.
@@ -18,25 +15,25 @@ class Atom(object):
     """
     explicit_characters = set(string.ascii_uppercase + string.digits)
 
-    quadrant_turf = 80      # 80 degrees have to remain free on either side
+    quadrant_turf = 80  # 80 degrees have to remain free on either side
 
-    quadrants = [   # quadrants for hydrogen placement
-                     [0, 0, 'east'],
-                     [1, 180, 'west'],
-                     [2, 270, 'south'],
-                     [3, 90, 'north']
+    quadrants = [  # quadrants for hydrogen placement
+        [0, 0, 'east'],
+        [1, 180, 'west'],
+        [2, 270, 'south'],
+        [3, 90, 'north']
     ]
 
-    charge_positions = [    # angles for placement of detached charges
-                     [0, 15, 'top_right'],
-                     [1,165, 'top_left'],
-                     [2, 90, 'top_center'],
-                     [3,270, 'bottom_center'],
-                     [4,345, 'bottom_right'],
-                     [5,195, 'bottom_left']
+    charge_positions = [  # angles for placement of detached charges
+        [0, 15, 'top_right'],
+        [1, 165, 'top_left'],
+        [2, 90, 'top_center'],
+        [3, 270, 'bottom_center'],
+        [4, 345, 'bottom_right'],
+        [5, 195, 'bottom_left']
     ]
 
-    charge_turf = 50   # reserved angle for charges - needs to be big enough for 2+
+    charge_turf = 50  # reserved angle for charges - needs to be big enough for 2+
 
     def __init__(self, options, idx, x, y, element, hydrogens, charge, radical, neighbors):
         self.options = options
@@ -51,8 +48,6 @@ class Atom(object):
 
         # angles of all attached bonds - to be populated later
         self.bond_angles = []
-
-        # self.explicit = False  # flag for explicitly printed atoms - set later
         marker = self.options.get('markers', None)
         if marker is not None:
             self.marker = "%s%s" % (marker, self.idx + 1)
@@ -67,8 +62,8 @@ class Atom(object):
         then compares to turf angle and returns a score > 0
         if angle falls within turf.
         """
-        diff = (a-b) % 360
-        angle = min(diff, 360-diff)
+        diff = (a - b) % 360
+        angle = min(diff, 360 - diff)
         return (max(0, turf - angle)) ** 2
 
     def _score_angles(self, choices, turf):
@@ -82,10 +77,6 @@ class Atom(object):
                 score += self._score_angle(choice_angle, bond_angle, turf)
             aux.append((score, priority, name))
         aux.sort()
-
-        # if self.element == 'Cl':
-        #   debug(aux)
-
         named = [a[-1] for a in aux]
         return named
 
@@ -93,7 +84,7 @@ class Atom(object):
         """
         determine which positions
 
-        We use one score for the placement of hydrogens w/ or w/o charge,
+        We use one score for the placement of hydrogen w/ or w/o charge,
         and a separate one for the placement of charges only.
 
         Atoms: precedence east, west, south, north
@@ -131,9 +122,6 @@ class Atom(object):
         comment_code = cfm.format_closure_comment(
             self.options,
             self.idx + 1,
-            self.element,
-            self.hydrogens,
-            self.charge,
         )
         return atom_code, comment_code
 
@@ -142,31 +130,24 @@ class Atom(object):
         render the atom and a comment
         """
         atom_code, self.string_pos, self.phantom, self.phantom_pos = cfm.format_atom(
-                                                        self.options,
-                                                        self.idx + 1,
-                                                        self.element,
-                                                        self.hydrogens,
-                                                        self.charge,
-                                                        self.radical,
-                                                        self.first_quadrant,
-                                                        self.second_quadrant,
-                                                        self.charge_angle
-                                                    )
-
-        comment_code = cfm.format_atom_comment(
             self.options,
             self.idx + 1,
             self.element,
             self.hydrogens,
             self.charge,
+            self.radical,
+            self.first_quadrant,
+            self.second_quadrant,
+            self.charge_angle,
+        )
+
+        comment_code = cfm.format_atom_comment(
+            self.options,
+            self.idx + 1,
         )
 
         marker_code = cfm.format_marker(self.marker)
         if marker_code:
             comment_code = " "  # force an empty comment, needed after markers
-
         self.explicit = bool(self.explicit_characters & set(atom_code))
-        # debug(self.idx, atom_code, self.explicit)
         return marker_code + atom_code, comment_code
-
-

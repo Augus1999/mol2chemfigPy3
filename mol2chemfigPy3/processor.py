@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 accept input from command line or through the web and
 return the result.
@@ -20,8 +21,14 @@ class Processor(object):
     parses input and invokes backend, returns result
     """
 
-    def __init__(self, rawargs, data, formfields, progname, webform, rpc):
-        self.rawargs = rawargs
+    def __init__(self,
+                 raw_args: any,
+                 data: any,
+                 formfields: any,
+                 progname: str,
+                 webform: bool,
+                 rpc: bool) -> None:
+        self.rawargs = raw_args
         self.data = data
         self.formfields = formfields
 
@@ -39,19 +46,19 @@ class Processor(object):
         # data obtained from the proper source go here
         self.data_string = None
 
-    def version_text(self):
+    def version_text(self) -> str:
         """
         print the program version
         """
         return common.version_text(progname=self.progname)
 
-    def help_text(self):
+    def help_text(self) -> str:
         """
         error messages for the command line interface.
         """
         return common.help_text(progname=self.progname)
 
-    def parseInputCli(self):
+    def parseInputCli(self) -> None:
         """
         parse input that came through the command line (locally or rpc)
         return success flag and either error message or data
@@ -64,7 +71,7 @@ class Processor(object):
 
         # parse options and arguments
         try:
-            parsed_options, datalist = self.optionparser.process_cli(self.rawargs)
+            parsed_options, data_list = self.optionparser.process_cli(self.rawargs)
         except Exception as msg:
             if str(msg).endswith('not recognized'):  # get opt error
                 msg = str(msg) + \
@@ -82,17 +89,17 @@ class Processor(object):
             raise HelpError(self.version_text())
 
         if self.data is not None:
-            datalist.append(self.data)
+            data_list.append(self.data)
 
         # at this point, we should have reached the same state
         # by rpc and local invocation
 
-        if len(datalist) != 1:
-            if not datalist:
+        if len(data_list) != 1:
+            if not data_list:
                 raise common.MCFError("No input data supplied")
             raise common.MCFError("Please give only one file or data string as input")
 
-        data = datalist[0]
+        data = data_list[0]
 
         if not self.rpc and self.options['input'] == 'file':
             try:
@@ -102,7 +109,7 @@ class Processor(object):
 
         self.data_string = data
 
-    def parseInputWeb(self):
+    def parseInputWeb(self) -> None:
         """
         parse options and provide data provided through the web form
         """
@@ -115,7 +122,7 @@ class Processor(object):
         self.options.update(parsed_options)
         self.data_string = self.data
 
-    def process(self):
+    def process(self) -> molecule.Molecule:
         """
         process input from both web form and CLI
         """
@@ -124,18 +131,18 @@ class Processor(object):
         else:
             self.parseInputWeb()
         # let toolkit parse the molecule, and process it
-        tkmol = self.parseMolecule()
+        tk_mol = self.parseMolecule()
 
         # we now know how to deal with orphan atoms
         # atoms, bonds = tkmol.countAtoms(), tkmol.countBonds()
         # if atoms <= 1 or bonds == 0:
         #   raise common.MCFError, "Input contains no bonds---can't render structure"
 
-        mol = molecule.Molecule(self.options, tkmol)
+        mol = molecule.Molecule(self.options, tk_mol)
 
         return mol
 
-    def parseMolecule(self):
+    def parseMolecule(self) -> any:
         """
         turn the input into a toolkit molecule according to user settings
 
@@ -143,24 +150,21 @@ class Processor(object):
         the format setting, basically. If it's numeric, we ask pubchem,
         if it isn't, we consider it a molecule.
         """
-        rawinput = self.data_string
+        raw_input = self.data_string
 
         try:
-            pubchemId = int(rawinput)
+            pubchem_id = int(raw_input)
         except ValueError:
-            pubchemId = None
+            pubchem_id = None
 
-        if pubchemId is not None:
+        if pubchem_id is not None:
             try:
-                url = common.pubchem_url % pubchemId
-                pubchemContent = urllib.request.urlopen(url).read()
+                url = common.pubchem_url % pubchem_id
+                pubchem_content = urllib.request.urlopen(url).read()
             except IOError:
                 raise common.MCFError('No connection to PubChem')
 
-            self.data_string = pubchemContent.decode()
-
-        # common.debug('rpc: %s' % self.rpc)
-        # common.debug('data ---\n%s\n---' % self.data_string)
+            self.data_string = pubchem_content.decode()
 
         try:
             tkmol = Indigo().loadMolecule(self.data_string)
@@ -182,12 +186,12 @@ class Processor(object):
         return tkmol
 
 
-def process(rawargs=None,
-            data=None,
-            formfields=None,
-            progname="mol2chemfig",
-            webform=False,
-            rpc=False):
+def process(rawargs: any = None,
+            data: any = None,
+            formfields: any = None,
+            progname: str = "mol2chemfig",
+            webform: bool = False,
+            rpc: bool = False) -> (bool, any):
     """
     process is a convenience wrapper for external callers
     """

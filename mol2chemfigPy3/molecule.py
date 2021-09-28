@@ -1,22 +1,16 @@
-"""
-parse a molfile molecule and render to chemfig code
-"""
-
+# -*- coding: utf-8 -*-
+# parse a molfile molecule and render to chemfig code
 import math
-# import sys
 from . import chemfig_mappings as cfm
 from .common import MCFError, Counter
-# from .common import debug
 from .atom import Atom
 from .bond import Bond, DummyFirstBond, AromaticRingBond, compare_positions
-
 from indigo import IndigoException
 
 
 class Molecule(object):
-
-    bond_scale = 1.0        # can be overridden by user option
-    exit_bond = None        # the first bond in the tree that connects to the exit atom
+    bond_scale = 1.0  # can be overridden by user option
+    exit_bond = None  # the first bond in the tree that connects to the exit atom
 
     def __init__(self, options, tkmol):
         self.options = options
@@ -87,7 +81,7 @@ class Molecule(object):
         # finally, render the thing and cache the result.
         self._rendered = self.render()
 
-    def link_atoms(self, x, y):
+    def link_atoms(self, x, y) -> None:
         """
         connect atoms with indexes x and y using a pseudo bond.
         Helper for connect_fragments
@@ -104,7 +98,7 @@ class Molecule(object):
         start_atom.neighbors.append(y)
         end_atom.neighbors.append(x)
 
-    def connect_fragments(self):
+    def connect_fragments(self) -> None:
         """
         connect multiple fragments, using link bonds across their
         last and first atoms, respectively.
@@ -126,15 +120,15 @@ class Molecule(object):
         for pair in self.atom_pairs:
             bonded.update(pair)
 
-        unbonded = list(atoms - bonded)
+        un_bonded = list(atoms - bonded)
 
-        if unbonded:
+        if un_bonded:
             if fragments:
                 anchor = fragments[-1][-1][-1]
             else:  # several atoms, but no bonds
-                anchor, unbonded = unbonded[0], unbonded[1:]
+                anchor, un_bonded = un_bonded[0], un_bonded[1:]
 
-            for atom in unbonded:
+            for atom in un_bonded:
                 self.link_atoms(anchor, atom)
 
     def molecule_fragments(self):
@@ -142,7 +136,8 @@ class Molecule(object):
         identify unconnected fragments in the molecule.
         used by connect_fragments
         """
-        def split_pairs(pair_list):
+
+        def split_pairs(pair_list) -> any:
             """
             break up pair_list into one list that contains all pairs
             that are connected, directly or indirectly,  to the first
@@ -192,19 +187,19 @@ class Molecule(object):
         """
         return a list with all bonds in the molecule tree
         """
-        allbonds = []
+        all_bonds = []
 
         def recurse(rt):
-            allbonds.append(rt)
+            all_bonds.append(rt)
             for d in rt.descendants:
                 recurse(d)
 
         recurse(self.root)
 
         if not root:
-            allbonds = allbonds[1:]
+            all_bonds = all_bonds[1:]
 
-        return allbonds
+        return all_bonds
 
     def process_cross_bonds(self):
         """
@@ -244,8 +239,8 @@ class Molecule(object):
 
             # modify bond copy
             bond_copy.set_cross()
-            bond_copy.to_phantom = True     # don't render atom again
-            bond_copy.descendants = []      # forget copied descendants
+            bond_copy.to_phantom = True  # don't render atom again
+            bond_copy.descendants = []  # forget copied descendants
 
             if bond_copy.start_atom is not self.exit_atom:  # usual case
                 # create a pseudo bond from the exit atom to the start atom
@@ -257,7 +252,7 @@ class Molecule(object):
                 )
 
                 pseudo_bond.set_link()
-                pseudo_bond.to_phantom = True      # don't render the atom, either
+                pseudo_bond.to_phantom = True  # don't render the atom, either
 
                 bond_copy.parent = pseudo_bond
                 pseudo_bond.descendants.append(bond_copy)
@@ -275,9 +270,9 @@ class Molecule(object):
         must be one of the leaf atoms, obviously.
         """
         scored = []
-
+        bonds = {}
         for bond in self.treebonds():
-            if bond.to_phantom:   # don't pick phantom atoms as exit
+            if bond.to_phantom:  # don't pick phantom atoms as exit
                 continue
 
             distance = 0
@@ -288,10 +283,11 @@ class Molecule(object):
                 distance += 1
                 the_bond = the_bond.parent
 
-            scored.append((distance, len(bond.descendants), bond))
-
+            scored.append((distance, len(bond.descendants)))
+            bonds[(distance, len(bond.descendants))] = bond
         scored.sort()
-        return scored[-1][-1]
+        bond_out = bonds[scored[-1]]
+        return bond_out
 
     def pickFirstLastAtoms(self):
         """
@@ -345,14 +341,17 @@ class Molecule(object):
 
             x, y, z = ra.xyz()
 
-            wrapped_atoms[idx] = Atom(self.options,
-                                      idx,
-                                      x, y,
-                                      element,
-                                      hydrogens,
-                                      charge,
-                                      radical,
-                                      neighbors)
+            wrapped_atoms[idx] = Atom(
+                self.options,
+                idx,
+                x,
+                y,
+                element,
+                hydrogens,
+                charge,
+                radical,
+                neighbors,
+            )
 
         return wrapped_atoms
 
@@ -360,8 +359,8 @@ class Molecule(object):
         """
         read some bond attributes
         """
-        bonds = {}        # dictionary with bond objects, both orientations
-        atom_pairs = []   # atom index pairs only, unique
+        bonds = {}  # dictionary with bond objects, both orientations
+        atom_pairs = []  # atom index pairs only, unique
 
         for bond in self.tkmol.iterateBonds():
             # start, end, bond_type, stereo = numbers
@@ -531,7 +530,7 @@ class Molecule(object):
             for atom, angle in atom_angles:
                 atom.bond_angles.append(angle)
 
-        else:   # flag orientation individual bonds - will influence rendering of double bonds
+        else:  # flag orientation individual bonds - will influence rendering of double bonds
             for bond in bonds:
                 bond.is_clockwise(center_x, center_y)
 
@@ -543,17 +542,21 @@ class Molecule(object):
         self.tkmol.aromatize()
 
         all_rings = []
-
-        for ring in self.tkmol.iterateSSSR():
+        rings = {}
+        _all_rings = []
+        for key, ring in enumerate(self.tkmol.iterateSSSR()):
             # bond-order == 4 means "aromatic"; all rings bonds must be aromatic
             is_aromatic = all(bond.bondOrder() == 4 for bond in ring.iterateBonds())
-            all_rings.append((is_aromatic, ring))
+            all_rings.append((is_aromatic, key))
+            rings[(is_aromatic, key)] = ring
 
         # prefer aromatic rings to non-aromatic ones, so that double bonds on
         # fused rings go preferably into aromatic rings
         all_rings.sort()
+        for i in all_rings:
+            _all_rings.append((i[0], rings[i]))
 
-        for is_aromatic, ring in reversed(all_rings):
+        for is_aromatic, ring in reversed(_all_rings):
             self.annotateRing(ring, is_aromatic)
 
     def scaleBonds(self):
@@ -621,7 +624,7 @@ class Molecule(object):
         branches = bond.descendants
 
         if bond is self.exit_bond:  # wrap all downstream bonds in branch
-            self._renderBranches(output, level+1, branches)
+            self._renderBranches(output, level + 1, branches)
 
         elif branches:  # prioritize bonds on the trunk from entry to exit
             for i, branch in enumerate(branches):
@@ -631,7 +634,7 @@ class Molecule(object):
             else:
                 first = branches.pop(0)
 
-            self._renderBranches(output, level+1, branches)
+            self._renderBranches(output, level + 1, branches)
             self._render(output, first, level)
 
     def dimensions(self):
@@ -647,7 +650,7 @@ class Molecule(object):
         minx = maxx = miny = maxy = None
 
         alpha = self.options['rotate']
-        alpha *= math.pi/180
+        alpha *= math.pi / 180
 
         sinalpha = math.sin(alpha)
         cosalpha = math.cos(alpha)

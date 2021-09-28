@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 definitions and code to translate the molecule tree to chemfig
 
@@ -6,12 +7,9 @@ the TeX syntax defined by the chemfig package.
 """
 
 import textwrap
-# from . import common
 
-# from .common import debug
-
-BOND_CODE_WIDTH = 50        # space for bonds - generous upfront, will be trimmed at the end
-TERSE_LINE_WIDTH = 75       # in terse code format, force linebreaks
+BOND_CODE_WIDTH = 50  # space for bonds - generous upfront, will be trimmed at the end
+TERSE_LINE_WIDTH = 75  # in terse code format, force linebreaks
 
 
 def num_round(num, sig):
@@ -92,7 +90,7 @@ radical_templates = dict(
 
 atom_templates = dict(
     # templates for atoms, specialized for different numbers and preferred
-    # quadrants of attached hydrogens and charges
+    # quadrants of attached hydrogen and charges
 
     # atom numbers
     atom_no=dict(
@@ -112,7 +110,7 @@ atom_templates = dict(
                         south=(r'\mcfbelow{%(element)s}{H}', 0)
                 ),
 
-                # multiple hydrogens
+                # multiple hydrogen
                 more_h=dict(
                         east=(r'%(element)sH_%(hydrogens)s', 1),
                         west=(r'H_%(hydrogens)s%(element)s', 2),
@@ -140,7 +138,7 @@ atom_templates = dict(
                         south=(r'\mcfbelowright{%(element)s}{H}{^{%(charge)s}}', 0)
                 ),
 
-                # more hydrogens
+                # more hydrogen
                 more_h=dict(
                         east=(r'%(element)sH_%(hydrogens)s^{%(charge)s}', 1),
                         west=(r'^{%(charge)s}H_%(hydrogens)s%(element)s', 3),
@@ -153,7 +151,7 @@ atom_templates = dict(
 
 #  helpers for bond formatting
 
-def format_angle(options, angle, parent_angle):
+def format_angle(options, angle, parent_angle) -> str:
     """
     format prefix and number for bond angle
     """
@@ -168,7 +166,7 @@ def format_angle(options, angle, parent_angle):
     return prefix + str(angle % 360)
 
 
-def specifier_default(val, default):
+def specifier_default(val, default) -> str:
     """
     set bond specifier default values to ""
     """
@@ -190,7 +188,7 @@ def format_bond(options,
                 arrival,
                 tikz_styles,
                 tikz_values,
-                marker):
+                marker) -> str:
     """
     render the bond code for one atom; the atom itself is
     rendered separately in format_atom
@@ -252,7 +250,7 @@ def format_bond(options,
     return bond_code + modifier + specifiers
 
 
-def fill_atom(keys, data, phantom, phantom_pos=0):
+def fill_atom(keys, data, phantom, phantom_pos=0) -> tuple:
     """
     helper for finalizing atom code. phantom_pos is the
     target position of a bond attaching to a phantom;
@@ -269,7 +267,7 @@ def fill_atom(keys, data, phantom, phantom_pos=0):
     return template % data, string_pos, phantom, phantom_pos
 
 
-def format_marker(marker):
+def format_marker(marker) -> any:
     """
     used for both bonds and atoms
     """
@@ -286,7 +284,7 @@ def format_atom(options,
                 radical,
                 first_quadrant,
                 second_quadrant,
-                charge_angle):
+                charge_angle) -> tuple:
     """
     render an atom with hydrogens and charges. Return
     - the chemfig code of the rendered atom
@@ -346,11 +344,11 @@ def format_atom(options,
         if data['element'] == 'C' and not options['show_carbons'] and (not options['show_methyls'] or hydrogens < 3):
             return '', 0, '', 0
 
-        # next simplest case: neutral atom without hydrogens
+        # next simplest case: neutral atom without hydrogen
         if not hydrogens:
             return data['element'], 0, element_phantom, 0
 
-        # one or more hydrogens
+        # one or more hydrogen
         if hydrogens == 1:
             keys = ('neutral', 'one_h', first_quadrant)
         else:
@@ -379,10 +377,7 @@ def format_atom(options,
 
 
 def format_atom_comment(options,
-                        idx,
-                        element,
-                        hydrogens,
-                        charge):
+                        idx) -> str:
     """
     render an optional end-of-line comment after a regular atom
     """
@@ -392,10 +387,7 @@ def format_atom_comment(options,
 
 
 def format_closure_comment(options,
-                           idx,
-                           element,
-                           hydrogens,
-                           charge):
+                           idx) -> str:
     """
     render an optional end of line comment after a ring-closing bond
     """
@@ -408,7 +400,7 @@ def format_aromatic_ring(options,
                          angle,
                          parent_angle,
                          length,
-                         radius):
+                         radius) -> (str, str, str):
 
     values = dict(
                 angle=format_angle(options, angle, parent_angle),
@@ -426,7 +418,7 @@ def format_aromatic_ring(options,
     return ring_bond_code, ring_code, comment
 
 
-def strip_output(output_list):
+def strip_output(output_list) -> list:
     """
     remove white space and comments
     """
@@ -454,7 +446,7 @@ def strip_output(output_list):
     return chunked
 
 
-def format_output(options, output_list):
+def format_output(options, output_list) -> str:
     """
     optionally wrap the translated output into a command,
     to ease inclusion in LaTeX documents with \\input
@@ -466,7 +458,7 @@ def format_output(options, output_list):
     _out = '\n'.join(output_list)
     _out = textwrap.dedent(_out).splitlines()
 
-    output_list = [_indent + l for l in _out]
+    output_list = [_indent + i for i in _out]
 
     if options['submol_name'] is not None:
         output_list.insert(0, r'\definesubmol{%s}{' % options['submol_name'])
