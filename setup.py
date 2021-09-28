@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
+from mol2chemfigPy3 import __version__
 
 setup(
     name='mol2chemfigPy3',
-    version='1.4',
+    version=__version__,
     url='https://github.com/Augus1999/mol2chemfigPy3',
     description='python3 version of mol2chemfig',
     license='MIT licence',
