@@ -26,8 +26,9 @@ server and client version may differ.
 For more information, type '%(progname)s --help'.
 '''
 
-_help_blurb = '''\
-%(progname)s v. %(version)s,  by Eric Brefo-Mensah and Michael Palmer
+_help_blurb = '''
+%(progname)s v. %(version)s,  originally by Eric Brefo-Mensah and Michael Palmer
+re-write in python by Nianze A. TAO (Omozawa SUENO) in 2021
 %(progname)s generates chemfig code from molfiles. Usage example:
 
 %(progname)s --angle=45 --aromatic-circles somefile.mol

@@ -8,7 +8,7 @@ from .bond import Bond, DummyFirstBond, AromaticRingBond, compare_positions
 from indigo import IndigoException
 
 
-class Molecule(object):
+class Molecule:
     bond_scale = 1.0  # can be overridden by user option
     exit_bond = None  # the first bond in the tree that connects to the exit atom
 
@@ -318,8 +318,6 @@ class Molecule(object):
         """
         Read some attributes from the toolkit atom object
         """
-        coordinates = []
-
         # wrap all atoms and supply coordinates
         wrapped_atoms = {}
 
@@ -389,7 +387,7 @@ class Molecule(object):
         recurse over atoms in molecule to create a tree of bonds
         """
         end_idx = end_atom.idx
-
+        start_idx = None
         if start_atom is None:  # this is the first atom in the molecule
             bond = DummyFirstBond(self.options, end_atom=end_atom)
 
@@ -453,7 +451,7 @@ class Molecule(object):
         """
         # first, set all bonds to aromatic
         ringbonds = list(ring.iterateBonds())
-
+        bond = None
         for tkbond in ringbonds:
             bond = self._getBond(tkbond)
             bond.bond_type = 'aromatic'
@@ -568,7 +566,7 @@ class Molecule(object):
 
         elif self.options['bond_scale'] == 'normalize':
             lengths = [bond.length for bond in self.treebonds()]
-            lengths = [round(l, self.options['bond_round']) for l in lengths]
+            lengths = [round(i, self.options['bond_round']) for i in lengths]
             lengths = Counter(lengths)
             self.bond_scale = self.options['bond_stretch'] / lengths.most_common()
 

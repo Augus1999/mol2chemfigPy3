@@ -63,7 +63,7 @@ def compare_positions(x1, y1, x2, y2):
     return length, angle
 
 
-class Bond(object):
+class Bond:
     """
     helper class for molecule.Molecule
 
@@ -173,8 +173,6 @@ class Bond(object):
         deepcopy but keep original atoms
         """
         c = copy(self)
-        # c.start_atom, c.and_atom = self.start_atom, self.end_atom
-
         return c
 
     def invert(self):
@@ -206,7 +204,6 @@ class Bond(object):
         """
         draw this bond crossing over another.
         """
-        # debug(self.start_atom.idx, self.end_atom.idx, self.tikz_styles, self.tikz_values)
         start_angles = self.upstream_angles()
         end_angles = self.downstream_angles()
 
@@ -441,8 +438,6 @@ class Bond(object):
                 self.tikz_values.update(dict(start=start, end=end))
                 self.bond_type = 'decorated'
 
-            # debug("b2c after ", self.start_atom.idx, self.end_atom.idx, self.tikz_styles, self.tikz_values)
-
         code = cfm.format_bond(
             self.options,
             self.angle,
@@ -484,7 +479,7 @@ class Bond(object):
 
 class DummyFirstBond(Bond):
     """
-    semi-dummy class that only takes an endatom, wich is the
+    semi-dummy class that only takes an end-atom, which is the
     first atom in the molecule, and just renders that.
 
     The other dummy attributes only exist to play nice with

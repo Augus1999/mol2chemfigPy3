@@ -16,7 +16,7 @@ class HelpError(common.MCFError):
     pass
 
 
-class Processor(object):
+class Processor:
     """
     parses input and invokes backend, returns result
     """

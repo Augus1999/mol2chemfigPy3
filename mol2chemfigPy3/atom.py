@@ -8,7 +8,7 @@ from . import chemfig_mappings as cfm
 hydrogen_lefties = "O S Se Te F Cl Br I At".split()  # I hope these are all ...
 
 
-class Atom(object):
+class Atom:
     """
     wrapper around toolkit atom object, augmented with coordinates
     helper class for molecule.Molecule
@@ -35,7 +35,16 @@ class Atom(object):
 
     charge_turf = 50  # reserved angle for charges - needs to be big enough for 2+
 
-    def __init__(self, options, idx, x, y, element, hydrogens, charge, radical, neighbors):
+    def __init__(self,
+                 options,
+                 idx,
+                 x,
+                 y,
+                 element,
+                 hydrogens,
+                 charge,
+                 radical,
+                 neighbors):
         self.options = options
         self.idx = idx
         self.x = x
@@ -45,7 +54,9 @@ class Atom(object):
         self.charge = charge
         self.radical = radical
         self.neighbors = neighbors  # the indexes only
-
+        self.first_quadrant, self.second_quadrant = None, None
+        self.string_pos, self.phantom, self.phantom_pos = None, None, None
+        self.charge_angle = None
         # angles of all attached bonds - to be populated later
         self.bond_angles = []
         marker = self.options.get('markers', None)
@@ -145,9 +156,7 @@ class Atom(object):
             self.options,
             self.idx + 1,
         )
-
         marker_code = cfm.format_marker(self.marker)
         if marker_code:
             comment_code = " "  # force an empty comment, needed after markers
-        self.explicit = bool(self.explicit_characters & set(atom_code))
         return marker_code + atom_code, comment_code

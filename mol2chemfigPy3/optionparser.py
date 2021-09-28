@@ -21,8 +21,8 @@ class OptionError(Exception):
     pass
 
 
-class Option(object):
-    collapseWs = re.compile('\s+')
+class Option:
+    collapseWs = re.compile(r'\s+')
 
     form_tag_template = "<!-- Option class needs to define a valid form tag template -->"
 
@@ -132,7 +132,6 @@ class Option(object):
 
 
 class BoolOption(Option):
-
     form_tag_template = r'''<input type="checkbox" name="%(key)s" value="yes" %(value)s/>'''
 
     def _default(self) -> bool:
@@ -271,6 +270,7 @@ class OptionParser(object):
     """
     collect and process options. the result will be contained in a dict.
     """
+
     def __init__(self) -> None:
         self._options = []
         self._options_by_name = {}
