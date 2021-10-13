@@ -25,6 +25,8 @@ mol2chemfigPy3 is a simple translation from py2 to py3 based on old mol2chemfig 
   $ python setup.py install
   ```
 
+If you prefer installing from wheel, you can download [here](https://github.com/Augus1999/mol2chemfigPy3/releases).
+
 ## Usage
 
 ### Use in command line
@@ -88,7 +90,7 @@ from mol2chemfigPy3 import mol2chemfig
 
 mol2chemfig('996')  # search the PubChem database
 
-mol2chemfig('C1=CC=C(C=C1)O')  # transfer InChI/SMILES to chemfig
+mol2chemfig('C1=CC=C(C=C1)O')  # transfer InChI/ to chemfig
 
 mol2chemfig('.\methanol.smi')  # from a file
 ```
