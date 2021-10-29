@@ -103,7 +103,7 @@ See official document [mol2chemfig-doc.pdf (uwaterloo.ca)](http://chimpsky.uwate
 
 ## Known issue(s)
 
-* direct using output file from mol2chemfig doesn't work. Copy the content to your own LaTaX files
+* direct using output file from mol2chemfig doesn't work. Copy the content to your own LaTeX files
 
 ## License
 
