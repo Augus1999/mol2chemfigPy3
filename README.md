@@ -90,7 +90,7 @@ from mol2chemfigPy3 import mol2chemfig
 
 mol2chemfig('996')  # search the PubChem database
 
-mol2chemfig('C1=CC=C(C=C1)O')  # transfer InChI/ to chemfig
+mol2chemfig('C1=CC=C(C=C1)O')  # transfer InChI/SMILES to chemfig
 
 mol2chemfig('.\methanol.smi')  # from a file
 ```
