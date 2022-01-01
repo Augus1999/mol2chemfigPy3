@@ -16,6 +16,7 @@ bugs.
 ## Install
 
 ### build from source
+
 * first install indigo
 
   ```bash
@@ -32,6 +33,9 @@ bugs.
 If you prefer installing from wheel, you can download [here](https://github.com/Augus1999/mol2chemfigPy3/releases).
 
 ### install from PyPi
+
+[![Downloads](https://static.pepy.tech/personalized-badge/mol2chemfigpy3?period=total&units=international_system&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/mol2chemfigpy3)
+
 ```bash
 $ pip install mol2chemfigPy3
 ```
