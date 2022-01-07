@@ -15,7 +15,7 @@ setup(
     package_dir={'mol2chemfigPy3': 'mol2chemfigPy3'},
     author='Nianze A. Tao',
     author_email='TaoN@cardiff.ac.uk',
-    scripts=['mol2chemfig.py'],
+    scripts=['mol2chemfig', 'mol2chemfig.py'],
     packages=find_packages(),
     python_requires='>=3',
     install_requires=['epam.indigo'],
