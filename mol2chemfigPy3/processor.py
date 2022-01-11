@@ -24,23 +24,23 @@ class Processor:
     def __init__(self,
                  raw_args: any,
                  data: any,
-                 formfields: any,
-                 progname: str,
-                 webform: bool,
+                 form_fields: any,
+                 program_name: str,
+                 web_form: bool,
                  rpc: bool) -> None:
-        self.rawargs = raw_args
+        self.raw_args = raw_args
         self.data = data
-        self.formfields = formfields
+        self.form_fields = form_fields
 
         # if the user renames the script file or the
         # web client, use their new names
-        self.progname = os.path.split(progname)[-1]
+        self.program_name = os.path.split(program_name)[-1]
 
         # flags that indicate origin of input
-        self.webform = webform
+        self.web_form = web_form
         self.rpc = rpc
 
-        self.optionparser = options.getParser()
+        self.option_parser = options.getParser()
         self.options = dict(common.settings)
 
         # data obtained from the proper source go here
@@ -50,13 +50,13 @@ class Processor:
         """
         print the program version
         """
-        return common.version_text(progname=self.progname)
+        return common.version_text(program_name=self.program_name)
 
     def help_text(self) -> str:
         """
         error messages for the command line interface.
         """
-        return common.help_text(progname=self.progname)
+        return common.help_text(program_name=self.program_name)
 
     def parseInputCli(self) -> None:
         """
@@ -64,18 +64,18 @@ class Processor:
         return success flag and either error message or data
         """
         # catch empty input
-        if not self.rawargs and not self.data:
+        if not self.raw_args and not self.data:
             ht = self.help_text()
 
             raise HelpError(ht)
 
         # parse options and arguments
         try:
-            parsed_options, data_list = self.optionparser.process_cli(self.rawargs)
+            parsed_options, data_list = self.option_parser.process_cli(self.raw_args)
         except Exception as msg:
             if str(msg).endswith('not recognized'):  # get opt error
                 msg = str(msg) + \
-                      ". Try %s --help to see a list of available options." % self.progname
+                      ". Try %s --help to see a list of available options." % self.program_name
             raise HelpError(msg)
 
         # if we get here, we have parsed options and a possibly empty data list
@@ -113,7 +113,7 @@ class Processor:
         """
         parse options and provide data provided through the web form
         """
-        parsed_options, warnings = self.optionparser.process_form_fields(self.formfields)
+        parsed_options, warnings = self.option_parser.process_form_fields(self.form_fields)
 
         if warnings:
             raise common.MCFError('<br/>\n'.join(warnings))
@@ -126,7 +126,7 @@ class Processor:
         """
         process input from both web form and CLI
         """
-        if not self.webform:
+        if not self.web_form:
             self.parseInputCli()
         else:
             self.parseInputWeb()
@@ -186,16 +186,16 @@ class Processor:
         return tkmol
 
 
-def process(rawargs: any = None,
+def process(raw_args: any = None,
             data: any = None,
-            formfields: any = None,
-            progname: str = "mol2chemfig",
-            webform: bool = False,
+            form_fields: any = None,
+            program_name: str = "mol2chemfig",
+            web_form: bool = False,
             rpc: bool = False) -> (bool, any):
     """
     process is a convenience wrapper for external callers
     """
-    p = Processor(rawargs, data, formfields, progname, webform, rpc)
+    p = Processor(raw_args, data, form_fields, program_name, web_form, rpc)
 
     try:
         mol = p.process()

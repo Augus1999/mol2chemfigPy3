@@ -639,36 +639,36 @@ class Molecule:
         """
         this calculates the approximate width and height
         of the rendered molecule, in units of chemfig
-        standard bond length (multiply with chemfig's
+        standard bond length (multiply with chemfig
         setatomsep parameter to obtain the physical size).
 
         It is only used for server side PDF generation,
         but maybe someone will have another use for it.
         """
-        minx = maxx = miny = maxy = None
+        min_x = max_x = min_y = max_y = None
 
         alpha = self.options['rotate']
         alpha *= math.pi / 180
 
-        sinalpha = math.sin(alpha)
-        cosalpha = math.cos(alpha)
+        sin_alpha = math.sin(alpha)
+        cos_alpha = math.cos(alpha)
 
         for atom in list(self.atoms.values()):
             x, y = atom.x, atom.y
 
-            xt = x * cosalpha - y * sinalpha
-            yt = x * sinalpha + y * cosalpha
+            xt = x * cos_alpha - y * sin_alpha
+            yt = x * sin_alpha + y * cos_alpha
 
-            if minx is None or xt < minx:
-                minx = xt
-            if maxx is None or xt > maxx:
-                maxx = xt
-            if miny is None or yt < miny:
-                miny = yt
-            if maxy is None or yt > maxy:
-                maxy = yt
+            if min_x is None or xt < min_x:
+                min_x = xt
+            if max_x is None or xt > max_x:
+                max_x = xt
+            if min_y is None or yt < min_y:
+                min_y = yt
+            if max_y is None or yt > max_y:
+                max_y = yt
 
-        xsize = (maxx - minx) * self.bond_scale
-        ysize = (maxy - miny) * self.bond_scale
+        x_size = (max_x - min_x) * self.bond_scale
+        y_size = (max_y - min_y) * self.bond_scale
 
-        return xsize, ysize
+        return x_size, y_size

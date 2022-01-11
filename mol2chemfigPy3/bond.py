@@ -35,27 +35,27 @@ def compare_positions(x1, y1, x2, y2):
     coordinates of two atoms.
     """
 
-    xdiff = x2 - x1
-    ydiff = y2 - y1
+    x_diff = x2 - x1
+    y_diff = y2 - y1
 
-    length = (xdiff ** 2 + ydiff ** 2) ** 0.5
+    length = (x_diff ** 2 + y_diff ** 2) ** 0.5
 
-    if xdiff == 0:
-        if ydiff < 0:
+    if x_diff == 0:
+        if y_diff < 0:
             angle = 270
         else:
             angle = 90
 
     else:
-        raw_angle = atan(abs(ydiff / xdiff)) * 180 / pi
+        raw_angle = atan(abs(y_diff / x_diff)) * 180 / pi
 
-        if ydiff >= 0:
-            if xdiff > 0:
+        if y_diff >= 0:
+            if x_diff > 0:
                 angle = raw_angle
             else:
                 angle = 180 - raw_angle
         else:
-            if xdiff > 0:
+            if x_diff > 0:
                 angle = -raw_angle
             else:
                 angle = 180 + raw_angle
@@ -487,6 +487,7 @@ class DummyFirstBond(Bond):
     """
 
     def __init__(self, options, end_atom):
+        # super(DummyFirstBond, self).__init__(options, end_atom)
         self.options = options
         self.end_atom = end_atom
         self.angle = None
@@ -503,7 +504,7 @@ class AromaticRingBond(Bond):
     as a node in the regular bond hierarchy.
     """
     descendants = []
-    scale = 1.5  # 1.5 corresponds to chemfig's ring size
+    scale = 1.5  # 1.5 corresponds to ring size of chemfig
 
     def __init__(self, options, parent, angle, length, inner_r):
         self.options = options

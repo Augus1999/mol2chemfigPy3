@@ -4,50 +4,50 @@ common settings and a bit of infrastructure
 """
 from .options import getParser
 
-program_version = '1.4.1'
+program_version = '1.4.2'
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = r"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%s&disopt=DisplaySDF"
 
 _version_blurb = '''
-%(progname)s version %(version)s
+%(program_name)s version %(version)s
 
 mol2chemfig generates chemfig code from molfiles.
-For more information, type '%(progname)s --help'.
+For more information, type '%(program_name)s --help'.
 '''
 
 _lua_version_blurb = '''
-This is version %(client_version)s of %(progname)s,
+This is version %(client_version)s of %(program_name)s,
 the Lua web client for the mol2chemfig server. The
 server is running version %(server_version)s of mol2chemfig;
 server and client version may differ.
 
-%(progname)s generates chemfig code from molfiles.
-For more information, type '%(progname)s --help'.
+%(program_name)s generates chemfig code from molfiles.
+For more information, type '%(program_name)s --help'.
 '''
 
 _help_blurb = '''
-%(progname)s v. %(version)s,  originally by Eric Brefo-Mensah and Michael Palmer
+%(program_name)s v. %(version)s,  originally by Eric Brefo-Mensah and Michael Palmer
 re-write in python3 by Nianze A. TAO (Omozawa SUENO) in 2021
-%(progname)s generates chemfig code from molfiles. Usage example:
+%(program_name)s generates chemfig code from molfiles. Usage example:
 
-%(progname)s --angle=45 --aromatic-circles somefile.mol
+%(program_name)s --angle=45 --aromatic-circles somefile.mol
 
 Options:
 '''
 
 
-def version_text(progname='mol2chemfig', version=program_version) -> str:
+def version_text(program_name='mol2chemfig', version=program_version) -> str:
     return _version_blurb % locals()
 
 
-def help_text(progname="mol2chemfig", version=program_version) -> str:
+def help_text(program_name="mol2chemfig", version=program_version) -> str:
     msg = _help_blurb % locals()
     msg += getParser().format_help(indent=32, linewidth=75, separator='')
     return msg
 
 
-def lua_version_text(progname, client_version) -> str:
+def lua_version_text(program_name, client_version) -> str:
     server_version = program_version
     return _lua_version_blurb % locals()
 
