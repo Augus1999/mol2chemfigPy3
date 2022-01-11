@@ -17,17 +17,18 @@ bugs.
 
 ### build from source
 
-* first install indigo
+this requires `setuptools` and `wheel` installed
+
+* first `cd` to where `setup.py` locates
 
   ```bash
-  $ pip install epam.indigo
+  $ cd <path>
   ```
 
 * then run
 
   ```bash
-  $ python setup.py bdist_wheel
-  $ python setup.py install
+  $ pip install ./
   ```
 
 If you prefer installing from wheel, you can download [here](https://github.com/Augus1999/mol2chemfigPy3/releases).
@@ -37,7 +38,7 @@ If you prefer installing from wheel, you can download [here](https://github.com/
 [![Downloads](https://static.pepy.tech/personalized-badge/mol2chemfigpy3?period=total&units=international_system&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/mol2chemfigpy3)
 
 ```bash
-$ pip install mol2chemfigPy3
+$ pip install -U mol2chemfigPy3
 ```
 
 ## Usage
