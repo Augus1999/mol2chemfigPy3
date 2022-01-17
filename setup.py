@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# Author: Nianze A. TAO (Omozawa SUENO)
+import os
+from shutil import rmtree
 from setuptools import setup, find_packages
 from mol2chemfigPy3 import __version__
 
@@ -20,3 +24,8 @@ setup(
     python_requires='>=3',
     install_requires=['epam.indigo'],
 )
+
+if os.path.exists('build'):
+    rmtree('build')
+if os.path.exists('mol2chemfigPy3.egg-info'):
+    rmtree('mol2chemfigPy3.egg-info')

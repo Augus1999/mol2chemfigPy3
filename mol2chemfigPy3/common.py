@@ -81,7 +81,7 @@ class MCFError(Exception):
     pass
 
 
-class Counter(object):
+class Counter:
     """
     a simple Counter class, just to remove the dependency on version 2.7
     (which provides one in module collections)

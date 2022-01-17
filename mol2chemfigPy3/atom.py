@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import string
+from typing import Union
 from . import chemfig_mappings as cfm
 # some atoms should carry their hydrogen to the left, rather than
 # to the right. This is applied to solitary atoms, but not to bonded
@@ -37,7 +38,7 @@ class Atom:
 
     def __init__(self,
                  options,
-                 idx,
+                 idx: int,
                  x,
                  y,
                  element,
@@ -66,7 +67,9 @@ class Atom:
             self.marker = ""
 
     @staticmethod
-    def _score_angle(a, b, turf):
+    def _score_angle(a: int,
+                     b: int,
+                     turf: int) -> int:
         """
         helper. calculates absolute angle between a and b.
         0 <= angle <= 180
@@ -77,7 +80,9 @@ class Atom:
         angle = min(diff, 360 - diff)
         return (max(0, turf - angle)) ** 2
 
-    def _score_angles(self, choices, turf):
+    def _score_angles(self,
+                      choices: list,
+                      turf: int) -> list:
         """
         backend for score_angles
         """
@@ -91,7 +96,7 @@ class Atom:
         named = [a[-1] for a in aux]
         return named
 
-    def score_angles(self):
+    def score_angles(self) -> None:
         """
         determine which positions
 
@@ -119,7 +124,7 @@ class Atom:
 
         self.charge_angle = self._score_angles(self.charge_positions, self.charge_turf)[0]
 
-    def render_phantom(self):
+    def render_phantom(self) -> (Union[str, None], str):
         """
         render a bond that closes a ring or loop, or for
         late-rendered cross bonds. The target atom
@@ -136,7 +141,7 @@ class Atom:
         )
         return atom_code, comment_code
 
-    def render(self):
+    def render(self) -> (str, str):
         """
         render the atom and a comment
         """

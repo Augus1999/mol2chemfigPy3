@@ -5,14 +5,14 @@ definitions and code to translate the molecule tree to chemfig
 this code will only make sense to you if you are familiar with
 the TeX syntax defined by the chemfig package.
 """
-
 import textwrap
+from typing import Union
 
 BOND_CODE_WIDTH = 50  # space for bonds - generous upfront, will be trimmed at the end
 TERSE_LINE_WIDTH = 75  # in terse code format, force linebreaks
 
 
-def num_round(num, sig):
+def num_round(num, sig) -> Union[int, float]:
     """
     round and, if applicable, return integer instead of float
     """
@@ -151,7 +151,9 @@ atom_templates = dict(
 
 #  helpers for bond formatting
 
-def format_angle(options, angle, parent_angle) -> str:
+def format_angle(options: dict,
+                 angle,
+                 parent_angle) -> str:
     """
     format prefix and number for bond angle
     """
@@ -177,7 +179,7 @@ def specifier_default(val, default) -> str:
 # the master bond formatter
 
 
-def format_bond(options,
+def format_bond(options: dict,
                 angle,
                 parent_angle,
                 bond_type,
@@ -276,8 +278,8 @@ def format_marker(marker) -> any:
     return marker
 
 
-def format_atom(options,
-                idx,
+def format_atom(options: dict,
+                idx: int,
                 element,
                 hydrogens,
                 charge,
@@ -376,8 +378,8 @@ def format_atom(options,
     return fill_atom(keys, data, element_phantom)
 
 
-def format_atom_comment(options,
-                        idx) -> str:
+def format_atom_comment(options: dict,
+                        idx: int) -> str:
     """
     render an optional end-of-line comment after a regular atom
     """
@@ -386,8 +388,8 @@ def format_atom_comment(options,
     return str(idx)
 
 
-def format_closure_comment(options,
-                           idx) -> str:
+def format_closure_comment(options: dict,
+                           idx: int) -> str:
     """
     render an optional end of line comment after a ring-closing bond
     """
@@ -396,7 +398,7 @@ def format_closure_comment(options,
     return '-> %s' % idx
 
 
-def format_aromatic_ring(options,
+def format_aromatic_ring(options: dict,
                          angle,
                          parent_angle,
                          length,
@@ -418,7 +420,7 @@ def format_aromatic_ring(options,
     return ring_bond_code, ring_code, comment
 
 
-def strip_output(output_list) -> list:
+def strip_output(output_list: list) -> list:
     """
     remove white space and comments
     """
@@ -446,7 +448,8 @@ def strip_output(output_list) -> list:
     return chunked
 
 
-def format_output(options, output_list) -> str:
+def format_output(options: dict,
+                  output_list: list) -> str:
     """
     optionally wrap the translated output into a command,
     to ease inclusion in LaTeX documents with \\input
