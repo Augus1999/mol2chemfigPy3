@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 from mol2chemfigPy3 import __version__
 
 
-with open("README.md", "r", encoding="utf-8") as fh:
+with open("README.md", mode="r", encoding="utf-8") as fh:
     long_description = fh.read()
 setup(
     name='mol2chemfigPy3',
@@ -21,7 +21,7 @@ setup(
     author_email='TaoN@cardiff.ac.uk',
     scripts=['mol2chemfig', 'mol2chemfig.py'],
     packages=find_packages(),
-    python_requires='>=3',
+    python_requires='>=3.7',
     install_requires=['epam.indigo'],
 )
 

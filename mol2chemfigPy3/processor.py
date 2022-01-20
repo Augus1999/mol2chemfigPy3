@@ -5,10 +5,9 @@ return the result.
 """
 import os.path
 import traceback
-import urllib.error
-import urllib.parse
-import urllib.request
-from indigo import Indigo, IndigoException
+from urllib import request
+from typing import Union
+from indigo import Indigo, IndigoException, IndigoObject
 from . import common, options, molecule
 
 
@@ -22,12 +21,12 @@ class Processor:
     """
 
     def __init__(self,
-                 raw_args: any,
+                 raw_args: Union[list, str, None],
                  data: any,
                  form_fields: any,
                  program_name: str,
                  web_form: bool,
-                 rpc: bool) -> None:
+                 rpc: bool):
         self.raw_args = raw_args
         self.data = data
         self.form_fields = form_fields
@@ -49,12 +48,16 @@ class Processor:
     def version_text(self) -> str:
         """
         print the program version
+
+        :return: version text
         """
         return common.version_text(program_name=self.program_name)
 
     def help_text(self) -> str:
         """
         error messages for the command line interface.
+
+        :return: help text
         """
         return common.help_text(program_name=self.program_name)
 
@@ -62,6 +65,8 @@ class Processor:
         """
         parse input that came through the command line (locally or rpc)
         return success flag and either error message or data
+
+        :return: None
         """
         # catch empty input
         if not self.raw_args and not self.data:
@@ -74,8 +79,7 @@ class Processor:
             parsed_options, data_list = self.option_parser.process_cli(self.raw_args)
         except Exception as msg:
             if str(msg).endswith('not recognized'):  # get opt error
-                msg = str(msg) + \
-                      ". Try %s --help to see a list of available options." % self.program_name
+                msg = f"{str(msg)}. Try {self.program_name} --help to see a list of available options."
             raise HelpError(msg)
 
         # if we get here, we have parsed options and a possibly empty data list
@@ -105,13 +109,15 @@ class Processor:
             try:
                 data = open(data).read()
             except IOError:
-                raise common.MCFError("Can't read file %s" % data)
+                raise common.MCFError(f"Can't read file {data}")
 
         self.data_string = data
 
     def parseInputWeb(self) -> None:
         """
         parse options and provide data provided through the web form
+
+        :return: None
         """
         parsed_options, warnings = self.option_parser.process_form_fields(self.form_fields)
 
@@ -125,6 +131,8 @@ class Processor:
     def process(self) -> molecule.Molecule:
         """
         process input from both web form and CLI
+
+        :return: a molecule
         """
         if not self.web_form:
             self.parseInputCli()
@@ -133,7 +141,7 @@ class Processor:
         # let toolkit parse the molecule, and process it
         tk_mol = self.parseMolecule()
 
-        # we now know how to deal with orphan atoms
+        # we now know how to deal with orphan atoms.
         # atoms, bonds = tkmol.countAtoms(), tkmol.countBonds()
         # if atoms <= 1 or bonds == 0:
         #   raise common.MCFError, "Input contains no bonds---can't render structure"
@@ -142,13 +150,15 @@ class Processor:
 
         return mol
 
-    def parseMolecule(self) -> any:
+    def parseMolecule(self) -> IndigoObject:
         """
         turn the input into a toolkit molecule according to user settings
 
         indigo is supposed to read transparently, so we can do away with
-        the format setting, basically. If it's numeric, we ask pubchem,
+        the format setting, basically. If it's numeric, we ask pubchem;
         if it isn't, we consider it a molecule.
+
+        :return: IndigoObject
         """
         raw_input = self.data_string
 
@@ -160,7 +170,7 @@ class Processor:
         if pubchem_id is not None:
             try:
                 url = common.pubchem_url % pubchem_id
-                pubchem_content = urllib.request.urlopen(url).read()
+                pubchem_content = request.urlopen(url).read()
             except IOError:
                 raise common.MCFError('No connection to PubChem')
 
@@ -170,6 +180,7 @@ class Processor:
             tkmol = Indigo().loadMolecule(self.data_string)
         except IndigoException:
             raise common.MCFError("Invalid input data")
+            # raise HelpError('Invalid input data')
 
         hydrogens = self.options['hydrogens']
 
@@ -186,14 +197,22 @@ class Processor:
         return tkmol
 
 
-def process(raw_args: any = None,
+def process(raw_args: Union[list, str, None] = None,
             data: any = None,
             form_fields: any = None,
-            program_name: str = "mol2chemfig",
+            program_name: str = "mol2chemfigPy3",
             web_form: bool = False,
-            rpc: bool = False) -> (bool, any):
+            rpc: bool = False) -> tuple[bool, Union[str, molecule.Molecule]]:
     """
     process is a convenience wrapper for external callers
+
+    :param raw_args: arguments
+    :param data: data
+    :param form_fields: form fields
+    :param program_name: program name
+    :param web_form: whether is web form
+    :param rpc: rpc
+    :return: (bool, molecule)
     """
     p = Processor(raw_args, data, form_fields, program_name, web_form, rpc)
 
@@ -201,7 +220,7 @@ def process(raw_args: any = None,
         mol = p.process()
 
     except HelpError as msg:
-        return False, msg
+        return False, str(msg)
 
     except common.MCFError:  # anticipated error - brief message enough
         msg = traceback.format_exc().splitlines()[-1]

@@ -4,7 +4,7 @@ common settings and a bit of infrastructure
 """
 from .options import getParser
 
-program_version = '1.4.2'
+program_version = '1.4.3'
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = r"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%s&disopt=DisplaySDF"
@@ -27,8 +27,8 @@ For more information, type '%(program_name)s --help'.
 '''
 
 _help_blurb = '''
-%(program_name)s v. %(version)s,  originally by Eric Brefo-Mensah and Michael Palmer
-re-write in python3 by Nianze A. TAO (Omozawa SUENO) in 2021
+%(program_name)s v. %(version)s, originally by Eric Brefo-Mensah and Michael Palmer;
+re-write in python3 by Nianze A. TAO (Omozawa SUENO) in 2021.
 %(program_name)s generates chemfig code from molfiles. Usage example:
 
 %(program_name)s --angle=45 --aromatic-circles somefile.mol
@@ -37,11 +37,11 @@ Options:
 '''
 
 
-def version_text(program_name='mol2chemfig', version=program_version) -> str:
+def version_text(program_name='mol2chemfigPy3', version=program_version) -> str:
     return _version_blurb % locals()
 
 
-def help_text(program_name="mol2chemfig", version=program_version) -> str:
+def help_text(program_name="mol2chemfigPy3", version=program_version) -> str:
     msg = _help_blurb % locals()
     msg += getParser().format_help(indent=32, linewidth=75, separator='')
     return msg
@@ -87,7 +87,7 @@ class Counter:
     (which provides one in module collections)
     """
 
-    def __init__(self, lst):
+    def __init__(self, lst: list):
         self._d = {}
 
         for val in lst:
@@ -97,6 +97,11 @@ class Counter:
             self._d[val] += 1
 
     def most_common(self) -> any:
+        """
+        return the most common object
+
+        :return: an object (any type)
+        """
         lst = list(self._d.items())
         lst.sort(key=lambda pair: pair[1])
 

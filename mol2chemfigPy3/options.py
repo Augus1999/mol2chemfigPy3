@@ -7,6 +7,8 @@ from .optionparser import *
 def getParser() -> OptionParser:
     """
     make sure the parser is created anew on each request
+
+    :return: OptionParser object
     """
     parser = OptionParser()
     parser.append(BoolOption(

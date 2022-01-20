@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 # parse a molfile molecule and render to chemfig code
 import math
+from typing import Optional, Union
 from . import chemfig_mappings as cfm
 from .common import MCFError, Counter
 from .atom import Atom
 from .bond import Bond, DummyFirstBond, AromaticRingBond, compare_positions
-from indigo import IndigoException
+from indigo import IndigoException, IndigoObject
 
 
 class Molecule:
     bond_scale = 1.0  # can be overridden by user option
     exit_bond = None  # the first bond in the tree that connects to the exit atom
 
-    def __init__(self, options, tkmol):
+    def __init__(self, options: dict, tkmol: IndigoObject):
         self.options = options
         self.tkmol = tkmol
 
@@ -81,10 +82,14 @@ class Molecule:
         # finally, render the thing and cache the result.
         self._rendered = self.render()
 
-    def link_atoms(self, x, y) -> None:
+    def link_atoms(self, x: int, y: int) -> None:
         """
         connect atoms with indexes x and y using a pseudo bond.
         Helper for connect_fragments
+
+        :param x: x index
+        :param y: y index
+        :return: None
         """
         start_atom = self.atoms[x]
         end_atom = self.atoms[y]
@@ -102,6 +107,8 @@ class Molecule:
         """
         connect multiple fragments, using link bonds across their
         last and first atoms, respectively.
+
+        :return: None
         """
         fragments = self.molecule_fragments()
 
@@ -131,19 +138,21 @@ class Molecule:
             for atom in un_bonded:
                 self.link_atoms(anchor, atom)
 
-    def molecule_fragments(self):
+    def molecule_fragments(self) -> list:
         """
         identify unconnected fragments in the molecule.
         used by connect_fragments
+
+        :return: fragments
         """
 
-        def split_pairs(pair_list) -> any:
+        def split_pairs(pair_list: list) -> tuple[list, list]:
             """
             break up pair_list into one list that contains all pairs
-            that are connected, directly or indirectly,  to the first
+            that are connected, directly or indirectly, to the first
             pair in the list, and another list containing the rest.
             """
-            first, rest = pair_list[0], pair_list[1:]
+            first, _rest = pair_list[0], pair_list[1:]
             connected_atoms = set(first)
 
             connected_pairs = [first]
@@ -151,7 +160,7 @@ class Molecule:
             while True:
                 unconnected = []
 
-                for r in rest:
+                for r in _rest:
                     s = set(r)
 
                     if connected_atoms & s:
@@ -160,10 +169,10 @@ class Molecule:
                     else:
                         unconnected.append(r)
 
-                if len(unconnected) == len(rest):  # no new pairs found in this loop iteration
+                if len(unconnected) == len(_rest):  # no new pairs found in this loop iteration
                     return connected_pairs, unconnected
                 else:
-                    rest = unconnected
+                    _rest = unconnected
 
         fragments = []
 
@@ -183,9 +192,13 @@ class Molecule:
             else:
                 atom_pairs = rest
 
-    def treebonds(self, root=False):
+    def treebonds(self,
+                  root: bool = False) -> list:
         """
         return a list with all bonds in the molecule tree
+
+        :param root: whether include the first bond
+        :return: [bond_1, bond_2, ...]
         """
         all_bonds = []
 
@@ -201,7 +214,7 @@ class Molecule:
 
         return all_bonds
 
-    def process_cross_bonds(self):
+    def process_cross_bonds(self) -> None:
         """
         if cross bonds have been declared:
         1. tag the corresponding bonds within the tree as no-ops
@@ -210,6 +223,8 @@ class Molecule:
         4. append 2 and 3 as branch to the exit atom
 
         this is unfortunately all a little hackish.
+
+        :return: None
         """
         cross_bonds = self.options['cross_bond']
 
@@ -223,7 +238,7 @@ class Molecule:
                     bond = self.bonds[combo]
                     break
             else:  # referenced bond doesn't exist
-                raise MCFError("bond %s-%s doesn't exist" % (start1, end1))
+                raise MCFError(f"bond {start1}-{end1} doesn't exist")
 
             # very special case: the bond _might_ already be the very
             # last one to be rendered - then we just tag it
@@ -263,11 +278,13 @@ class Molecule:
             else:  # occasionally, the molecule's exit atom may be the starting point of the elevated bond
                 self.exit_bond.descendants.append(bond_copy)
 
-    def default_exit_bond(self):
+    def default_exit_bond(self) -> Bond:
         """
         pick the bond and atom that is at the greatest distance from
         the entry atom along the parsed molecule tree. This
         must be one of the leaf atoms, obviously.
+
+        :return: the most distant bond
         """
         scored = []
         bonds = {}
@@ -289,11 +306,13 @@ class Molecule:
         bond_out = bonds[scored[-1]]
         return bond_out
 
-    def pickFirstLastAtoms(self):
+    def pickFirstLastAtoms(self) -> tuple[Optional[Atom], Optional[Atom]]:
         """
         If the first atom is not given, we try to pick one
         that has only one bond to the rest of the molecule,
         so that only the first angle is absolute.
+
+        :return: (entry atom, exit atom)
         """
         if self.options['entry_atom'] is not None:
             entry_atom = self.atoms.get(self.options['entry_atom'] - 1)  # -> zero index
@@ -314,9 +333,11 @@ class Molecule:
 
         return entry_atom, exit_atom
 
-    def parseAtoms(self):
+    def parseAtoms(self) -> dict:
         """
         Read some attributes from the toolkit atom object
+
+        :return: a dict containing wrapped atoms
         """
         # wrap all atoms and supply coordinates
         wrapped_atoms = {}
@@ -353,9 +374,11 @@ class Molecule:
 
         return wrapped_atoms
 
-    def parseBonds(self):
+    def parseBonds(self) -> tuple[dict, list]:
         """
         read some bond attributes
+
+        :return: (bonds, atom pairs)
         """
         bonds = {}  # dictionary with bond objects, both orientations
         atom_pairs = []  # atom index pairs only, unique
@@ -382,9 +405,15 @@ class Molecule:
 
         return bonds, atom_pairs
 
-    def parseTree(self, start_atom, end_atom):
+    def parseTree(self,
+                  start_atom: Optional[Atom],
+                  end_atom: Atom) -> Optional[Bond]:
         """
         recurse over atoms in molecule to create a tree of bonds
+
+        :param start_atom: the start atom (can be None)
+        :param end_atom: the end atom
+        :return: Bond object
         """
         end_idx = end_atom.idx
         start_idx = None
@@ -431,13 +460,16 @@ class Molecule:
 
         return bond
 
-    def _getBond(self, tkbond):
+    def _getBond(self, tk_bond) -> Bond:
         """
         helper for aromatizeRing: find bond in parse tree that
         corresponds to toolkit bond
+
+        :param tk_bond: toolkit bond
+        :return: Bond object
         """
-        start_idx = tkbond.source().index()
-        end_idx = tkbond.destination().index()
+        start_idx = tk_bond.source().index()
+        end_idx = tk_bond.destination().index()
 
         if (start_idx, end_idx) in self.seen_bonds:
             return self.bonds[(start_idx, end_idx)]
@@ -445,15 +477,20 @@ class Molecule:
         # the bond must be going the other way ...
         return self.bonds[(end_idx, start_idx)]
 
-    def aromatizeRing(self, ring, center_x, center_y):
+    def aromatizeRing(self,
+                      ring,
+                      center_x: Union[float, int],
+                      center_y: Union[float, int]) -> None:
         """
         render a ring that is aromatic and is a regular polygon
+
+        :return: None
         """
         # first, set all bonds to aromatic
-        ringbonds = list(ring.iterateBonds())
+        ring_bonds = list(ring.iterateBonds())
         bond = None
-        for tkbond in ringbonds:
-            bond = self._getBond(tkbond)
+        for tk_bond in ring_bonds:
+            bond = self._getBond(tk_bond)
             bond.bond_type = 'aromatic'
 
         # any bond can serve as the anchor for the circle,
@@ -468,26 +505,32 @@ class Molecule:
         # for bond scaling that may have taken place
         outer_r *= self.bond_scale
 
-        alpha = (math.pi / 2 - math.pi / len(ringbonds))
+        alpha = (math.pi / 2 - math.pi / len(ring_bonds))
         inner_r = math.sin(alpha) * outer_r
 
         arb = AromaticRingBond(self.options, bond, angle, outer_r, inner_r)
         bond.descendants.append(arb)
 
-    def annotateRing(self, ring, is_aromatic):
+    def annotateRing(self,
+                     ring,
+                     is_aromatic: bool) -> None:
         """
         determine center, symmetry and aromatic character of ring
         I wonder if indigo would tell us directly about these ...
 
         annotate double bonds in rings, or alternatively decorate
         ring with aromatic circle.
+
+        :param ring: ring
+        :param is_aromatic: whether is aromatic molecule
+        :return: None
         """
         atoms = set()
         bond_lengths = []
         bonds = []
 
-        for tkbond in ring.iterateBonds():
-            bond = self._getBond(tkbond)
+        for tk_bond in ring.iterateBonds():
+            bond = self._getBond(tk_bond)
             bonds.append(bond)
 
             atoms.add(self.atoms[bond.start_atom.idx])
@@ -532,10 +575,12 @@ class Molecule:
             for bond in bonds:
                 bond.is_clockwise(center_x, center_y)
 
-    def annotateRings(self):
+    def annotateRings(self) -> None:
         """
         modify double bonds in rings. In aromatic rings, we optionally
         do away with double bonds altogether and draw a circle instead
+
+        :return: None
         """
         self.tkmol.aromatize()
 
@@ -557,9 +602,11 @@ class Molecule:
         for is_aromatic, ring in reversed(_all_rings):
             self.annotateRing(ring, is_aromatic)
 
-    def scaleBonds(self):
+    def scaleBonds(self) -> None:
         """
         scale bonds according to user options
+
+        :return: None
         """
         if self.options['bond_scale'] == 'keep':
             pass
@@ -576,24 +623,30 @@ class Molecule:
         for bond in self.treebonds():
             bond.length = self.bond_scale * bond.length
 
-    def render(self):
+    def render(self) -> list:
         """
         render molecule to chemfig
+
+        :return: a list containing rendered bonds
         """
         output = []
         self._render(output, bond=self.root, level=0)
 
         return output
 
-    def render_user(self):
+    def render_user(self) -> str:
         """
         returns code formatted according to user options
+
+        :return: formatted code
         """
         return cfm.format_output(self.options, self._rendered)
 
-    def render_server(self):
+    def render_server(self) -> str:
         """
         returns code formatted for server-side PDF generation
+
+        :return: formatted code
         """
         # override some options
         params = dict(self.options)
@@ -603,9 +656,17 @@ class Molecule:
 
         return cfm.format_output(params, self._rendered)
 
-    def _renderBranches(self, output, level, bonds):
+    def _renderBranches(self,
+                        output: list,
+                        level: int,
+                        bonds: list) -> None:
         """
         render a list of branching bonds indented and inside enclosing brackets.
+
+        :param output: [...]
+        :param level: level
+        :param bonds: [Bond_1, Bond_2,...]
+        :return: None
         """
         branch_indent = self.options['indent']
 
@@ -614,9 +675,17 @@ class Molecule:
             self._render(output, bond, level)
             output.append(")".rjust(level * branch_indent + cfm.BOND_CODE_WIDTH))
 
-    def _render(self, output, bond, level):
+    def _render(self,
+                output: list,
+                bond: Union[Bond, DummyFirstBond, AromaticRingBond],
+                level: int) -> None:
         """
         recursively render the molecule.
+
+        :param output: an empty list
+        :param bond: Bond object
+        :param level: level
+        :return: None
         """
         output.append(bond.render(level))
         branches = bond.descendants
@@ -635,7 +704,7 @@ class Molecule:
             self._renderBranches(output, level + 1, branches)
             self._render(output, first, level)
 
-    def dimensions(self):
+    def dimensions(self) -> tuple[float, float]:
         """
         this calculates the approximate width and height
         of the rendered molecule, in units of chemfig
@@ -644,6 +713,8 @@ class Molecule:
 
         It is only used for server side PDF generation,
         but maybe someone will have another use for it.
+
+        :return: (width, height)
         """
         min_x = max_x = min_y = max_y = None
 

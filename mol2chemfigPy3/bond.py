@@ -2,11 +2,12 @@
 """
 My name is Bond. JAMES Bond.
 """
-from typing import Union
+from typing import Optional, Union
 from copy import deepcopy, copy
 from math import atan, tan, pi
-from . import chemfig_mappings as cfm
 from indigo import Indigo
+from .atom import Atom
+from . import chemfig_mappings as cfm
 
 # Indigo.UP : stereo "up" bond
 # Indigo.DOWN : stereo "down" bond
@@ -32,7 +33,7 @@ bond_mapping = {
 def compare_positions(x1: float,
                       y1: float,
                       x2: float,
-                      y2: float) -> (float, float):
+                      y2: float) -> tuple[float, float]:
     """
     calculate distance and angle between the
     coordinates of two atoms.
@@ -97,10 +98,10 @@ class Bond:
 
     def __init__(self,
                  options: dict,
-                 start_atom,
-                 end_atom,
-                 bond_type=None,
-                 stereo=0):
+                 start_atom: Atom,
+                 end_atom: Atom,
+                 bond_type: Optional[str] = None,
+                 stereo: int = 0):
 
         self.options = options
         self.start_atom = start_atom
@@ -138,13 +139,15 @@ class Bond:
         if marker is not None:
             ids = [self.start_atom.idx + 1, self.end_atom.idx + 1]
             ids.sort()
-            self.marker = '%s%s-%s' % (marker, ids[0], ids[1])
+            self.marker = f'{marker}{ids[0]}-{ids[1]}'
         else:
             self.marker = ""
 
-    def bond_dimensions(self) -> (float, float):
+    def bond_dimensions(self) -> tuple[float, float]:
         """
         determine bond angle and distance between two atoms
+
+        :return: (distance, angle)
         """
         return compare_positions(
             self.start_atom.x,
@@ -159,6 +162,10 @@ class Bond:
         """
         determine whether the bond will be drawn clockwise
         or counterclockwise relative to center
+
+        :param center_x: x of centre
+        :param center_y: y of centre
+        :return: None
         """
         if self.clockwise:  # assign only once
             return
@@ -182,6 +189,8 @@ class Bond:
     def clone(self):
         """
         deepcopy but keep original atoms
+
+        :return: Bond object
         """
         c = copy(self)
         return c
@@ -189,6 +198,8 @@ class Bond:
     def invert(self):
         """
         draw a bond backwards.
+
+        :return: Bond object (inverted)
         """
         c = deepcopy(self)
         c.start_atom, c.end_atom = self.end_atom, self.start_atom
@@ -205,15 +216,21 @@ class Bond:
         """
         make this bond an invisible link. this also cancels
         any other tikz styles, and removes the marker.
+
+        :return: None
         """
         self.bond_type = "link"
         self.tikz_styles = set()
         self.tikz_values = {}
         self.marker = ""
 
-    def set_cross(self, last: bool = False) -> None:
+    def set_cross(self,
+                  last: bool = False) -> None:
         """
         draw this bond crossing over another.
+
+        :param last: whether the bond is the last
+        :return: None
         """
         start_angles = self.upstream_angles()
         end_angles = self.downstream_angles()
@@ -230,11 +247,15 @@ class Bond:
         self.is_last = last
 
     def _adjoining_angles(self,
-                          atom,
-                          inversion_angle=0) -> (int, int):
+                          atom: Atom,
+                          inversion_angle: Union[int, float] = 0) -> tuple[Optional[int], Optional[int]]:
         """
         determine the narrowest upstream or downstream angles
         on the left and the right.
+
+        :param atom: Atom object
+        :param inversion_angle: inversion angle
+        :return: (left angle, right angle) or (None, None)
         """
         raw_angles = atom.bond_angles[:]
         raw_angles = [int(round(a)) % 360 for a in raw_angles]
@@ -255,6 +276,8 @@ class Bond:
     def upstream_angles(self) -> dict:
         """
         determine the narrowest upstream left and upstream right angle.
+
+        :return: {left: first, right: last}
         """
         first, last = self._adjoining_angles(self.start_atom)
 
@@ -267,6 +290,8 @@ class Bond:
     def downstream_angles(self) -> dict:
         """
         determine the narrowest downstream left and downstream right angle.
+
+        :return: {left: last, right: first}
         """
         first, last = self._adjoining_angles(self.end_atom, 180)
 
@@ -277,10 +302,13 @@ class Bond:
         return dict(left=last, right=first)
 
     @staticmethod
-    def angle_penalty(angle: Union[float, None]) -> float:
+    def angle_penalty(angle: Optional[float]) -> float:
         """
         scoring function used in picking sides for second
         stroke of double bond
+
+        :param angle: angle
+        :return: 0 if angle is None else (angle - 105)^2
         """
         if angle is None:
             return 0
@@ -291,16 +319,23 @@ class Bond:
     def cotan100(angle: float) -> int:
         """
         100 times cotan of angle, rounded
+
+        :param angle: angle
+        :return: Int(100 * cot(angle))
         """
         _tan = tan(angle * pi / 180)
         return int(round(100 / _tan))
 
     def shorten_stroke(self,
-                       same_angle,
-                       other_angle) -> int:
+                       same_angle: Union[int, float, None],
+                       other_angle: Union[int, float, None]) -> int:
         """
         determine by how much to shorten the second stroke
         of a double bond.
+
+        :param same_angle: the angle
+        :param other_angle: another angle
+        :return: 100 * cot(angle*)
         """
         if same_angle is None:  # other_angle will be, too; don't shorten.
             return 0
@@ -317,13 +352,15 @@ class Bond:
 
         return self.cotan100(angle)
 
-    def fancy_double(self) -> Union[tuple[str, int, int], None]:
+    def fancy_double(self) -> Optional[tuple[str, int, int]]:
         """
         work out the parameters for rendering a fancy double bond.
 
         we need to decide whether the second stroke should be to
         the left or the right of the main stroke, and also by
-        how much to shorten the start and and of the second stroke.
+        how much to shorten the start and of the second stroke.
+
+        :return: (side, start, end) or None
         """
         # if we are in a ring, the second stroke should be inside.
 
@@ -391,11 +428,13 @@ class Bond:
 
         return side, start, end
 
-    def fancy_triple(self) -> (int, int):
+    def fancy_triple(self) -> tuple[int, int]:
         """
         work out parameters for fancy triple bond. We don't
         need to choose sides here, just calculate the required
         line shortening.
+
+        :return: (start, end)
         """
         # end_angles = self.downstream_angles()
 
@@ -423,6 +462,8 @@ class Bond:
         """
         delegate to chemfig_mappings module to render
         the bond code, without the atom
+
+        :return: bond code
         """
 
         if self.to_phantom:
@@ -469,10 +510,17 @@ class Bond:
         return code
 
     def indent(self,
-               level,
-               bond_code,
+               level: int,
+               bond_code: str,
                atom_code: str = '',
                comment_code: str = '') -> str:
+        """
+        :param level: level value
+        :param bond_code: bond code
+        :param atom_code: atom code
+        :param comment_code: comment code
+        :return: indent space + bond code + atom code
+        """
         stuff = ' ' * self.options['indent'] * level + bond_code.rjust(cfm.BOND_CODE_WIDTH) + atom_code
 
         if comment_code:
@@ -480,9 +528,12 @@ class Bond:
 
         return stuff.rstrip()
 
-    def render(self, level) -> str:
+    def render(self, level: int) -> str:
         """
         render bond and trailing atom.
+
+        :param level: level value
+        :return: rendered code
         """
         if not self.to_phantom:
             atom_code, comment_code = self.end_atom.render()
@@ -503,7 +554,7 @@ class DummyFirstBond(Bond):
     the molecule class.
     """
 
-    def __init__(self, options, end_atom):
+    def __init__(self, options: dict, end_atom: Atom):
         self.options = options
         self.end_atom = end_atom
         self.angle = None
@@ -511,6 +562,11 @@ class DummyFirstBond(Bond):
         self.length = None
 
     def bond_to_chemfig(self) -> str:
+        """
+        render an empty bond
+
+        :return: a null string
+        """
         return ''  # empty bond code before first atom
 
 
@@ -522,7 +578,12 @@ class AromaticRingBond(Bond):
     descendants = []
     scale = 1.5  # 1.5 corresponds to ring size of chemfig
 
-    def __init__(self, options, parent, angle, length, inner_r):
+    def __init__(self,
+                 options: dict,
+                 parent: Optional[Bond],
+                 angle: Union[int, float],
+                 length: Union[int, float],
+                 inner_r: Union[int, float]):
         self.options = options
         self.angle = cfm.num_round(angle, 1) % 360
         if parent is not None:
@@ -532,10 +593,13 @@ class AromaticRingBond(Bond):
         self.length = cfm.num_round(length, 2)
         self.radius = cfm.num_round(self.scale * inner_r, 2)
 
-    def render(self, level) -> str:
+    def render(self, level: int) -> str:
         """
         there is no atom to render, so we just call chemfig_mapping
         on our own attributes.
+
+        :param level: level value
+        :return: rendered code
         """
         ring_bond_code, ring_code, comment = cfm.format_aromatic_ring(
             self.options,

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import string
-from typing import Union
+from typing import Optional, Union
 from . import chemfig_mappings as cfm
 # some atoms should carry their hydrogen to the left, rather than
 # to the right. This is applied to solitary atoms, but not to bonded
@@ -37,15 +37,15 @@ class Atom:
     charge_turf = 50  # reserved angle for charges - needs to be big enough for 2+
 
     def __init__(self,
-                 options,
+                 options: dict,
                  idx: int,
-                 x,
-                 y,
-                 element,
-                 hydrogens,
-                 charge,
-                 radical,
-                 neighbors):
+                 x: Union[int, float],
+                 y: Union[int, float],
+                 element: Optional[str],
+                 hydrogens: Optional[int],
+                 charge: int,
+                 radical: int,
+                 neighbors: list[int]):
         self.options = options
         self.idx = idx
         self.x = x
@@ -60,9 +60,10 @@ class Atom:
         self.charge_angle = None
         # angles of all attached bonds - to be populated later
         self.bond_angles = []
+        self.explicit = None  # a bool value
         marker = self.options.get('markers', None)
         if marker is not None:
-            self.marker = "%s%s" % (marker, self.idx + 1)
+            self.marker = f"{marker}{self.idx + 1}"
         else:
             self.marker = ""
 
@@ -71,20 +72,29 @@ class Atom:
                      b: int,
                      turf: int) -> int:
         """
-        helper. calculates absolute angle between a and b.
-        0 <= angle <= 180
+        helper. calculates absolute angle between a and b,
+        i.e., 0 <= angle <= 180.
         then compares to turf angle and returns a score > 0
         if angle falls within turf.
+
+        :param a: angle a
+        :param b: angle b
+        :param turf: turf angle
+        :return: 0 or (turf - angle) ** 2
         """
         diff = (a - b) % 360
         angle = min(diff, 360 - diff)
         return (max(0, turf - angle)) ** 2
 
     def _score_angles(self,
-                      choices: list,
-                      turf: int) -> list:
+                      choices: list[list[int, int, str]],
+                      turf: int) -> list[list]:
         """
         backend for score_angles
+
+        :param choices: choices list
+        :param turf: turf value
+        :return: [position_1, position_2,...]
         """
         aux = []
         for priority, choice_angle, name in choices:
@@ -103,11 +113,13 @@ class Atom:
         We use one score for the placement of hydrogen w/ or w/o charge,
         and a separate one for the placement of charges only.
 
-        Atoms: precedence east, west, south, north
+        Atoms: precedence east, west, south, north;
                tolerated impingement 10 degrees
 
         Charges: precedence top right, top left, top straight,
                  bottom straight, others
+
+        :return: None
         """
         if len(self.bond_angles) > 0:  # this atom is bonded
             quadrants = self._score_angles(self.quadrants, self.quadrant_turf)
@@ -124,7 +136,7 @@ class Atom:
 
         self.charge_angle = self._score_angles(self.charge_positions, self.charge_turf)[0]
 
-    def render_phantom(self) -> (Union[str, None], str):
+    def render_phantom(self) -> tuple[Optional[str], str]:
         """
         render a bond that closes a ring or loop, or for
         late-rendered cross bonds. The target atom
@@ -133,6 +145,8 @@ class Atom:
         This relies on .render() having been called earlier, which
         it will be - atoms always precede their phantoms during
         molecule tree traversal.
+
+        :return: (atom code, comment code)
         """
         atom_code = self.phantom
         comment_code = cfm.format_closure_comment(
@@ -141,9 +155,11 @@ class Atom:
         )
         return atom_code, comment_code
 
-    def render(self) -> (str, str):
+    def render(self) -> tuple[str, str]:
         """
         render the atom and a comment
+
+        :return: (atom code + marker code, comment code)
         """
         atom_code, self.string_pos, self.phantom, self.phantom_pos = cfm.format_atom(
             self.options,
@@ -164,4 +180,5 @@ class Atom:
         marker_code = cfm.format_marker(self.marker)
         if marker_code:
             comment_code = " "  # force an empty comment, needed after markers
+        self.explicit = bool(self.explicit_characters & set(atom_code))
         return marker_code + atom_code, comment_code

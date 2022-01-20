@@ -6,15 +6,20 @@ this code will only make sense to you if you are familiar with
 the TeX syntax defined by the chemfig package.
 """
 import textwrap
-from typing import Union
+from typing import Union, Optional
 
 BOND_CODE_WIDTH = 50  # space for bonds - generous upfront, will be trimmed at the end
 TERSE_LINE_WIDTH = 75  # in terse code format, force linebreaks
 
 
-def num_round(num, sig) -> Union[int, float]:
+def num_round(num: Union[int, float],
+              sig: Union[int, float]) -> Union[int, float]:
     """
     round and, if applicable, return integer instead of float
+
+    :param num: number
+    :param sig: n-digits
+    :return: rounded num
     """
     res = round(num, sig)
     if res == int(res):
@@ -65,7 +70,7 @@ macro_templates = dict(  # various custom LaTeX macros
     minus_charge=r'\mcfminus',
 
     # template for phantom that forms the end of ring-closing bond
-    phantom=r'\phantom{%s}',    # phantom at end of ring-closing bonds
+    phantom=r'\phantom{%s}',  # phantom at end of ring-closing bonds
 
     # template for drawing a circle inside an aromatic ring
     aromatic_circle=r'\mcfcringle{%s}',
@@ -94,66 +99,66 @@ atom_templates = dict(
 
     # atom numbers
     atom_no=dict(
-                empty=(r'\mcfatomno{%(number)s}', 0),
-                east=(r'\mcfright{%(element)s}{\mcfatomno{%(number)s}}', 0),
-                west=(r'\mcfleft{\mcfatomno{%(number)s}}{%(element)s}', 0),
-                north=(r'\mcfabove{%(element)s}{\mcfatomno{%(number)s}}', 0),
-                south=(r'\mcfbelow{%(element)s}{\mcfatomno{%(number)s}}', 0)
-            ),
+        empty=(r'\mcfatomno{%(number)s}', 0),
+        east=(r'\mcfright{%(element)s}{\mcfatomno{%(number)s}}', 0),
+        west=(r'\mcfleft{\mcfatomno{%(number)s}}{%(element)s}', 0),
+        north=(r'\mcfabove{%(element)s}{\mcfatomno{%(number)s}}', 0),
+        south=(r'\mcfbelow{%(element)s}{\mcfatomno{%(number)s}}', 0)
+    ),
 
     neutral=dict(
-                # one hydrogen
-                one_h=dict(
-                        east=(r'%(element)sH', 1),
-                        west=(r'H%(element)s', 2),
-                        north=(r'\mcfabove{%(element)s}{H}', 0),
-                        south=(r'\mcfbelow{%(element)s}{H}', 0)
-                ),
+        # one hydrogen
+        one_h=dict(
+            east=(r'%(element)sH', 1),
+            west=(r'H%(element)s', 2),
+            north=(r'\mcfabove{%(element)s}{H}', 0),
+            south=(r'\mcfbelow{%(element)s}{H}', 0)
+        ),
 
-                # multiple hydrogen
-                more_h=dict(
-                        east=(r'%(element)sH_%(hydrogens)s', 1),
-                        west=(r'H_%(hydrogens)s%(element)s', 2),
-                        north=(r'\mcfabove{%(element)s}{\mcfright{H}{_%(hydrogens)s}}', 0),
-                        south=(r'\mcfbelow{%(element)s}{\mcfright{H}{_%(hydrogens)s}}', 0)
-                ),
+        # multiple hydrogen
+        more_h=dict(
+            east=(r'%(element)sH_%(hydrogens)s', 1),
+            west=(r'H_%(hydrogens)s%(element)s', 2),
+            north=(r'\mcfabove{%(element)s}{\mcfright{H}{_%(hydrogens)s}}', 0),
+            south=(r'\mcfbelow{%(element)s}{\mcfright{H}{_%(hydrogens)s}}', 0)
+        ),
     ),
 
     # charged
     charged=dict(
-                no_h=dict(
-                        top_right=(r'\mcfright{%(element)s}{^{%(charge)s}}', 0),
-                        top_left=(r'^{%(charge)s}%(element)s', 2),
-                        top_center=(r'\mcfabove{%(element)s}{_{%(charge)s}}', 0),
-                        bottom_right=(r'\mcfright{%(element)s}{_{%(charge)s}}', 0),
-                        bottom_left=(r'_{%(charge)s}%(element)s', 2),
-                        bottom_center=(r'\mcfbelow{%(element)s}{^{%(charge)s}}', 0)
-                ),
+        no_h=dict(
+            top_right=(r'\mcfright{%(element)s}{^{%(charge)s}}', 0),
+            top_left=(r'^{%(charge)s}%(element)s', 2),
+            top_center=(r'\mcfabove{%(element)s}{_{%(charge)s}}', 0),
+            bottom_right=(r'\mcfright{%(element)s}{_{%(charge)s}}', 0),
+            bottom_left=(r'_{%(charge)s}%(element)s', 2),
+            bottom_center=(r'\mcfbelow{%(element)s}{^{%(charge)s}}', 0)
+        ),
 
-                # one hydrogen
-                one_h=dict(
-                        east=(r'%(element)sH^{%(charge)s}', 1),
-                        h_west=(r'^{%(charge)s}H%(element)s', 3),
-                        north=(r'\mcfaboveright{%(element)s}{H}{^{%(charge)s}}', 0),
-                        south=(r'\mcfbelowright{%(element)s}{H}{^{%(charge)s}}', 0)
-                ),
+        # one hydrogen
+        one_h=dict(
+            east=(r'%(element)sH^{%(charge)s}', 1),
+            h_west=(r'^{%(charge)s}H%(element)s', 3),
+            north=(r'\mcfaboveright{%(element)s}{H}{^{%(charge)s}}', 0),
+            south=(r'\mcfbelowright{%(element)s}{H}{^{%(charge)s}}', 0)
+        ),
 
-                # more hydrogen
-                more_h=dict(
-                        east=(r'%(element)sH_%(hydrogens)s^{%(charge)s}', 1),
-                        west=(r'^{%(charge)s}H_%(hydrogens)s%(element)s', 3),
-                        north=(r'\mcfaboveright{%(element)s}{H}{^{%(charge)s}_%(hydrogens)s}', 0),
-                        south=(r'\mcfbelowright{%(element)s}{H}{^{%(charge)s}_%(hydrogens)s}', 0)
-                )
-     )
+        # more hydrogen
+        more_h=dict(
+            east=(r'%(element)sH_%(hydrogens)s^{%(charge)s}', 1),
+            west=(r'^{%(charge)s}H_%(hydrogens)s%(element)s', 3),
+            north=(r'\mcfaboveright{%(element)s}{H}{^{%(charge)s}_%(hydrogens)s}', 0),
+            south=(r'\mcfbelowright{%(element)s}{H}{^{%(charge)s}_%(hydrogens)s}', 0)
+        )
+    )
 )
 
 
 #  helpers for bond formatting
 
 def format_angle(options: dict,
-                 angle,
-                 parent_angle) -> str:
+                 angle: Union[int, float],
+                 parent_angle: Union[int, float, None]) -> str:
     """
     format prefix and number for bond angle
     """
@@ -168,7 +173,7 @@ def format_angle(options: dict,
     return prefix + str(angle % 360)
 
 
-def specifier_default(val, default) -> str:
+def specifier_default(val: any, default: any) -> str:
     """
     set bond specifier default values to ""
     """
@@ -176,21 +181,22 @@ def specifier_default(val, default) -> str:
         return ""
     return str(val)
 
+
 # the master bond formatter
 
 
 def format_bond(options: dict,
-                angle,
-                parent_angle,
-                bond_type,
-                clockwise,
-                is_last,
-                length,
-                departure,
-                arrival,
-                tikz_styles,
-                tikz_values,
-                marker) -> str:
+                angle: Union[int, float, None],
+                parent_angle: Union[int, float, None],
+                bond_type: str,
+                clockwise: int,
+                is_last: bool,
+                length: Union[int, float],
+                departure: str,
+                arrival: str,
+                tikz_styles: Union[set, dict],
+                tikz_values: Union[set, dict],
+                marker: str) -> str:
     """
     render the bond code for one atom; the atom itself is
     rendered separately in format_atom
@@ -198,8 +204,8 @@ def format_bond(options: dict,
 
     # debug(tikz_styles, tikz_values)
 
-    if angle is None:   # angle is None -- first atom only. Is this ever used? Shouldn't
-        return ''       # let's try to eliminate once the rest is working
+    if angle is None:  # angle is None -- first atom only. Is this ever used? Shouldn't
+        return ''  # let's try to eliminate once the rest is working
 
     angle = format_angle(options, angle, parent_angle)
 
@@ -225,8 +231,8 @@ def format_bond(options: dict,
         tikz = bond_styles[key] % tikz_values
         tikz_filled.append(tikz)
 
-        if "cross" in key and not is_last:    # departure atom is empty or a phantom, so
-            departure = ""                    # at most 1 character. is_last guards against edge case.
+        if "cross" in key and not is_last:  # departure atom is empty or a phantom, so
+            departure = ""  # at most 1 character. is_last guards against edge case.
 
     tikz = ','.join(tikz_filled)
     tikz = bond_style_shortcuts.get(tikz, tikz)  # replace tikz with shortcut if available
@@ -238,7 +244,7 @@ def format_bond(options: dict,
         specifiers = format_marker(marker) + specifiers
 
     if specifiers:
-        specifiers = '[%s]' % specifiers
+        specifiers = f'[{specifiers}]'
 
     # modify double bonds in non-aromatic rings
     if bond_type == 'double' and clockwise != 0:
@@ -252,7 +258,10 @@ def format_bond(options: dict,
     return bond_code + modifier + specifiers
 
 
-def fill_atom(keys, data, phantom, phantom_pos=0) -> tuple:
+def fill_atom(keys: tuple,
+              data: dict,
+              phantom: str,
+              phantom_pos: int = 0) -> tuple:
     """
     helper for finalizing atom code. phantom_pos is the
     target position of a bond attaching to a phantom;
@@ -269,7 +278,7 @@ def fill_atom(keys, data, phantom, phantom_pos=0) -> tuple:
     return template % data, string_pos, phantom, phantom_pos
 
 
-def format_marker(marker) -> any:
+def format_marker(marker: str) -> any:
     """
     used for both bonds and atoms
     """
@@ -280,13 +289,13 @@ def format_marker(marker) -> any:
 
 def format_atom(options: dict,
                 idx: int,
-                element,
-                hydrogens,
-                charge,
-                radical,
-                first_quadrant,
-                second_quadrant,
-                charge_angle) -> tuple:
+                element: str,
+                hydrogens: Optional[int],
+                charge: int,
+                radical: int,
+                first_quadrant: str,
+                second_quadrant: str,
+                charge_angle: Optional[int]) -> tuple:
     """
     render an atom with hydrogens and charges. Return
     - the chemfig code of the rendered atom
@@ -297,7 +306,7 @@ def format_atom(options: dict,
       string is never used though.
     """
 
-    _mt = macro_templates    # shortcuts
+    _mt = macro_templates  # shortcuts
     _at = atom_templates
 
     # collect elements in a dict that then is used to fill
@@ -343,7 +352,8 @@ def format_atom(options: dict,
     if charge == 0:
 
         # empty carbons. This case is so simple we don't use a template.
-        if data['element'] == 'C' and not options['show_carbons'] and (not options['show_methyls'] or hydrogens < 3):
+        if data['element'] == 'C' and not options['show_carbons'] and \
+                (not options['show_methyls'] or hydrogens < 3):
             return '', 0, '', 0
 
         # next simplest case: neutral atom without hydrogen
@@ -392,22 +402,28 @@ def format_closure_comment(options: dict,
                            idx: int) -> str:
     """
     render an optional end of line comment after a ring-closing bond
+
+    :param options: option dict
+    :param idx: index
+    :return: '-> ' + idx
     """
     if options['terse']:
         return ''
-    return '-> %s' % idx
+    return f'-> {idx}'
 
 
 def format_aromatic_ring(options: dict,
-                         angle,
-                         parent_angle,
-                         length,
-                         radius) -> (str, str, str):
+                         angle: Union[int, float],
+                         parent_angle: Union[int, float, None],
+                         length: Union[int, float],
+                         radius: Union[int, float]) -> (str, str, str):
+    """
 
+    """
     values = dict(
-                angle=format_angle(options, angle, parent_angle),
-                length=specifier_default(length, 1)
-             )
+        angle=format_angle(options, angle, parent_angle),
+        length=specifier_default(length, 1)
+    )
 
     ring_bond_code = macro_templates['aromatic_circle_bond'] % values
     ring_code = macro_templates['aromatic_circle'] % radius
@@ -423,6 +439,9 @@ def format_aromatic_ring(options: dict,
 def strip_output(output_list: list) -> list:
     """
     remove white space and comments
+
+    :param output_list: [...]
+    :return: modified output_list
     """
     stripped = []
 
@@ -453,6 +472,10 @@ def format_output(options: dict,
     """
     optionally wrap the translated output into a command,
     to ease inclusion in LaTeX documents with \\input
+
+    :param options: option dict
+    :param output_list: [...]
+    :return: command output
     """
     # first, do a bit of prettification by removing excessive
     # indentation
@@ -464,7 +487,7 @@ def format_output(options: dict,
     output_list = [_indent + i for i in _out]
 
     if options['submol_name'] is not None:
-        output_list.insert(0, r'\definesubmol{%s}{' % options['submol_name'])
+        output_list.insert(0, f'\\definesubmol{{{options["submol_name"]}}}{{')
         output_list.append(r'}')
 
     elif options['chemfig_command']:
