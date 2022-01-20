@@ -295,7 +295,7 @@ def format_atom(options: dict,
                 radical: int,
                 first_quadrant: str,
                 second_quadrant: str,
-                charge_angle: Optional[int]) -> tuple:
+                charge_angle: Optional[str]) -> tuple:
     """
     render an atom with hydrogens and charges. Return
     - the chemfig code of the rendered atom

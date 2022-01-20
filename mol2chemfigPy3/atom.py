@@ -88,7 +88,7 @@ class Atom:
 
     def _score_angles(self,
                       choices: list[list[int, int, str]],
-                      turf: int) -> list[list]:
+                      turf: int) -> list[str]:
         """
         backend for score_angles
 
