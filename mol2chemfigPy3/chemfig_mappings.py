@@ -161,6 +161,11 @@ def format_angle(options: dict,
                  parent_angle: Union[int, float, None]) -> str:
     """
     format prefix and number for bond angle
+
+    :param options: option dict
+    :param angle: angle
+    :param parent_angle: parent angle
+    :return: formatted angle
     """
     if options['relative_angles'] and parent_angle is not None:
         angle -= parent_angle
@@ -176,6 +181,10 @@ def format_angle(options: dict,
 def specifier_default(val: any, default: any) -> str:
     """
     set bond specifier default values to ""
+
+    :param val: input value
+    :param default: default value
+    :return: '' if val==default else str(val)
     """
     if val == default:
         return ""
@@ -200,10 +209,21 @@ def format_bond(options: dict,
     """
     render the bond code for one atom; the atom itself is
     rendered separately in format_atom
+
+    :param options: option dict
+    :param angle: angle
+    :param parent_angle: parent angle
+    :param bond_type: bond type (single, double, or triple)
+    :param clockwise: clockwise value
+    :param is_last: whether is the last one
+    :param length: length
+    :param departure: departure atom
+    :param arrival: arrival atom
+    :param tikz_styles: tikz styles
+    :param tikz_values: tikz values
+    :param marker: marker symbol
+    :return: rendered bond code
     """
-
-    # debug(tikz_styles, tikz_values)
-
     if angle is None:  # angle is None -- first atom only. Is this ever used? Shouldn't
         return ''  # let's try to eliminate once the rest is working
 
@@ -267,6 +287,12 @@ def fill_atom(keys: tuple,
     target position of a bond attaching to a phantom;
     currently, this is always 0, but if phantoms
     should become more elaborate, that might change.
+
+    :param keys: key values
+    :param data: data
+    :param phantom: phantom
+    :param phantom_pos: phantom position
+    :return: (modified data, string position, phantom, phantom position)
     """
     thing = atom_templates[keys[0]]
 
@@ -278,9 +304,12 @@ def fill_atom(keys: tuple,
     return template % data, string_pos, phantom, phantom_pos
 
 
-def format_marker(marker: str) -> any:
+def format_marker(marker: Optional[str]) -> Optional[str]:
     """
     used for both bonds and atoms
+
+    :param marker: marker symbol (can be None)
+    :return: modified marker ready for use
     """
     if marker:
         marker = macro_templates['marker'] % marker
@@ -304,6 +333,17 @@ def format_atom(options: dict,
       here because we don't want to duplicate all those case
       distinctions somewhere else. In most cases, the phantom
       string is never used though.
+
+    :param options: option dict
+    :param idx: index
+    :param element: element symbol
+    :param hydrogens: number of hydrogen(s)
+    :param charge: charge value
+    :param radical: number of radical
+    :param first_quadrant: first quadrant
+    :param second_quadrant: second quadrant
+    :param charge_angle: the position where to label the charge
+    :return: output from fill_atom() function
     """
 
     _mt = macro_templates  # shortcuts
@@ -392,6 +432,10 @@ def format_atom_comment(options: dict,
                         idx: int) -> str:
     """
     render an optional end-of-line comment after a regular atom
+
+    :param options: option dict
+    :param idx: index
+    :return: '' if terse else str(idx)
     """
     if options['terse']:
         return ''
@@ -418,7 +462,12 @@ def format_aromatic_ring(options: dict,
                          length: Union[int, float],
                          radius: Union[int, float]) -> (str, str, str):
     """
-
+    :param options: option dict
+    :param angle: angle
+    :param parent_angle: parent angle
+    :param length: length
+    :param radius: radius
+    :return: (ring bond code, ring code, comment)
     """
     values = dict(
         angle=format_angle(options, angle, parent_angle),

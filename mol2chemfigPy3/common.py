@@ -4,7 +4,7 @@ common settings and a bit of infrastructure
 """
 from .options import getParser
 
-program_version = '1.4.3'
+program_version = '1.4.33'
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = r"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%s&disopt=DisplaySDF"
@@ -27,8 +27,9 @@ For more information, type '%(program_name)s --help'.
 '''
 
 _help_blurb = '''
-%(program_name)s v. %(version)s, originally by Eric Brefo-Mensah and Michael Palmer;
-re-write in python3 by Nianze A. TAO (Omozawa SUENO) in 2021.
+%(program_name)s version %(version)s, originally by Eric Brefo-Mensah and Michael Palmer;
+Re-written in python3 by Nianze A. TAO (Omozawa SUENO) in 2021.*
+*Visit https://augus1999.github.io/mol2chemfigPy3/ for more details.
 %(program_name)s generates chemfig code from molfiles. Usage example:
 
 %(program_name)s --angle=45 --aromatic-circles somefile.mol

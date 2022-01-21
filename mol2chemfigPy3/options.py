@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # option declarations. The options will be used to update the
 # settings dict in module common.
-from .optionparser import *
+from .optionparser import (OptionParser, BoolOption, IntOption, FloatOption,
+                           StringOption, SelectOption, RangeOption)
 
 
 def getParser() -> OptionParser:

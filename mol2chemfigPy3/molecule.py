@@ -2,11 +2,11 @@
 # parse a molfile molecule and render to chemfig code
 import math
 from typing import Optional, Union
+from indigo import IndigoException, IndigoObject
 from . import chemfig_mappings as cfm
 from .common import MCFError, Counter
 from .atom import Atom
 from .bond import Bond, DummyFirstBond, AromaticRingBond, compare_positions
-from indigo import IndigoException, IndigoObject
 
 
 class Molecule:
