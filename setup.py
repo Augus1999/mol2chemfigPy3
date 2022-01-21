@@ -11,7 +11,7 @@ with open("README.md", mode="r", encoding="utf-8") as fh:
 setup(
     name='mol2chemfigPy3',
     version=__version__,
-    url='https://github.com/Augus1999/mol2chemfigPy3',
+    url='https://augus1999.github.io/mol2chemfigPy3/',
     description='python3 version of mol2chemfig',
     long_description=long_description,
     long_description_content_type="text/markdown",
