@@ -17,7 +17,8 @@ def mol2chemfig(content: str,
                 relative_angle: bool = False,
                 show_carbon: bool = False,
                 show_methyl: bool = False,
-                inline: bool = False) -> Optional[str]:
+                inline: bool = False,
+                *args: str) -> Optional[str]:
     """
     wrapper of mol2chemfigPy3.process(.)
 
@@ -44,8 +45,9 @@ def mol2chemfig(content: str,
     _l = {True: '', False: f'-l {name}'}
     g = _g[marker is None]
     l = _l[name is None]
+    others = ' '.join(args)
     arg = f'-wz{a[aromatic] + v[relative_angle] + c[show_carbon] + m[show_methyl]}' \
-          f' -a {rotate} {g} {l}'
+          f' -a {rotate} {g} {l} {others}'
     arg = re.sub(r'\s+', ' ', arg)
     if os.path.isfile(content):
         arg += f' -i file \"{content}\"'
@@ -55,9 +57,11 @@ def mol2chemfig(content: str,
         else:
             arg += f' -i direct {content}'
     success, result = process(raw_args=arg)
-    if inline:
-        return result.render_user()
     if success:
+        if inline:
+            return result.render_user()
         print(result.render_user())
     else:
+        if inline:
+            return result
         print("Failed...")
