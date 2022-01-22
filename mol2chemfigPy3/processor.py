@@ -3,6 +3,7 @@
 accept input from command line or through the web and
 return the result.
 """
+import re
 import os.path
 import traceback
 from urllib import request
@@ -180,7 +181,6 @@ class Processor:
             tkmol = Indigo().loadMolecule(self.data_string)
         except IndigoException:
             raise common.MCFError("Invalid input data")
-            # raise HelpError('Invalid input data')
 
         hydrogens = self.options['hydrogens']
 
@@ -224,7 +224,7 @@ def process(raw_args: Union[list, str, None] = None,
 
     except common.MCFError:  # anticipated error - brief message enough
         msg = traceback.format_exc().splitlines()[-1]
-        msg = msg[len('MCFError: '):]
+        msg = re.findall(r'MCFError: .+', msg)[0]
         return False, msg
 
     except Exception:  # unexpected error - get full traceback

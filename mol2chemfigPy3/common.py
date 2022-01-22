@@ -79,7 +79,11 @@ class MCFError(Exception):
     """
     this flags an anticipated error due to faulty user input.
     """
-    pass
+    def __init__(self, text):
+        self.text = text
+
+    def __str__(self):
+        return self.text
 
 
 class Counter:
