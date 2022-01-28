@@ -1,6 +1,6 @@
 # mol2chemfigPy3
 
-Current version 1.4.333 (transferred from mol2chemfig v1.4).
+Current version 1.4.3333 (transferred from mol2chemfig v1.4).
 
 This is NOT an official version of mol2chemfig for python 3.
 
@@ -97,7 +97,7 @@ it will give you
 
 This is not included in the old Py2 version of mol2chemfig.
 
-> mol2chemfigPy3.___mol2chemfig___(content: _str_, rotate: _float = 0.0_, aromatic: _bool = True_, marker: _Optional[str] = None_, name: _Optional[str] = None_, relative_angle: _bool = False_, show_carbon: _bool = False_, show_methyl: _bool = False_, inline: _bool = False_, *args: _str_)
+> mol2chemfigPy3.___mol2chemfig___(content: _str_, *args: _str_, rotate: _float = 0.0_, aromatic: _bool = True_, marker: _Optional[str] = None_, name: _Optional[str] = None_, relative_angle: _bool = False_, show_carbon: _bool = False_, show_methyl: _bool = False_, inline: _bool = False_)
 
 e. g.
 

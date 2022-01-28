@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 # Author: Nianze A. TAO (Omozawa SUENO)
 import os
-import pkg_resources
 from shutil import rmtree
 from setuptools import setup, find_packages
+from mol2chemfigPy3 import __version__
 
 
 with open("README.md", mode="r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-version = pkg_resources.require('mol2chemfigPy3')[0].version
-
 setup(
     name='mol2chemfigPy3',
-    version=version,
+    version=__version__,
     url='https://augus1999.github.io/mol2chemfigPy3/',
     description='python3 version of mol2chemfig',
     long_description=long_description,

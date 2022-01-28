@@ -10,6 +10,7 @@ from .processor import process
 
 
 def mol2chemfig(content: str,
+                *args: str,
                 rotate: float = 0.0,
                 aromatic: bool = True,
                 marker: Optional[str] = None,
@@ -17,8 +18,7 @@ def mol2chemfig(content: str,
                 relative_angle: bool = False,
                 show_carbon: bool = False,
                 show_methyl: bool = False,
-                inline: bool = False,
-                *args: str) -> Optional[str]:
+                inline: bool = False) -> Optional[str]:
     """
     wrapper of mol2chemfigPy3.process(.)
 
