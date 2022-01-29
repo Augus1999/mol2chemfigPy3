@@ -37,18 +37,11 @@ def mol2chemfig(content: str,
     assert isinstance(relative_angle, bool), "This value should be in type Bool"
     assert isinstance(show_carbon, bool), "This value should be in type Bool"
     assert isinstance(show_methyl, bool), "This value should be in type Bool"
-    a = {True: 'o', False: ''}
-    v = {True: 'v', False: ''}
-    c = {True: 'c', False: ''}
-    m = {True: 'm', False: ''}
-    _g = {True: '', False: f'-g {marker}'}
-    _l = {True: '', False: f'-l {name}'}
-    g = _g[marker is None]
-    l = _l[name is None]
     others = ' '.join(args)
-    arg = f'-wz{a[aromatic] + v[relative_angle] + c[show_carbon] + m[show_methyl]}' \
-          f' -a {rotate} {g} {l} {others}'
-    arg = re.sub(r'\s+', ' ', arg)
+    arg = f'-wz{"o" if aromatic else ""}{"v" if relative_angle else ""}' \
+          f'{"c" if show_carbon else ""}{"m" if show_methyl else ""}' \
+          f' -a {rotate} {"" if marker is None else "-g "+marker}' \
+          f' {"" if name is None else "-l "+name} {others}'
     if os.path.isfile(content):
         arg += f' -i file \"{content}\"'
     else:
@@ -56,6 +49,7 @@ def mol2chemfig(content: str,
             arg += f' -i pubchem {content}'
         else:
             arg += f' -i direct {content}'
+    arg = re.sub(r'\s+', ' ', arg)
     success, result = process(raw_args=arg)
     if inline:
         return result.render_user() if success else result
