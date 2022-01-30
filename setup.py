@@ -1,17 +1,28 @@
 # -*- coding: utf-8 -*-
 # Author: Nianze A. TAO (Omozawa SUENO)
 import os
+import re
+from pathlib import Path
 from shutil import rmtree
 from setuptools import setup, find_packages
-from mol2chemfigPy3 import __version__
+init_file = Path('mol2chemfigPy3') / 'common.py'
 
+with open(init_file, mode='r', encoding='utf-8') as f:
+    lines = f.readlines()
+    for line in lines:
+        if 'program_version' in line:
+            version = re.findall(r'[0-9]+\.[0-9]+\.[0-9]+', line)
+            if len(version) != 0:
+                version = version[0]
+                print("version:", version)
+                break
 
 with open("README.md", mode="r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
     name='mol2chemfigPy3',
-    version=__version__,
+    version=version,
     url='https://augus1999.github.io/mol2chemfigPy3/',
     description='python3 version of mol2chemfig',
     long_description=long_description,
