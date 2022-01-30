@@ -31,10 +31,10 @@ setup(
     package_dir={'mol2chemfigPy3': 'mol2chemfigPy3'},
     author='Nianze A. Tao',
     author_email='TaoN@cardiff.ac.uk',
-    scripts=['mol2chemfig', 'mol2chemfig.py'],
     packages=find_packages(),
     python_requires='>=3.7',
     install_requires=['epam.indigo'],
+    project_urls={"Source": "https://github.com/Augus1999/mol2chemfigPy3"},
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -49,6 +49,9 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering :: Chemistry",
     ],
+    entry_points={
+        'console_scripts': ['mol2chemfig=mol2chemfigPy3.main:main']
+    },
 )
 
 if os.path.exists('build'):
