@@ -1,6 +1,6 @@
 # mol2chemfigPy3
 
-Current version 1.5.0 (transferred from mol2chemfig v1.5).
+Current version 1.5.1 (transferred from mol2chemfig v1.5).
 
 This is NOT an official version of mol2chemfig for python 3.
 
@@ -43,6 +43,8 @@ $ pip install -U mol2chemfigPy3
 ## Usage
 
 ### Use in command line
+
+> Attention: to render the colours on Windows platform, run it in modern terminals, e.g. ___Windows Terminal___.
 
 Run, for example:
 

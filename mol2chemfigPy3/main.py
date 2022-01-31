@@ -18,7 +18,3 @@ def main() -> None:
         print(result.render_user())
     else:
         print(result)
-
-
-if __name__ == "__main__":
-    main()

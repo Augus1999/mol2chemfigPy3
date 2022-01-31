@@ -201,7 +201,8 @@ def process(raw_args: Union[list, str, None] = None,
             form_fields: any = None,
             program_name: str = "mol2chemfigPy3",
             web_form: bool = False,
-            rpc: bool = False) -> tuple[bool, Union[str, molecule.Molecule]]:
+            rpc: bool = False,
+            inline: bool = False) -> tuple[bool, Union[str, molecule.Molecule]]:
     """
     process is a convenience wrapper for external callers
 
@@ -211,6 +212,7 @@ def process(raw_args: Union[list, str, None] = None,
     :param program_name: program name
     :param web_form: whether is web form
     :param rpc: rpc
+    :param inline: inline mode: if true return the raw result else the decorated result
     :return: (bool, molecule)
     """
     p = Processor(raw_args, data, form_fields, program_name, web_form, rpc)
@@ -224,7 +226,7 @@ def process(raw_args: Union[list, str, None] = None,
     except common.MCFError:  # anticipated error - brief message enough
         msg = traceback.format_exc().splitlines()[-1]
         msg = msg.split(': ')[-1]
-        return False, msg
+        return False, msg if inline else f'\033[0;31m{msg}\033[0m'
 
     except Exception:  # unexpected error - get full traceback
         tb = traceback.format_exc()

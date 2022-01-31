@@ -56,7 +56,7 @@ def mol2chemfig(content: str,
         else:
             arg += f' -i direct {content}'
     arg = re.sub(r'\s+', ' ', arg)
-    success, result = process(raw_args=arg)
+    success, result = process(raw_args=arg, inline=True)
     if inline:
         return result.render_user() if success else result
     print(f'{result.render_user() if success else "Failed..."}')
