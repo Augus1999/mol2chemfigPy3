@@ -7,4 +7,4 @@ import mol2chemfigPy3
 
 
 if __name__ == "__main__":
-    mol2chemfigPy3.main()
+    mol2chemfigPy3.main('mol2chemfig')

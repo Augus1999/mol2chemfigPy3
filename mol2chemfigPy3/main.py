@@ -7,13 +7,14 @@ import sys
 from .processor import process
 
 
-def main() -> None:
+def main(program_name: str = sys.argv[0]) -> None:
     """
     console function
 
+    :param program_name: program name
     :return: None
     """
-    success, result = process(raw_args=sys.argv[1:], program_name=sys.argv[0])
+    success, result = process(raw_args=sys.argv[1:], program_name=program_name)
     if success:
         print(result.render_user())
     else:
