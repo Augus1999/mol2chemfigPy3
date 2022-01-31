@@ -261,7 +261,6 @@ class Bond:
         raw_angles = [int(round(a)) % 360 for a in raw_angles]
 
         reference_angle = int(round(self.angle - inversion_angle)) % 360
-        # debug(atom.idx, inversion_angle, reference_angle, raw_angles)
 
         raw_angles.remove(reference_angle)
 
@@ -606,6 +605,7 @@ class AromaticRingBond(Bond):
             self.angle,
             self.parent_angle,
             self.length,
-            self.radius)
+            self.radius,
+        )
 
         return self.indent(level, ring_bond_code, ring_code, comment)

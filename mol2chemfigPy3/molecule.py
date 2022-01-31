@@ -705,11 +705,11 @@ class Molecule:
             self._render(output, first, level)
 
     def dimensions(self) -> tuple[float, float]:
-        """
+        r"""
         this calculates the approximate width and height
         of the rendered molecule, in units of chemfig
         standard bond length (multiply with chemfig
-        setatomsep parameter to obtain the physical size).
+        \setatomsep parameter to obtain the physical size).
 
         It is only used for server side PDF generation,
         but maybe someone will have another use for it.

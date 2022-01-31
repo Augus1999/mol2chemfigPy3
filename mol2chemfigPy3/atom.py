@@ -60,7 +60,7 @@ class Atom:
         self.charge_angle = None
         # angles of all attached bonds - to be populated later
         self.bond_angles = []
-        self.explicit = None  # a bool value
+        self.explicit = False  # flag for explicitly printed atoms - set later
         marker = self.options.get('markers', None)
         if marker is not None:
             self.marker = f"{marker}{self.idx + 1}"

@@ -1,6 +1,6 @@
 # mol2chemfigPy3
 
-Current version 1.4.4 (transferred from mol2chemfig v1.4).
+Current version 1.5.0 (transferred from mol2chemfig v1.5).
 
 This is NOT an official version of mol2chemfig for python 3.
 
@@ -9,9 +9,8 @@ python2. Nowadays, who are still using py2? LOL
 
 Simply applying 2to3 to it doesn't work, alas.
 
-mol2chemfigPy3 is a simple translation from py2 to py3 based on old mol2chemfig version 1.4 (well, 27/03/2014, more than
-7 years ago🤐[mol2chemfig (uwaterloo.ca)](http://chimpsky.uwaterloo.ca/mol2chemfig/download)), and it, of course, has
-bugs.
+mol2chemfigPy3 is a simple translation from py2 to py3 based on old mol2chemfig version 1.5 (the python codes are the
+same as 1.4🤔 [mol2chemfig (uwaterloo.ca)](http://chimpsky.uwaterloo.ca/mol2chemfig/download)).
 
 ## Install
 
