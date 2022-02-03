@@ -12,7 +12,11 @@ from . import common, options, molecule
 
 
 class HelpError(common.MCFError):
-    pass
+    def __init__(self, text: any):
+        self.text = str(text)  # convert error messages to string
+
+    def __str__(self):
+        return self.text
 
 
 class Processor:

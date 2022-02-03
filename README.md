@@ -1,6 +1,6 @@
 # mol2chemfigPy3
 
-Current version 1.5.1 (transferred from mol2chemfig v1.5).
+Current version 1.5.2 (transferred from mol2chemfig v1.5).
 
 This is NOT an official version of mol2chemfig for python 3.
 
@@ -27,7 +27,7 @@ this requires `setuptools` and `wheel` installed
 * then run
 
   ```bash
-  $ pip install ./
+  $ pip install .
   ```
 
 If you prefer installing from wheel, you can download [here](https://github.com/Augus1999/mol2chemfigPy3/releases).

@@ -4,7 +4,7 @@ common settings and a bit of infrastructure
 """
 from .options import getParser
 
-program_version = '1.5.1'
+program_version = '1.5.2'
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = r"http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?cid=%s&disopt=DisplaySDF"
@@ -79,8 +79,8 @@ class MCFError(Exception):
     """
     this flags an anticipated error due to faulty user input.
     """
-    def __init__(self, text):
-        self.text = text
+    def __init__(self, text: any):
+        self.text = str(text)
 
     def __str__(self):
         return self.text
