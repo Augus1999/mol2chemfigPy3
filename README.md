@@ -1,40 +1,16 @@
 # mol2chemfigPy3
 
-Current version 1.5.2 (transferred from mol2chemfig v1.5).
+[![PyPI](https://img.shields.io/pypi/v/mol2chemfigPy3?color=ff69b4)](https://pypi.org/project/mol2chemfigPy3/)
+[![Downloads](https://static.pepy.tech/personalized-badge/mol2chemfigpy3?period=total&units=international_system&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/mol2chemfigpy3)
 
 This is NOT an official version of mol2chemfig for python 3.
 
-There are always too few free tools for chemistry, while mol2chemfig is a good one of them. But it was written in
-python2. Nowadays, who are still using py2? LOL
-
-Simply applying 2to3 to it doesn't work, alas.
-
-mol2chemfigPy3 is a simple translation from py2 to py3 based on old mol2chemfig version 1.5 (the python codes are the
-same as 1.4🤔 [mol2chemfig (uwaterloo.ca)](http://chimpsky.uwaterloo.ca/mol2chemfig/download)).
+mol2chemfigPy3 is a translation from py2 to py3 based on
+old [mol2chemfig](http://chimpsky.uwaterloo.ca/mol2chemfig/download) version 1.5.
 
 ## Install
 
-### build from source
-
-this requires `setuptools` and `wheel` installed
-
-* first `cd` to where `setup.py` locates
-
-  ```bash
-  $ cd <path>
-  ```
-
-* then run
-
-  ```bash
-  $ pip install .
-  ```
-
-If you prefer installing from wheel, you can download [here](https://github.com/Augus1999/mol2chemfigPy3/releases).
-
 ### install from PyPi
-
-[![Downloads](https://static.pepy.tech/personalized-badge/mol2chemfigpy3?period=total&units=international_system&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/mol2chemfigpy3)
 
 ```bash
 $ pip install -U mol2chemfigPy3
@@ -46,7 +22,23 @@ $ pip install -U mol2chemfigPy3
 
 > Attention: to render the colours on Windows platform, run it in modern terminals, e.g. ___Windows Terminal___.
 
-Run, for example:
+> `mol2chemfig` and `python -m mol2chemfigPy3` are equivalent.
+
+#### 1. getting version
+
+```bash
+$ mol2chemfig --version
+```
+
+#### 2. getting help
+
+```bash
+$ mol2chemfig -h
+```
+
+#### 3. some examples
+
+##### 3.1 converting SMILES
 
 ```bash
 $ mol2chemfig -zw -i direct "C1=CC=C(C=C1)O"
@@ -54,7 +46,7 @@ $ mol2chemfig -zw -i direct "C1=CC=C(C=C1)O"
 
 it will give you `\chemfig{OH-[:180,,1]=_[:240]-[:180]=_[:120]-[:60]=_(-[:300])}`
 
-Run, for another example:
+##### 3.2 writing to an output file
 
 ```bash
 $ mol2chemfig -zw -i direct "C1=CC=C(C=C1)O" > phenol-smi-terse.tex
@@ -62,7 +54,7 @@ $ mol2chemfig -zw -i direct "C1=CC=C(C=C1)O" > phenol-smi-terse.tex
 
 it will write result to file `phenol-smi-terse.tex`
 
-Run, for again another example:
+##### 3.3 searching PubChem database
 
 ```bash
 $ mol2chemfig -zw -i pubchem 99
@@ -91,12 +83,9 @@ it will give you
 -[:305.9,0.62]H)-[:275.9](-[:185.9,0.62]H)(-[:275.9,0.62]H)-[:5.9,0.62]H}
 ```
 
-(it's [Coenzyme A, S-(3-methyl-2-butenoate)](https://pubchem.ncbi.nlm.nih.gov/compound/99#section=Synonyms) by the way
-😜)
-
 ### Use as a python package (new add in to this python 3 version)
 
-This is not included in the old Py2 version of mol2chemfig.
+This is not included in the original Py2 version of mol2chemfig.
 
 > mol2chemfigPy3.___mol2chemfig___(content: _str_, *args: _str_, rotate: _float = 0.0_, aromatic: _bool = True_, marker: _Optional[str] = None_, name: _Optional[str] = None_, relative_angle: _bool = False_, show_carbon: _bool = False_, show_methyl: _bool = False_, inline: _bool = False_)
 
@@ -109,8 +98,16 @@ mol2chemfig('996')  # search the PubChem database
 
 mol2chemfig('C1=CC=C(C=C1)O')  # transfer InChI/SMILES to chemfig
 
-mol2chemfig('.\methanol.smi')  # from a file
+mol2chemfig('./methanol.smi')  # from a file
 ```
+
+## To future maintainers
+
+The static callgraph of this project is:
+
+![callgraph](https://user-images.githubusercontent.com/39725660/151780413-ceea35ac-4199-4c4d-966b-2be5e6a68633.svg)
+
+[large image](https://user-images.githubusercontent.com/39725660/151780413-ceea35ac-4199-4c4d-966b-2be5e6a68633.svg)
 
 ## Document
 
