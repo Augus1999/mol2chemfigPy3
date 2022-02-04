@@ -2,6 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/mol2chemfigPy3?color=ff69b4)](https://pypi.org/project/mol2chemfigPy3/)
 [![Downloads](https://static.pepy.tech/personalized-badge/mol2chemfigpy3?period=total&units=international_system&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/mol2chemfigpy3)
+![OS](https://img.shields.io/badge/OS-Win%20|%20Linux%20|%20macOS-blue?color=00B16A)
+![python](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10-blue.svg?color=dd9b65)
 
 This is NOT an official version of mol2chemfig for python 3.
 
@@ -44,7 +46,11 @@ $ mol2chemfig -h
 $ mol2chemfig -zw -i direct "C1=CC=C(C=C1)O"
 ```
 
-it will give you `\chemfig{OH-[:180,,1]=_[:240]-[:180]=_[:120]-[:60]=_(-[:300])}`
+it will give you
+
+```latex
+\chemfig{OH-[:180,,1]=_[:240]-[:180]=_[:120]-[:60]=_(-[:300])}
+```
 
 ##### 3.2 writing to an output file
 
@@ -57,30 +63,13 @@ it will write result to file `phenol-smi-terse.tex`
 ##### 3.3 searching PubChem database
 
 ```bash
-$ mol2chemfig -zw -i pubchem 99
+$ mol2chemfig -zw -i pubchem 996
 ```
 
-it will give you
+##### 3.4 reading from a file
 
-```latex
-\chemfig{O=[:137.9]P(-[:47.9]O-[:107.9,0.62]H)(-[:137.9]O-[:197.9,0.62]H)%
--[:227.9]O-[:287.9](-[:44.9,0.62]H)-[:233.9](-[:179.9]O-[:119.9,0.62]H)(%
--[:116.9,0.62]H)-[:305.9](-[:251.9]N-[:197.8,0.994]=^[:150]N-[:210](%
--[:150,0.62]H)=^[:270]N-[:330](=^[:30](-[:90])-[:342.1,0.994]N%
-=^[:54.1,0.994](-[,0.62]H)-[:126,0.994]\phantom{N})-[:270]N(-[:330,0.62]H)%
--[:210,0.62]H)(-[:314.9,0.62]H)-[:17.9]O-[:89.9](-[:161.9])(-[:332.9,0.62]H%
-)-[:35.9](-[:55.9,0.62]H)(-[:135.9,0.62]H)-[:335.9]O-[:35.9]P(-[:305.9]O%
--[:245.9,0.62]H)(=[:125.9]O)-[:35.9]O-[:335.9]P(-[:65.9]O-[:125.9,0.62]H)(%
-=[:245.9]O)-[:335.9]O-[:35.9](-[:55.9,0.62]H)(-[:135.9,0.62]H)-[:335.9](%
--[:65.9](-[:65.9,0.62]H)(-[:155.9,0.62]H)-[:335.9,0.62]H)(-[:245.9](%
--[:245.9,0.62]H)(-[:335.9,0.62]H)-[:155.9,0.62]H)-[:335.9](-[:275.9]O%
--[:335.9,0.62]H)(-[:215.9,0.62]H)-[:35.9](=[:95.9]O)-[:335.9]N(%
--[:275.9,0.62]H)-[:35.9](-[:55.9,0.62]H)(-[:135.9,0.62]H)-[:335.9](%
--[:235.9,0.62]H)(-[:315.9,0.62]H)-[:35.9](=[:95.9]O)-[:335.9]N(%
--[:275.9,0.62]H)-[:35.9](-[:55.9,0.62]H)(-[:135.9,0.62]H)-[:335.9](%
--[:235.9,0.62]H)(-[:315.9,0.62]H)-[:35.9]S-[:335.9](=[:275.9]O)-[:35.9](%
--[:95.9,0.62]H)=[:335.9](-[:35.9](-[:35.9,0.62]H)(-[:125.9,0.62]H)%
--[:305.9,0.62]H)-[:275.9](-[:185.9,0.62]H)(-[:275.9,0.62]H)-[:5.9,0.62]H}
+```bash
+$ mol2chemfig -zw peniciling.mol
 ```
 
 ### Use as a python package (new add in to this python 3 version)
@@ -100,14 +89,6 @@ mol2chemfig('C1=CC=C(C=C1)O')  # transfer InChI/SMILES to chemfig
 
 mol2chemfig('./methanol.smi')  # from a file
 ```
-
-## To future maintainers
-
-The static callgraph of this project is:
-
-![callgraph](https://user-images.githubusercontent.com/39725660/151780413-ceea35ac-4199-4c4d-966b-2be5e6a68633.svg)
-
-[large image](https://user-images.githubusercontent.com/39725660/151780413-ceea35ac-4199-4c4d-966b-2be5e6a68633.svg)
 
 ## Document
 
