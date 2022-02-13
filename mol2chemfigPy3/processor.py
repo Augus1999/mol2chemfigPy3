@@ -26,7 +26,7 @@ class Processor:
 
     def __init__(self,
                  raw_args: Union[list, str, None],
-                 data: any,
+                 data: str,
                  form_fields: any,
                  program_name: str,
                  web_form: bool,
@@ -111,7 +111,8 @@ class Processor:
 
         if not self.rpc and self.options['input'] == 'file':
             try:
-                data = open(data).read()
+                with open(data, mode='r', encoding='utf-8') as fh:
+                    data = fh.read()
             except IOError:
                 raise common.MCFError(f"Can't read file {data}")
 

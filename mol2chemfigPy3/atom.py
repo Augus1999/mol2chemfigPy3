@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+define Atom object
+"""
 import string
 from typing import Optional, Union
 from . import chemfig_mappings as cfm

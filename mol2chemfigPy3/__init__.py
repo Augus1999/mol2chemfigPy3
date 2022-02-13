@@ -2,7 +2,7 @@
 # make this a python package
 """
 a python 3 version of mol2chemfig.
-mol2chemfig generates chemfig code from molfiles.
+mol2chemfig generates chemfig code from mol files.
 """
 import os
 import re
@@ -12,7 +12,7 @@ from .processor import process
 from .common import program_version
 __version__ = program_version
 __Author__ = 'Nianze A. TAO'
-__all__ = ['main', 'mol2chemfig', 'mol2chemfig', '__version__']
+__all__ = ['main', 'mol2chemfig', '__version__']
 
 
 def mol2chemfig(content: str,
