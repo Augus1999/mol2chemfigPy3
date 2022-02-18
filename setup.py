@@ -49,6 +49,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering :: Chemistry",
     ],
+    keywords=["Chemistry", "chemfig"],
     entry_points={
         'console_scripts': ['mol2chemfig=mol2chemfigPy3.main:main']
     },

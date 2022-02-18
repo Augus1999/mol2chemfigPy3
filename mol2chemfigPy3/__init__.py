@@ -4,7 +4,6 @@
 a python 3 version of mol2chemfig.
 mol2chemfig generates chemfig code from mol files.
 """
-import os
 import re
 from typing import Optional
 from .main import main
@@ -48,14 +47,15 @@ def mol2chemfig(content: str,
           f'{"c" if show_carbon else ""}{"m" if show_methyl else ""}' \
           f' -a {rotate} {"" if marker is None else "-g "+marker}' \
           f' {"" if name is None else "-l "+name} {others}'
-    if os.path.isfile(content):
-        arg += f' -i file \"{content}\"'
+    arg = re.sub(r'\s+', ' ', arg).split()
+    if content.endswith(('.mol', '.smi',)):
+        arg += ['-i', 'file', content]
     else:
-        if re.match(r'[0-9]+', content).group(0) == content:
-            arg += f' -i pubchem {content}'
-        else:
-            arg += f' -i direct {content}'
-    arg = re.sub(r'\s+', ' ', arg)
+        try:
+            pubchem_id = int(content)
+            arg += ['-i', 'pubchem', str(pubchem_id)]
+        except ValueError:
+            arg += ['-i', 'direct', content]
     success, result = process(raw_args=arg, inline=True)
     if inline:
         return result.render_user() if success else result

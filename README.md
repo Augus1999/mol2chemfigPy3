@@ -22,8 +22,6 @@ $ pip install -U mol2chemfigPy3
 
 ### Use in command line
 
-> Attention: to render the colours on Windows platform, run it in modern terminals, e.g. ___Windows Terminal___.
-
 > `mol2chemfig` and `python -m mol2chemfigPy3` are equivalent.
 
 #### 1. getting version
