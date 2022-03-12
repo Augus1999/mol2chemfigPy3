@@ -5,6 +5,7 @@ define Atom object
 import string
 from typing import Optional, Union
 from . import chemfig_mappings as cfm
+
 # some atoms should carry their hydrogen to the left, rather than
 # to the right. This is applied to solitary atoms, but not to bonded
 # functional groups that contain those elements.
@@ -17,38 +18,41 @@ class Atom:
     wrapper around toolkit atom object, augmented with coordinates
     helper class for molecule.Molecule
     """
+
     explicit_characters = set(string.ascii_uppercase + string.digits)
 
     quadrant_turf = 80  # 80 degrees have to remain free on either side
 
     quadrants = [  # quadrants for hydrogen placement
-        [0, 0, 'east'],
-        [1, 180, 'west'],
-        [2, 270, 'south'],
-        [3, 90, 'north']
+        [0, 0, "east"],
+        [1, 180, "west"],
+        [2, 270, "south"],
+        [3, 90, "north"],
     ]
 
     charge_positions = [  # angles for placement of detached charges
-        [0, 15, 'top_right'],
-        [1, 165, 'top_left'],
-        [2, 90, 'top_center'],
-        [3, 270, 'bottom_center'],
-        [4, 345, 'bottom_right'],
-        [5, 195, 'bottom_left']
+        [0, 15, "top_right"],
+        [1, 165, "top_left"],
+        [2, 90, "top_center"],
+        [3, 270, "bottom_center"],
+        [4, 345, "bottom_right"],
+        [5, 195, "bottom_left"],
     ]
 
     charge_turf = 50  # reserved angle for charges - needs to be big enough for 2+
 
-    def __init__(self,
-                 options: dict,
-                 idx: int,
-                 x: Union[int, float],
-                 y: Union[int, float],
-                 element: Optional[str],
-                 hydrogens: Optional[int],
-                 charge: int,
-                 radical: int,
-                 neighbors: list[int]):
+    def __init__(
+        self,
+        options: dict,
+        idx: int,
+        x: Union[int, float],
+        y: Union[int, float],
+        element: Optional[str],
+        hydrogens: Optional[int],
+        charge: int,
+        radical: int,
+        neighbors: list[int],
+    ):
         self.options = options
         self.idx = idx
         self.x = x
@@ -64,16 +68,14 @@ class Atom:
         # angles of all attached bonds - to be populated later
         self.bond_angles = []
         self.explicit = False  # flag for explicitly printed atoms - set later
-        marker = self.options.get('markers', None)
+        marker = self.options.get("markers", None)
         if marker is not None:
             self.marker = f"{marker}{self.idx + 1}"
         else:
             self.marker = ""
 
     @staticmethod
-    def _score_angle(a: int,
-                     b: int,
-                     turf: int) -> int:
+    def _score_angle(a: int, b: int, turf: int) -> int:
         """
         helper. calculates absolute angle between a and b,
         i.e., 0 <= angle <= 180.
@@ -89,9 +91,7 @@ class Atom:
         angle = min(diff, 360 - diff)
         return (max(0, turf - angle)) ** 2
 
-    def _score_angles(self,
-                      choices: list[list[int, int, str]],
-                      turf: int) -> list[str]:
+    def _score_angles(self, choices: list[list[int, int, str]], turf: int) -> list[str]:
         """
         backend for score_angles
 
@@ -127,17 +127,21 @@ class Atom:
         if len(self.bond_angles) > 0:  # this atom is bonded
             quadrants = self._score_angles(self.quadrants, self.quadrant_turf)
             self.first_quadrant = quadrants[0]
-            self.second_quadrant = quadrants[1]  # 2nd choice may be used for radical electrons
+            self.second_quadrant = quadrants[
+                1
+            ]  # 2nd choice may be used for radical electrons
 
         else:  # this atom is solitary
             if self.element in hydrogen_lefties:
-                self.first_quadrant = 'west'
-                self.second_quadrant = 'east'
+                self.first_quadrant = "west"
+                self.second_quadrant = "east"
             else:
-                self.first_quadrant = 'east'
-                self.second_quadrant = 'west'
+                self.first_quadrant = "east"
+                self.second_quadrant = "west"
 
-        self.charge_angle = self._score_angles(self.charge_positions, self.charge_turf)[0]
+        self.charge_angle = self._score_angles(self.charge_positions, self.charge_turf)[
+            0
+        ]
 
     def render_phantom(self) -> tuple[Optional[str], str]:
         """

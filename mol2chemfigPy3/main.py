@@ -4,8 +4,10 @@
 package main
 """
 import sys
+
 try:
     from pip._vendor import colorama
+
     colour = True
 except ImportError:
     colour = False

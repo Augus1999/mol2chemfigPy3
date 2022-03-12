@@ -24,13 +24,15 @@ class Processor:
     parses input and invokes backend, returns result
     """
 
-    def __init__(self,
-                 raw_args: Union[list, str, None],
-                 data: str,
-                 form_fields: any,
-                 program_name: str,
-                 web_form: bool,
-                 rpc: bool):
+    def __init__(
+        self,
+        raw_args: Union[list, str, None],
+        data: str,
+        form_fields: any,
+        program_name: str,
+        web_form: bool,
+        rpc: bool,
+    ):
         self.raw_args = raw_args
         self.data = data
         self.form_fields = form_fields
@@ -82,7 +84,7 @@ class Processor:
         try:
             parsed_options, data_list = self.option_parser.process_cli(self.raw_args)
         except Exception as msg:
-            if str(msg).endswith('not recognized'):  # get opt error
+            if str(msg).endswith("not recognized"):  # get opt error
                 msg = f"{str(msg)}. Try {self.program_name} --help to see a list of available options."
             raise HelpError(msg)
 
@@ -91,9 +93,9 @@ class Processor:
 
         # before we go on to check on the data, we will satisfy help requests,
         # which we treat like an error
-        if self.options['help']:
+        if self.options["help"]:
             raise HelpError(self.help_text())
-        elif self.options['version']:
+        elif self.options["version"]:
             raise HelpError(self.version_text())
 
         if self.data is not None:
@@ -109,9 +111,9 @@ class Processor:
 
         data = data_list[0]
 
-        if not self.rpc and self.options['input'] == 'file':
+        if not self.rpc and self.options["input"] == "file":
             try:
-                with open(data, mode='r', encoding='utf-8') as fh:
+                with open(data, mode="r", encoding="utf-8") as fh:
                     data = fh.read()
             except IOError:
                 raise common.MCFError(f"Can't read file {data}")
@@ -124,10 +126,12 @@ class Processor:
 
         :return: None
         """
-        parsed_options, warnings = self.option_parser.process_form_fields(self.form_fields)
+        parsed_options, warnings = self.option_parser.process_form_fields(
+            self.form_fields
+        )
 
         if warnings:
-            raise common.MCFError('<br/>\n'.join(warnings))
+            raise common.MCFError("<br/>\n".join(warnings))
 
         # no warnings ...
         self.options.update(parsed_options)
@@ -177,7 +181,7 @@ class Processor:
                 url = common.pubchem_url % pubchem_id
                 pubchem_content = request.urlopen(url).read()
             except IOError:
-                raise common.MCFError('No connection to PubChem')
+                raise common.MCFError("No connection to PubChem")
 
             self.data_string = pubchem_content.decode()
 
@@ -186,28 +190,30 @@ class Processor:
         except IndigoException:
             raise common.MCFError("Invalid input data")
 
-        hydrogens = self.options['hydrogens']
+        hydrogens = self.options["hydrogens"]
 
-        if hydrogens == 'add':
+        if hydrogens == "add":
             tkmol.unfoldHydrogens()
             tkmol.layout()  # needed to give coordinates to added Hs
 
-        elif hydrogens == 'delete':
+        elif hydrogens == "delete":
             tkmol.foldHydrogens()
 
-        if not tkmol.hasCoord() or self.options['recalculate_coordinates']:
+        if not tkmol.hasCoord() or self.options["recalculate_coordinates"]:
             tkmol.layout()
 
         return tkmol
 
 
-def process(raw_args: Union[list, str, None] = None,
-            data: any = None,
-            form_fields: any = None,
-            program_name: str = "mol2chemfigPy3",
-            web_form: bool = False,
-            rpc: bool = False,
-            inline: bool = False) -> tuple[bool, Union[str, molecule.Molecule]]:
+def process(
+    raw_args: Union[list, str, None] = None,
+    data: any = None,
+    form_fields: any = None,
+    program_name: str = "mol2chemfigPy3",
+    web_form: bool = False,
+    rpc: bool = False,
+    inline: bool = False,
+) -> tuple[bool, Union[str, molecule.Molecule]]:
     """
     process is a convenience wrapper for external callers
 
@@ -230,8 +236,8 @@ def process(raw_args: Union[list, str, None] = None,
 
     except common.MCFError:  # anticipated error - brief message enough
         msg = traceback.format_exc().splitlines()[-1]
-        msg = msg.split(': ')[-1]
-        return False, msg if inline else f'\033[0;31m{msg}\033[0m'
+        msg = msg.split(": ")[-1]
+        return False, msg if inline else f"\033[0;31m{msg}\033[0m"
 
     except Exception:  # unexpected error - get full traceback
         tb = traceback.format_exc()

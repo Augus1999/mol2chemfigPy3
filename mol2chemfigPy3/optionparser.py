@@ -23,20 +23,24 @@ class OptionError(Exception):
 
 
 class Option:
-    collapseWs = re.compile(r'\s+')
+    collapseWs = re.compile(r"\s+")
 
-    form_tag_template = "<!-- Option class needs to define a valid form tag template -->"
+    form_tag_template = (
+        "<!-- Option class needs to define a valid form tag template -->"
+    )
 
-    def __init__(self,
-                 long_name: str,
-                 short_name: str,
-                 form_text: Optional[str] = None,
-                 key: Optional[str] = None,
-                 default: Union[bool, int, float, str, None] = None,
-                 valid_range: Union[list, tuple, None] = None,
-                 help_text: str = """
+    def __init__(
+        self,
+        long_name: str,
+        short_name: str,
+        form_text: Optional[str] = None,
+        key: Optional[str] = None,
+        default: Union[bool, int, float, str, None] = None,
+        valid_range: Union[list, tuple, None] = None,
+        help_text: str = """
                  Our engineers deemed it self-explanatory
-                 """):
+                 """,
+    ):
 
         self.long_name = long_name
         self.short_name = short_name
@@ -108,7 +112,7 @@ class Option:
 
         :return: short option + :
         """
-        return self.short_name + ':'
+        return self.short_name + ":"
 
     def long_getopt(self) -> str:
         """
@@ -116,11 +120,9 @@ class Option:
 
         :return: long name + =
         """
-        return self.long_name + '='
+        return self.long_name + "="
 
-    def format_help(self,
-                    indent: int = 30,
-                    linewidth: int = 80) -> list:
+    def format_help(self, indent: int = 30, linewidth: int = 80) -> list:
         """
         format option and help text for console display
         maybe we can generalize this for html somehow
@@ -129,17 +131,17 @@ class Option:
         :param linewidth: width of a line
         :return: a list of help texts
         """
-        help_text = f'{self.help_text} (Default: {self.default})'
-        help_text = self.collapseWs.sub(' ', help_text.strip())
+        help_text = f"{self.help_text} (Default: {self.default})"
+        help_text = self.collapseWs.sub(" ", help_text.strip())
 
         h_wrap = textwrap.wrap(
             help_text,
             width=linewidth,
-            initial_indent=' ' * indent,
-            subsequent_indent=' ' * indent,
+            initial_indent=" " * indent,
+            subsequent_indent=" " * indent,
         )
 
-        opts = f'-{self.short_name}, --{self.long_name}'
+        opts = f"-{self.short_name}, --{self.long_name}"
         h_wrap[0] = opts.ljust(indent) + h_wrap[0].lstrip()
 
         return h_wrap
@@ -152,7 +154,7 @@ class Option:
         :return: str(value) if value is not None else ''
         """
         if value is None:
-            return ''
+            return ""
         return str(value)
 
     def format_tag(self, value: any = None) -> tuple[str, str, str, str]:
@@ -171,7 +173,9 @@ class Option:
 
 
 class BoolOption(Option):
-    form_tag_template = r'''<input type="checkbox" name="%(key)s" value="yes" %(value)s/>'''
+    form_tag_template = (
+        r"""<input type="checkbox" name="%(key)s" value="yes" %(value)s/>"""
+    )
 
     def _default(self) -> bool:
         """
@@ -223,7 +227,7 @@ class BoolOption(Option):
         if value is True:
             return 'checked="checked"'
         else:
-            return ''
+            return ""
 
 
 class SelectOption(Option):
@@ -231,8 +235,9 @@ class SelectOption(Option):
     make a selection from a list of valid string values.
     argument valid_range cannot be empty with this class.
     """
-    option_template = r'''<option value="%(option)s" %(selected)s>%(option)s</option>'''
-    field_template = '''<select name="%(key)s">\n%(options)s\n</select>'''
+
+    option_template = r"""<option value="%(option)s" %(selected)s>%(option)s</option>"""
+    field_template = """<select name="%(key)s">\n%(options)s\n</select>"""
 
     def _default(self) -> None:
         """
@@ -243,7 +248,7 @@ class SelectOption(Option):
         try:
             return self.valid_range[0]
         except (TypeError, IndexError):
-            raise OptionError('valid_range does not supply default')
+            raise OptionError("valid_range does not supply default")
 
     def _validate(self, value: str) -> tuple[bool, str]:
         """
@@ -263,16 +268,18 @@ class SelectOption(Option):
         options = []
 
         if not (self.default in self.valid_range):  # why am I doing this here?
-            raise OptionError('invalid default')
+            raise OptionError("invalid default")
 
         for option in self.valid_range:
             if option == value:
                 selected = 'selected="selected"'
             else:
-                selected = ''
-            options.append(self.option_template % dict(option=option, selected=selected))
+                selected = ""
+            options.append(
+                self.option_template % dict(option=option, selected=selected)
+            )
 
-        option_string = '\n'.join(options)
+        option_string = "\n".join(options)
         tag = self.field_template % dict(options=option_string, key=self.key)
         return self.key, tag, self.form_text, self.help_text
 
@@ -281,9 +288,12 @@ class TypeOption(Option):
     """
     coerces an input value to a type
     """
+
     _type = int
     _class_default = 0
-    form_tag_template = r'''<input type="text" name="%(key)s" value="%(value)s" size="8"/>'''
+    form_tag_template = (
+        r"""<input type="text" name="%(key)s" value="%(value)s" size="8"/>"""
+    )
 
     def _validate(self, value: any) -> tuple[bool, any]:
         """
@@ -315,9 +325,12 @@ class RangeOption(Option):
     such as 5-6,7-19
     these should be converted into [(5,6),(7,19)]
     """
-    outer_sep = ','
-    inner_sep = '-'
-    form_tag_template = r'''<input type="text" name="%(key)s" value="%(value)s" size="8"/>'''
+
+    outer_sep = ","
+    inner_sep = "-"
+    form_tag_template = (
+        r"""<input type="text" name="%(key)s" value="%(value)s" size="8"/>"""
+    )
 
     def _validate(self, raw_value: str) -> tuple[bool, Union[list, str]]:
         """
@@ -404,7 +417,7 @@ class OptionParser:
         for key, value in list(fields.items()):
             option = self._options_by_key[key]
             if not option.validate_form_value(value):
-                msg = f'Invalid value {value} for option {option.form_text} ignored'
+                msg = f"Invalid value {value} for option {option.form_text} ignored"
                 warnings.append(msg)
 
         return self.option_values(), warnings
@@ -426,13 +439,16 @@ class OptionParser:
         opts, args = getopt.getopt(raw_input, shorts, longs)
 
         for opt_name, value in opts:
-            key = self._options_by_name[opt_name.lstrip('-')]
+            key = self._options_by_name[opt_name.lstrip("-")]
             option = self._options_by_key[key]
 
             if not option.validate(value):
-                msg = [f"rejected value '{value}' for option {opt_name}", 'Option usage:']
+                msg = [
+                    f"rejected value '{value}' for option {opt_name}",
+                    "Option usage:",
+                ]
                 msg.extend(option.format_help())
-                raise OptionError('\n'.join(msg))
+                raise OptionError("\n".join(msg))
 
         return self.option_values(), args
 
@@ -440,7 +456,7 @@ class OptionParser:
         """
         :return: (shorts, [long_1, long_2,...])
         """
-        shorts = ''.join([option.short_getopt() for option in self._options])
+        shorts = "".join([option.short_getopt() for option in self._options])
         longs = [option.long_getopt() for option in self._options]
 
         return shorts, longs
@@ -455,12 +471,11 @@ class OptionParser:
         """
         bools = [opt for opt in self._options if isinstance(opt, BoolOption)]
         shorts = [nb.short_name for nb in bools]
-        return ''.join(shorts)
+        return "".join(shorts)
 
-    def format_help(self,
-                    indent: int = 25,
-                    linewidth: int = 70,
-                    separator: Optional[str] = None) -> str:
+    def format_help(
+        self, indent: int = 25, linewidth: int = 70, separator: Optional[str] = None
+    ) -> str:
         """
         just ask the options to render themselves
 
@@ -477,7 +492,7 @@ class OptionParser:
             if separator is not None:
                 output.append(separator)
 
-        return '\n'.join(output)
+        return "\n".join(output)
 
     def form_tags(self) -> list:
         """

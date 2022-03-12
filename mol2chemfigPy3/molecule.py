@@ -21,9 +21,9 @@ class Molecule:
 
         # now it's time to flip and flop the coordinates
         for atom in list(self.atoms.values()):
-            if self.options['flip_horizontal']:
+            if self.options["flip_horizontal"]:
                 atom.x = -atom.x
-            if self.options['flip_vertical']:
+            if self.options["flip_vertical"]:
                 atom.y = -atom.y
 
         self.bonds, self.atom_pairs = self.parseBonds()
@@ -65,7 +65,7 @@ class Molecule:
                     flagged_bond = flagged_bond.parent
 
             # process cross bonds
-            if self.options['cross_bond'] is not None:
+            if self.options["cross_bond"] is not None:
                 self.process_cross_bonds()
 
             # adjust bond lengths
@@ -169,7 +169,9 @@ class Molecule:
                     else:
                         unconnected.append(r)
 
-                if len(unconnected) == len(_rest):  # no new pairs found in this loop iteration
+                if len(unconnected) == len(
+                    _rest
+                ):  # no new pairs found in this loop iteration
                     return connected_pairs, unconnected
                 else:
                     _rest = unconnected
@@ -192,8 +194,7 @@ class Molecule:
             else:
                 atom_pairs = rest
 
-    def treebonds(self,
-                  root: bool = False) -> list:
+    def treebonds(self, root: bool = False) -> list:
         """
         return a list with all bonds in the molecule tree
 
@@ -226,7 +227,7 @@ class Molecule:
 
         :return: None
         """
-        cross_bonds = self.options['cross_bond']
+        cross_bonds = self.options["cross_bond"]
 
         for start1, end1 in cross_bonds:
             start = start1 - 1
@@ -314,20 +315,20 @@ class Molecule:
 
         :return: (entry atom, exit atom)
         """
-        if self.options['entry_atom'] is not None:
-            entry_atom = self.atoms.get(self.options['entry_atom'] - 1)  # -> zero index
+        if self.options["entry_atom"] is not None:
+            entry_atom = self.atoms.get(self.options["entry_atom"] - 1)  # -> zero index
             if entry_atom is None:
-                raise MCFError('Invalid entry atom number')
+                raise MCFError("Invalid entry atom number")
 
         else:  # pick a default atom with few neighbors
             atoms = list(self.atoms.values())
             atoms.sort(key=lambda atom: len(atom.neighbors))
             entry_atom = atoms[0]
 
-        if self.options['exit_atom'] is not None:
-            exit_atom = self.atoms.get(self.options['exit_atom'] - 1)  # -> zero index
+        if self.options["exit_atom"] is not None:
+            exit_atom = self.atoms.get(self.options["exit_atom"] - 1)  # -> zero index
             if exit_atom is None:
-                raise MCFError('Invalid exit atom number')
+                raise MCFError("Invalid exit atom number")
         else:
             exit_atom = None
 
@@ -349,7 +350,7 @@ class Molecule:
             try:
                 hydrogens = ra.countImplicitHydrogens()
             except IndigoException:
-                if self.options['strict']:
+                if self.options["strict"]:
                     raise
                 hydrogens = 0
 
@@ -405,9 +406,7 @@ class Molecule:
 
         return bonds, atom_pairs
 
-    def parseTree(self,
-                  start_atom: Optional[Atom],
-                  end_atom: Atom) -> Optional[Bond]:
+    def parseTree(self, start_atom: Optional[Atom], end_atom: Atom) -> Optional[Bond]:
         """
         recurse over atoms in molecule to create a tree of bonds
 
@@ -425,7 +424,10 @@ class Molecule:
 
             # guard against reentrant bonds. Can those even still happen?
             # apparently they can, even if I don't really understand how.
-            if (start_idx, end_idx) in self.seen_bonds or (end_idx, start_idx) in self.seen_bonds:
+            if (start_idx, end_idx) in self.seen_bonds or (
+                end_idx,
+                start_idx,
+            ) in self.seen_bonds:
                 return None
 
             # if we get here, the bond is not in the tree yet
@@ -477,10 +479,9 @@ class Molecule:
         # the bond must be going the other way ...
         return self.bonds[(end_idx, start_idx)]
 
-    def aromatizeRing(self,
-                      ring,
-                      center_x: Union[float, int],
-                      center_y: Union[float, int]) -> None:
+    def aromatizeRing(
+        self, ring, center_x: Union[float, int], center_y: Union[float, int]
+    ) -> None:
         """
         render a ring that is aromatic and is a regular polygon
 
@@ -491,7 +492,7 @@ class Molecule:
         bond = None
         for tk_bond in ring_bonds:
             bond = self._getBond(tk_bond)
-            bond.bond_type = 'aromatic'
+            bond.bond_type = "aromatic"
 
         # any bond can serve as the anchor for the circle,
         # so we'll just use the last one from the loop
@@ -499,21 +500,19 @@ class Molecule:
 
         outer_r, angle = compare_positions(atom.x, atom.y, center_x, center_y)
         # angle is based on raw coordinates - adjust for user-set rotation
-        angle += self.options['rotate']
+        angle += self.options["rotate"]
 
         # outer_r calculated from raw coordinates, must be adjusted
         # for bond scaling that may have taken place
         outer_r *= self.bond_scale
 
-        alpha = (math.pi / 2 - math.pi / len(ring_bonds))
+        alpha = math.pi / 2 - math.pi / len(ring_bonds)
         inner_r = math.sin(alpha) * outer_r
 
         arb = AromaticRingBond(self.options, bond, angle, outer_r, inner_r)
         bond.descendants.append(arb)
 
-    def annotateRing(self,
-                     ring,
-                     is_aromatic: bool) -> None:
+    def annotateRing(self, ring, is_aromatic: bool) -> None:
         """
         determine center, symmetry and aromatic character of ring
         I wonder if indigo would tell us directly about these ...
@@ -562,9 +561,9 @@ class Molecule:
         cd_spread = (cd_max - min(center_distances)) / cd_max
 
         tolerance = 0.05
-        is_symmetric = (cd_spread <= tolerance and bl_spread <= tolerance)
+        is_symmetric = cd_spread <= tolerance and bl_spread <= tolerance
 
-        if is_aromatic and is_symmetric and self.options['aromatic_circles']:
+        if is_aromatic and is_symmetric and self.options["aromatic_circles"]:
             # ring meets all requirements to be displayed with circle inside
             self.aromatizeRing(ring, center_x, center_y)
             # flag bond angles as occupied
@@ -608,17 +607,17 @@ class Molecule:
 
         :return: None
         """
-        if self.options['bond_scale'] == 'keep':
+        if self.options["bond_scale"] == "keep":
             pass
 
-        elif self.options['bond_scale'] == 'normalize':
+        elif self.options["bond_scale"] == "normalize":
             lengths = [bond.length for bond in self.treebonds()]
-            lengths = [round(i, self.options['bond_round']) for i in lengths]
+            lengths = [round(i, self.options["bond_round"]) for i in lengths]
             lengths = Counter(lengths)
-            self.bond_scale = self.options['bond_stretch'] / lengths.most_common()
+            self.bond_scale = self.options["bond_stretch"] / lengths.most_common()
 
-        elif self.options['bond_scale'] == 'scale':
-            self.bond_scale = self.options['bond_stretch']
+        elif self.options["bond_scale"] == "scale":
+            self.bond_scale = self.options["bond_stretch"]
 
         for bond in self.treebonds():
             bond.length = self.bond_scale * bond.length
@@ -650,16 +649,13 @@ class Molecule:
         """
         # override some options
         params = dict(self.options)
-        params['submol_name'] = None
+        params["submol_name"] = None
         # params['terse'] = False  # why?
-        params['chemfig_command'] = True
+        params["chemfig_command"] = True
 
         return cfm.format_output(params, self._rendered)
 
-    def _renderBranches(self,
-                        output: list,
-                        level: int,
-                        bonds: list) -> None:
+    def _renderBranches(self, output: list, level: int, bonds: list) -> None:
         """
         render a list of branching bonds indented and inside enclosing brackets.
 
@@ -668,17 +664,19 @@ class Molecule:
         :param bonds: [Bond_1, Bond_2,...]
         :return: None
         """
-        branch_indent = self.options['indent']
+        branch_indent = self.options["indent"]
 
         for bond in bonds:
             output.append("(".rjust(level * branch_indent + cfm.BOND_CODE_WIDTH))
             self._render(output, bond, level)
             output.append(")".rjust(level * branch_indent + cfm.BOND_CODE_WIDTH))
 
-    def _render(self,
-                output: list,
-                bond: Union[Bond, DummyFirstBond, AromaticRingBond],
-                level: int) -> None:
+    def _render(
+        self,
+        output: list,
+        bond: Union[Bond, DummyFirstBond, AromaticRingBond],
+        level: int,
+    ) -> None:
         """
         recursively render the molecule.
 
@@ -718,7 +716,7 @@ class Molecule:
         """
         min_x = max_x = min_y = max_y = None
 
-        alpha = self.options['rotate']
+        alpha = self.options["rotate"]
         alpha *= math.pi / 180
 
         sin_alpha = math.sin(alpha)

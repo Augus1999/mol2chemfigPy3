@@ -20,20 +20,19 @@ from . import chemfig_mappings as cfm
 
 # map indigo's bond specifiers to m2cf custom ones.
 bond_mapping = {
-    1: 'single',
-    2: 'double',
-    3: 'triple',
-    4: 'aromatic',  # not really used
-    Indigo.UP: 'upto',
-    Indigo.DOWN: 'downto',
-    Indigo.EITHER: 'either'
+    1: "single",
+    2: "double",
+    3: "triple",
+    4: "aromatic",  # not really used
+    Indigo.UP: "upto",
+    Indigo.DOWN: "downto",
+    Indigo.EITHER: "either",
 }
 
 
-def compare_positions(x1: float,
-                      y1: float,
-                      x2: float,
-                      y2: float) -> tuple[float, float]:
+def compare_positions(
+    x1: float, y1: float, x2: float, y2: float
+) -> tuple[float, float]:
     """
     calculate distance and angle between the
     coordinates of two atoms.
@@ -48,7 +47,7 @@ def compare_positions(x1: float,
     x_diff = x2 - x1
     y_diff = y2 - y1
 
-    length = (x_diff ** 2 + y_diff ** 2) ** 0.5
+    length = (x_diff**2 + y_diff**2) ** 0.5
 
     if x_diff == 0:
         if y_diff < 0:
@@ -85,6 +84,7 @@ class Bond:
     we can assign a parent. This has to occur later. So, initially
     we just know the start and the end atom.
     """
+
     is_last = False  # flag for bond that is the last descendant of
     # the exit bond - needed in rare case in
     # cases for bond formatting.
@@ -96,12 +96,14 @@ class Bond:
 
     # not drawn with aromatic circles
 
-    def __init__(self,
-                 options: dict,
-                 start_atom: Atom,
-                 end_atom: Atom,
-                 bond_type: Optional[str] = None,
-                 stereo: int = 0):
+    def __init__(
+        self,
+        options: dict,
+        start_atom: Atom,
+        end_atom: Atom,
+        bond_type: Optional[str] = None,
+        stereo: int = 0,
+    ):
 
         self.options = options
         self.start_atom = start_atom
@@ -112,7 +114,7 @@ class Bond:
         self.tikz_values = {}
 
         if stereo in (Indigo.UP, Indigo.DOWN):
-            if self.options['flip_vertical'] != self.options['flip_horizontal']:
+            if self.options["flip_vertical"] != self.options["flip_horizontal"]:
                 stereo = Indigo.UP + Indigo.DOWN - stereo
 
         if stereo in (Indigo.UP, Indigo.DOWN, Indigo.EITHER):  # implies single bond
@@ -130,16 +132,16 @@ class Bond:
         # length is adjusted and rounded later, after all is parsed
 
         # apply molecule rotation
-        angle += self.options['rotate']
+        angle += self.options["rotate"]
         self.angle = angle
 
         # define marker
-        marker = self.options.get('markers', None)
+        marker = self.options.get("markers", None)
 
         if marker is not None:
             ids = [self.start_atom.idx + 1, self.end_atom.idx + 1]
             ids.sort()
-            self.marker = f'{marker}{ids[0]}-{ids[1]}'
+            self.marker = f"{marker}{ids[0]}-{ids[1]}"
         else:
             self.marker = ""
 
@@ -150,15 +152,10 @@ class Bond:
         :return: (distance, angle)
         """
         return compare_positions(
-            self.start_atom.x,
-            self.start_atom.y,
-            self.end_atom.x,
-            self.end_atom.y
+            self.start_atom.x, self.start_atom.y, self.end_atom.x, self.end_atom.y
         )
 
-    def is_clockwise(self,
-                     center_x: float,
-                     center_y: float) -> None:
+    def is_clockwise(self, center_x: float, center_y: float) -> None:
         """
         determine whether the bond will be drawn clockwise
         or counterclockwise relative to center
@@ -171,14 +168,12 @@ class Bond:
             return
 
         center_dist, center_angle = compare_positions(
-            self.end_atom.x,
-            self.end_atom.y,
-            center_x,
-            center_y)
+            self.end_atom.x, self.end_atom.y, center_x, center_y
+        )
 
         # bond is already rotated at this stage, so we need to
         # rotate the ring center also
-        center_angle += self.options['rotate']
+        center_angle += self.options["rotate"]
         center_kink = (center_angle - self.angle) % 360
 
         if center_kink > 180:
@@ -205,10 +200,10 @@ class Bond:
         c.start_atom, c.end_atom = self.end_atom, self.start_atom
         c.angle = (c.angle + 180) % 360
 
-        if self.bond_type == 'upto':
-            c.bond_type = 'upfrom'
-        elif self.bond_type == 'downto':
-            c.bond_type = 'downfrom'
+        if self.bond_type == "upto":
+            c.bond_type = "upfrom"
+        elif self.bond_type == "downto":
+            c.bond_type = "downfrom"
 
         return c
 
@@ -224,8 +219,7 @@ class Bond:
         self.tikz_values = {}
         self.marker = ""
 
-    def set_cross(self,
-                  last: bool = False) -> None:
+    def set_cross(self, last: bool = False) -> None:
         """
         draw this bond crossing over another.
 
@@ -246,9 +240,9 @@ class Bond:
 
         self.is_last = last
 
-    def _adjoining_angles(self,
-                          atom: Atom,
-                          inversion_angle: Union[int, float] = 0) -> tuple[Optional[int], Optional[int]]:
+    def _adjoining_angles(
+        self, atom: Atom, inversion_angle: Union[int, float] = 0
+    ) -> tuple[Optional[int], Optional[int]]:
         """
         determine the narrowest upstream or downstream angles
         on the left and the right.
@@ -325,9 +319,9 @@ class Bond:
         _tan = tan(angle * pi / 180)
         return int(round(100 / _tan))
 
-    def shorten_stroke(self,
-                       same_angle: Union[int, float, None],
-                       other_angle: Union[int, float, None]) -> int:
+    def shorten_stroke(
+        self, same_angle: Union[int, float, None], other_angle: Union[int, float, None]
+    ) -> int:
         """
         determine by how much to shorten the second stroke
         of a double bond.
@@ -373,16 +367,22 @@ class Bond:
             if self.start_atom.explicit and self.end_atom.explicit:
                 return None
 
-            elif self.start_atom.explicit and \
-                    (end_angles['left'] is None or
-                     (90 <= abs(end_angles['left']) <= 135 and
-                      90 <= abs(end_angles['right']) <= 135)):
+            elif self.start_atom.explicit and (
+                end_angles["left"] is None
+                or (
+                    90 <= abs(end_angles["left"]) <= 135
+                    and 90 <= abs(end_angles["right"]) <= 135
+                )
+            ):
                 return None
 
-            elif self.end_atom.explicit and \
-                    (start_angles['left'] is None or
-                     (90 <= abs(start_angles['left']) <= 135 and
-                      90 <= abs(start_angles['right']) <= 135)):
+            elif self.end_atom.explicit and (
+                start_angles["left"] is None
+                or (
+                    90 <= abs(start_angles["left"]) <= 135
+                    and 90 <= abs(start_angles["right"]) <= 135
+                )
+            ):
                 return None
 
         # at this point we are looking at either only implicit atoms
@@ -396,8 +396,8 @@ class Bond:
         else:  # not in a ring. use scoring function to pick sides.
             _ap = self.angle_penalty
 
-            left_penalty = _ap(start_angles['left']) + _ap(end_angles['left'])
-            right_penalty = _ap(start_angles['right']) + _ap(end_angles['right'])
+            left_penalty = _ap(start_angles["left"]) + _ap(end_angles["left"])
+            right_penalty = _ap(start_angles["right"]) + _ap(end_angles["right"])
 
             if left_penalty < right_penalty:
                 side = "left"
@@ -412,18 +412,18 @@ class Bond:
         if self.start_atom.explicit:
             start = 0
         else:
-            if side == 'left':
-                start = self.shorten_stroke(start_angles['left'], start_angles['right'])
+            if side == "left":
+                start = self.shorten_stroke(start_angles["left"], start_angles["right"])
             else:
-                start = self.shorten_stroke(start_angles['right'], start_angles['left'])
+                start = self.shorten_stroke(start_angles["right"], start_angles["left"])
 
         if self.end_atom.explicit:
             end = 0
         else:
-            if side == 'left':
-                end = self.shorten_stroke(end_angles['left'], end_angles['right'])
+            if side == "left":
+                end = self.shorten_stroke(end_angles["left"], end_angles["right"])
             else:
-                end = self.shorten_stroke(end_angles['right'], end_angles['left'])
+                end = self.shorten_stroke(end_angles["right"], end_angles["left"])
 
         return side, start, end
 
@@ -470,10 +470,9 @@ class Bond:
         else:
             end_string_pos = self.end_atom.string_pos
 
-        if self.options['fancy_bonds'] \
-                and self.bond_type in ('double', 'triple'):
+        if self.options["fancy_bonds"] and self.bond_type in ("double", "triple"):
 
-            if self.bond_type == 'double':
+            if self.bond_type == "double":
                 fd = self.fancy_double()
 
                 if fd is not None:
@@ -482,14 +481,14 @@ class Bond:
                     self.tikz_styles.add("double")
                     self.tikz_styles.add(side)
                     self.tikz_values.update(dict(start=start, end=end))
-                    self.bond_type = 'decorated'
+                    self.bond_type = "decorated"
 
-            elif self.bond_type == 'triple':
-                self.tikz_styles.add('triple')
+            elif self.bond_type == "triple":
+                self.tikz_styles.add("triple")
                 start, end = self.fancy_triple()
 
                 self.tikz_values.update(dict(start=start, end=end))
-                self.bond_type = 'decorated'
+                self.bond_type = "decorated"
 
         code = cfm.format_bond(
             self.options,
@@ -503,16 +502,14 @@ class Bond:
             end_string_pos,
             self.tikz_styles,
             self.tikz_values,
-            self.marker
+            self.marker,
         )
 
         return code
 
-    def indent(self,
-               level: int,
-               bond_code: str,
-               atom_code: str = '',
-               comment_code: str = '') -> str:
+    def indent(
+        self, level: int, bond_code: str, atom_code: str = "", comment_code: str = ""
+    ) -> str:
         """
         :param level: level value
         :param bond_code: bond code
@@ -520,7 +517,11 @@ class Bond:
         :param comment_code: comment code
         :return: indent space + bond code + atom code
         """
-        stuff = ' ' * self.options['indent'] * level + bond_code.rjust(cfm.BOND_CODE_WIDTH) + atom_code
+        stuff = (
+            " " * self.options["indent"] * level
+            + bond_code.rjust(cfm.BOND_CODE_WIDTH)
+            + atom_code
+        )
 
         if comment_code:
             stuff += "% " + comment_code
@@ -544,7 +545,7 @@ class Bond:
         return self.indent(level, bond_code, atom_code, comment_code)
 
 
-class DummyFirstBond(Bond):
+class DummyFirstBond:
     """
     semi-dummy class that only takes an end-atom, which is the
     first atom in the molecule, and just renders that.
@@ -566,7 +567,7 @@ class DummyFirstBond(Bond):
 
         :return: a null string
         """
-        return ''  # empty bond code before first atom
+        return ""  # empty bond code before first atom
 
 
 class AromaticRingBond(Bond):
@@ -574,15 +575,18 @@ class AromaticRingBond(Bond):
     A gross hack to render the circle inside an aromatic ring
     as a node in the regular bond hierarchy.
     """
+
     descendants = []
     scale = 1.5  # 1.5 corresponds to ring size of chemfig
 
-    def __init__(self,
-                 options: dict,
-                 parent: Optional[Bond],
-                 angle: Union[int, float],
-                 length: Union[int, float],
-                 inner_r: Union[int, float]):
+    def __init__(
+        self,
+        options: dict,
+        parent: Optional[Bond],
+        angle: Union[int, float],
+        length: Union[int, float],
+        inner_r: Union[int, float],
+    ):
         self.options = options
         self.angle = cfm.num_round(angle, 1) % 360
         if parent is not None:

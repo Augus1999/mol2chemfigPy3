@@ -4,6 +4,7 @@
 [![Downloads](https://static.pepy.tech/personalized-badge/mol2chemfigpy3?period=total&units=international_system&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/mol2chemfigpy3)
 ![OS](https://img.shields.io/badge/OS-Win%20|%20Linux%20|%20macOS-blue?color=00B16A)
 ![python](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10-blue.svg?color=dd9b65)
+![black](https://img.shields.io/badge/code%20style-black-black)
 
 This is NOT an official version of mol2chemfig for python 3.
 
