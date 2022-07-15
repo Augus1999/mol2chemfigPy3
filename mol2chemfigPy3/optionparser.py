@@ -15,7 +15,7 @@ that client code will have to do both.
 import getopt
 import re
 import textwrap
-from typing import Union, Optional
+from typing import Union, Optional, List, Tuple, Dict
 
 
 class OptionError(Exception):
@@ -36,7 +36,7 @@ class Option:
         form_text: Optional[str] = None,
         key: Optional[str] = None,
         default: Union[bool, int, float, str, None] = None,
-        valid_range: Union[list, tuple, None] = None,
+        valid_range: Union[List, Tuple, None] = None,
         help_text: str = """
                  Our engineers deemed it self-explanatory
                  """,
@@ -97,7 +97,7 @@ class Option:
         """
         return self.validate(value)
 
-    def _validate(self, value: any) -> tuple[bool, any]:
+    def _validate(self, value: any) -> Tuple[bool, any]:
         """
         no-op default
 
@@ -157,7 +157,7 @@ class Option:
             return ""
         return str(value)
 
-    def format_tag(self, value: any = None) -> tuple[str, str, str, str]:
+    def format_tag(self, value: any = None) -> Tuple[str, str, str, str]:
         """
         render a html form tag
 
@@ -250,7 +250,7 @@ class SelectOption(Option):
         except (TypeError, IndexError):
             raise OptionError("valid_range does not supply default")
 
-    def _validate(self, value: str) -> tuple[bool, str]:
+    def _validate(self, value: str) -> Tuple[bool, str]:
         """
         we enforce conversion to lowercase
 
@@ -259,7 +259,7 @@ class SelectOption(Option):
         """
         return True, value.lower()
 
-    def format_tag(self, value: any = None) -> tuple[str, str, str, str]:
+    def format_tag(self, value: any = None) -> Tuple[str, str, str, str]:
         """
         :param value: value
         :return: (key, tag, form text, help text)
@@ -295,7 +295,7 @@ class TypeOption(Option):
         r"""<input type="text" name="%(key)s" value="%(value)s" size="8"/>"""
     )
 
-    def _validate(self, value: any) -> tuple[bool, any]:
+    def _validate(self, value: any) -> Tuple[bool, any]:
         """
         :param value: any value
         :return: (bool, value)
@@ -332,7 +332,7 @@ class RangeOption(Option):
         r"""<input type="text" name="%(key)s" value="%(value)s" size="8"/>"""
     )
 
-    def _validate(self, raw_value: str) -> tuple[bool, Union[list, str]]:
+    def _validate(self, raw_value: str) -> Tuple[bool, Union[List, str]]:
         """
         :param raw_value: string value
         :return: (bool, range)
@@ -380,7 +380,7 @@ class OptionParser:
         # also maintain options ordered in a list
         self._options.append(option)
 
-    def validKeys(self) -> list:
+    def validKeys(self) -> List:
         """
         required by the web form front end
 
@@ -388,7 +388,7 @@ class OptionParser:
         """
         return list(self._options_by_key.keys())
 
-    def option_values(self) -> dict:
+    def option_values(self) -> Dict:
         """
         read current option values
 
@@ -401,7 +401,7 @@ class OptionParser:
 
         return option_dict
 
-    def process_form_fields(self, fields: any) -> tuple[dict, list]:
+    def process_form_fields(self, fields: any) -> Tuple[Dict, List]:
         """
         process options received through the web form.
         we don't look at the cargo data here at all.
@@ -422,7 +422,7 @@ class OptionParser:
 
         return self.option_values(), warnings
 
-    def process_cli(self, raw_input: Union[list, str]) -> tuple[dict, list]:
+    def process_cli(self, raw_input: Union[List, str]) -> Tuple[Dict, List]:
         """
         process input from the command line interface
         - assemble template strings for getopt and run getopt
@@ -452,7 +452,7 @@ class OptionParser:
 
         return self.option_values(), args
 
-    def format_for_getopt(self) -> tuple[str, list]:
+    def format_for_getopt(self) -> Tuple[str, List]:
         """
         :return: (shorts, [long_1, long_2,...])
         """
@@ -494,7 +494,7 @@ class OptionParser:
 
         return "\n".join(output)
 
-    def form_tags(self) -> list:
+    def form_tags(self) -> List:
         """
         collect the html for each option
 

@@ -2,7 +2,7 @@
 """
 My name is Bond. JAMES Bond.
 """
-from typing import Optional, Union
+from typing import Optional, Union, Tuple, Dict
 from copy import deepcopy, copy
 from math import atan, tan, pi
 from indigo import Indigo
@@ -32,7 +32,7 @@ bond_mapping = {
 
 def compare_positions(
     x1: float, y1: float, x2: float, y2: float
-) -> tuple[float, float]:
+) -> Tuple[float, float]:
     """
     calculate distance and angle between the
     coordinates of two atoms.
@@ -98,7 +98,7 @@ class Bond:
 
     def __init__(
         self,
-        options: dict,
+        options: Dict,
         start_atom: Atom,
         end_atom: Atom,
         bond_type: Optional[str] = None,
@@ -145,7 +145,7 @@ class Bond:
         else:
             self.marker = ""
 
-    def bond_dimensions(self) -> tuple[float, float]:
+    def bond_dimensions(self) -> Tuple[float, float]:
         """
         determine bond angle and distance between two atoms
 
@@ -266,7 +266,7 @@ class Bond:
 
         return int(round(angles[0])), int(round(angles[-1]))
 
-    def upstream_angles(self) -> dict:
+    def upstream_angles(self) -> Dict:
         """
         determine the narrowest upstream left and upstream right angle.
 
@@ -280,7 +280,7 @@ class Bond:
 
         return dict(left=first, right=last)
 
-    def downstream_angles(self) -> dict:
+    def downstream_angles(self) -> Dict:
         """
         determine the narrowest downstream left and downstream right angle.
 
@@ -345,7 +345,7 @@ class Bond:
 
         return self.cotan100(angle)
 
-    def fancy_double(self) -> Optional[tuple[str, int, int]]:
+    def fancy_double(self) -> Optional[Tuple[str, int, int]]:
         """
         work out the parameters for rendering a fancy double bond.
 
@@ -427,7 +427,7 @@ class Bond:
 
         return side, start, end
 
-    def fancy_triple(self) -> tuple[int, int]:
+    def fancy_triple(self) -> Tuple[int, int]:
         """
         work out parameters for fancy triple bond. We don't
         need to choose sides here, just calculate the required
@@ -545,7 +545,7 @@ class Bond:
         return self.indent(level, bond_code, atom_code, comment_code)
 
 
-class DummyFirstBond:
+class DummyFirstBond(Bond):
     """
     semi-dummy class that only takes an end-atom, which is the
     first atom in the molecule, and just renders that.
@@ -581,7 +581,7 @@ class AromaticRingBond(Bond):
 
     def __init__(
         self,
-        options: dict,
+        options: Dict,
         parent: Optional[Bond],
         angle: Union[int, float],
         length: Union[int, float],

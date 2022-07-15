@@ -3,7 +3,7 @@
 define Atom object
 """
 import string
-from typing import Optional, Union
+from typing import Optional, Union, Dict, List, Tuple
 from . import chemfig_mappings as cfm
 
 # some atoms should carry their hydrogen to the left, rather than
@@ -43,7 +43,7 @@ class Atom:
 
     def __init__(
         self,
-        options: dict,
+        options: Dict,
         idx: int,
         x: Union[int, float],
         y: Union[int, float],
@@ -51,7 +51,7 @@ class Atom:
         hydrogens: Optional[int],
         charge: int,
         radical: int,
-        neighbors: list[int],
+        neighbors: List[int],
     ):
         self.options = options
         self.idx = idx
@@ -91,7 +91,7 @@ class Atom:
         angle = min(diff, 360 - diff)
         return (max(0, turf - angle)) ** 2
 
-    def _score_angles(self, choices: list[list[int, int, str]], turf: int) -> list[str]:
+    def _score_angles(self, choices: List[List], turf: int) -> List[str]:
         """
         backend for score_angles
 
@@ -143,7 +143,7 @@ class Atom:
             0
         ]
 
-    def render_phantom(self) -> tuple[Optional[str], str]:
+    def render_phantom(self) -> Tuple[Optional[str], str]:
         """
         render a bond that closes a ring or loop, or for
         late-rendered cross bonds. The target atom
@@ -162,7 +162,7 @@ class Atom:
         )
         return atom_code, comment_code
 
-    def render(self) -> tuple[str, str]:
+    def render(self) -> Tuple[str, str]:
         """
         render the atom and a comment
 

@@ -6,7 +6,7 @@ this code will only make sense to you if you are familiar with
 the TeX syntax defined by the chemfig package.
 """
 import textwrap
-from typing import Union, Optional
+from typing import Union, Optional, List, Tuple, Dict
 
 BOND_CODE_WIDTH = 50  # space for bonds - generous upfront, will be trimmed at the end
 TERSE_LINE_WIDTH = 75  # in terse code format, force linebreaks
@@ -137,7 +137,7 @@ atom_templates = dict(
 
 
 def format_angle(
-    options: dict, angle: Union[int, float], parent_angle: Union[int, float, None]
+    options: Dict, angle: Union[int, float], parent_angle: Union[int, float, None]
 ) -> str:
     """
     format prefix and number for bond angle
@@ -175,7 +175,7 @@ def specifier_default(val: any, default: any) -> str:
 
 
 def format_bond(
-    options: dict,
+    options: Dict,
     angle: Union[int, float, None],
     parent_angle: Union[int, float, None],
     bond_type: str,
@@ -184,8 +184,8 @@ def format_bond(
     length: Union[int, float],
     departure: str,
     arrival: str,
-    tikz_styles: Union[set, dict],
-    tikz_values: Union[set, dict],
+    tikz_styles: Union[set, Dict],
+    tikz_values: Union[set, Dict],
     marker: str,
 ) -> str:
     """
@@ -262,7 +262,7 @@ def format_bond(
     return bond_code + modifier + specifiers
 
 
-def fill_atom(keys: tuple, data: dict, phantom: str, phantom_pos: int = 0) -> tuple:
+def fill_atom(keys: Tuple, data: Dict, phantom: str, phantom_pos: int = 0) -> tuple:
     """
     helper for finalizing atom code. phantom_pos is the
     target position of a bond attaching to a phantom;
@@ -298,7 +298,7 @@ def format_marker(marker: Optional[str]) -> Optional[str]:
 
 
 def format_atom(
-    options: dict,
+    options: Dict,
     idx: int,
     element: str,
     hydrogens: Optional[int],
@@ -307,7 +307,7 @@ def format_atom(
     first_quadrant: str,
     second_quadrant: str,
     charge_angle: Optional[str],
-) -> tuple:
+) -> Tuple:
     """
     render an atom with hydrogens and charges. Return
     - the chemfig code of the rendered atom
@@ -417,7 +417,7 @@ def format_atom(
     return fill_atom(keys, data, element_phantom)
 
 
-def format_atom_comment(options: dict, idx: int) -> str:
+def format_atom_comment(options: Dict, idx: int) -> str:
     """
     render an optional end-of-line comment after a regular atom
 
@@ -449,7 +449,7 @@ def format_aromatic_ring(
     parent_angle: Union[int, float, None],
     length: Union[int, float],
     radius: Union[int, float],
-) -> tuple[str, str, str]:
+) -> (str, str, str):
     """
     :param options: option dict
     :param angle: angle

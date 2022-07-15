@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # parse a molfile molecule and render to chemfig code
 import math
-from typing import Optional, Union
+from typing import Optional, Union, Tuple, List, Dict
 from indigo import IndigoException, IndigoObject
 from . import chemfig_mappings as cfm
 from .common import MCFError, Counter
@@ -13,7 +13,7 @@ class Molecule:
     bond_scale = 1.0  # can be overridden by user option
     exit_bond = None  # the first bond in the tree that connects to the exit atom
 
-    def __init__(self, options: dict, tkmol: IndigoObject):
+    def __init__(self, options: Dict, tkmol: IndigoObject):
         self.options = options
         self.tkmol = tkmol
 
@@ -138,7 +138,7 @@ class Molecule:
             for atom in un_bonded:
                 self.link_atoms(anchor, atom)
 
-    def molecule_fragments(self) -> list:
+    def molecule_fragments(self) -> List:
         """
         identify unconnected fragments in the molecule.
         used by connect_fragments
@@ -146,7 +146,7 @@ class Molecule:
         :return: fragments
         """
 
-        def split_pairs(pair_list: list) -> tuple[list, list]:
+        def split_pairs(pair_list: List) -> Tuple[List, List]:
             """
             break up pair_list into one list that contains all pairs
             that are connected, directly or indirectly, to the first
@@ -194,7 +194,7 @@ class Molecule:
             else:
                 atom_pairs = rest
 
-    def treebonds(self, root: bool = False) -> list:
+    def treebonds(self, root: bool = False) -> List:
         """
         return a list with all bonds in the molecule tree
 
@@ -307,7 +307,7 @@ class Molecule:
         bond_out = bonds[scored[-1]]
         return bond_out
 
-    def pickFirstLastAtoms(self) -> tuple[Optional[Atom], Optional[Atom]]:
+    def pickFirstLastAtoms(self) -> Tuple[Optional[Atom], Optional[Atom]]:
         """
         If the first atom is not given, we try to pick one
         that has only one bond to the rest of the molecule,
@@ -334,7 +334,7 @@ class Molecule:
 
         return entry_atom, exit_atom
 
-    def parseAtoms(self) -> dict:
+    def parseAtoms(self) -> Dict:
         """
         Read some attributes from the toolkit atom object
 
@@ -375,7 +375,7 @@ class Molecule:
 
         return wrapped_atoms
 
-    def parseBonds(self) -> tuple[dict, list]:
+    def parseBonds(self) -> Tuple[Dict, List]:
         """
         read some bond attributes
 
@@ -622,7 +622,7 @@ class Molecule:
         for bond in self.treebonds():
             bond.length = self.bond_scale * bond.length
 
-    def render(self) -> list:
+    def render(self) -> List:
         """
         render molecule to chemfig
 
@@ -655,7 +655,7 @@ class Molecule:
 
         return cfm.format_output(params, self._rendered)
 
-    def _renderBranches(self, output: list, level: int, bonds: list) -> None:
+    def _renderBranches(self, output: List, level: int, bonds: List) -> None:
         """
         render a list of branching bonds indented and inside enclosing brackets.
 
@@ -673,7 +673,7 @@ class Molecule:
 
     def _render(
         self,
-        output: list,
+        output: List,
         bond: Union[Bond, DummyFirstBond, AromaticRingBond],
         level: int,
     ) -> None:
@@ -702,7 +702,7 @@ class Molecule:
             self._renderBranches(output, level + 1, branches)
             self._render(output, first, level)
 
-    def dimensions(self) -> tuple[float, float]:
+    def dimensions(self) -> Tuple[float, float]:
         r"""
         this calculates the approximate width and height
         of the rendered molecule, in units of chemfig

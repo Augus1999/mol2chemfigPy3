@@ -6,7 +6,7 @@ return the result.
 import os.path
 import traceback
 from urllib import request
-from typing import Union
+from typing import Union, List, Tuple
 from indigo import Indigo, IndigoException, IndigoObject
 from . import common, options, molecule
 
@@ -26,7 +26,7 @@ class Processor:
 
     def __init__(
         self,
-        raw_args: Union[list, str, None],
+        raw_args: Union[List, str, None],
         data: str,
         form_fields: any,
         program_name: str,
@@ -206,14 +206,14 @@ class Processor:
 
 
 def process(
-    raw_args: Union[list, str, None] = None,
+    raw_args: Union[List, str, None] = None,
     data: any = None,
     form_fields: any = None,
     program_name: str = "mol2chemfigPy3",
     web_form: bool = False,
     rpc: bool = False,
     inline: bool = False,
-) -> tuple[bool, Union[str, molecule.Molecule]]:
+) -> Tuple[bool, Union[str, molecule.Molecule]]:
     """
     process is a convenience wrapper for external callers
 
