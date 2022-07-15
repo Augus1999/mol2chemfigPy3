@@ -449,7 +449,7 @@ def format_aromatic_ring(
     parent_angle: Union[int, float, None],
     length: Union[int, float],
     radius: Union[int, float],
-) -> (str, str, str):
+) -> Tuple[str, str, str]:
     """
     :param options: option dict
     :param angle: angle
