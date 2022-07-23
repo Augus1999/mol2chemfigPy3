@@ -430,7 +430,7 @@ def format_atom_comment(options: Dict, idx: int) -> str:
     return str(idx)
 
 
-def format_closure_comment(options: dict, idx: int) -> str:
+def format_closure_comment(options: Dict, idx: int) -> str:
     """
     render an optional end of line comment after a ring-closing bond
 
@@ -444,7 +444,7 @@ def format_closure_comment(options: dict, idx: int) -> str:
 
 
 def format_aromatic_ring(
-    options: dict,
+    options: Dict,
     angle: Union[int, float],
     parent_angle: Union[int, float, None],
     length: Union[int, float],
@@ -474,7 +474,7 @@ def format_aromatic_ring(
     return ring_bond_code, ring_code, comment
 
 
-def strip_output(output_list: list) -> list:
+def strip_output(output_list: List) -> List:
     """
     remove white space and comments
 
@@ -505,7 +505,7 @@ def strip_output(output_list: list) -> list:
     return chunked
 
 
-def format_output(options: dict, output_list: list) -> str:
+def format_output(options: Dict, output_list: List) -> str:
     """
     optionally wrap the translated output into a command,
     to ease inclusion in LaTeX documents with \\input

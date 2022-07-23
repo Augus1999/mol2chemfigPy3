@@ -242,7 +242,7 @@ class Bond:
 
     def _adjoining_angles(
         self, atom: Atom, inversion_angle: Union[int, float] = 0
-    ) -> tuple[Optional[int], Optional[int]]:
+    ) -> Tuple[Optional[int], Optional[int]]:
         """
         determine the narrowest upstream or downstream angles
         on the left and the right.
