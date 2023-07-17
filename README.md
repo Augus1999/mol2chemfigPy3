@@ -91,7 +91,9 @@ mol2chemfig('./methanol.smi')  # from a file
 
 ## Document
 
-See official document [mol2chemfig-doc.pdf (uwaterloo.ca)](http://chimpsky.uwaterloo.ca/m2cf_static/mol2chemfig-doc.pdf)
+~~See official document [mol2chemfig-doc.pdf (uwaterloo.ca)](http://chimpsky.uwaterloo.ca/m2cf_static/mol2chemfig-doc.pdf)~~
+
+The website seems down, so here is a mirror [mol2chemfig Documentation Version 1.5](https://mirror.ox.ac.uk/sites/ctan.org/graphics/mol2chemfig/mol2chemfig-doc.pdf)
 
 ## License
 
