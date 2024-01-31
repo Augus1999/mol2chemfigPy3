@@ -41,7 +41,6 @@ class Option:
                  Our engineers deemed it self-explanatory
                  """,
     ):
-
         self.long_name = long_name
         self.short_name = short_name
         self.key = key or long_name

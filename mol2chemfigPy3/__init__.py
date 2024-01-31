@@ -53,12 +53,7 @@ def mol2chemfig(
         f' {"" if name is None else "-l "+name} {others}'
     )
     arg = re.sub(r"\s+", " ", arg).split()
-    if content.endswith(
-        (
-            ".mol",
-            ".smi",
-        )
-    ):
+    if content.endswith((".mol", ".smi")):
         arg += ["-i", "file", content]
     else:
         try:

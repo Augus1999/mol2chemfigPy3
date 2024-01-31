@@ -32,7 +32,7 @@ class Molecule:
         # positioning of implicit hydrogen and charges.
 
         for connection, bond in list(self.bonds.items()):
-            first_idx, last_idx = connection
+            first_idx, _ = connection
             self.atoms[first_idx].bond_angles.append(bond.angle)
 
         # this would be the place to work out the placement of the second
@@ -113,7 +113,6 @@ class Molecule:
         fragments = self.molecule_fragments()
 
         if len(fragments) > 1:
-
             for head, tail in zip(fragments[:-1], fragments[1:]):
                 head_last = head[-1][-1]
                 tail_first = tail[0][0]
@@ -288,7 +287,6 @@ class Molecule:
         :return: the most distant bond
         """
         scored = []
-        bonds = {}
         for bond in self.treebonds():
             if bond.to_phantom:  # don't pick phantom atoms as exit
                 continue
@@ -301,11 +299,9 @@ class Molecule:
                 distance += 1
                 the_bond = the_bond.parent
 
-            scored.append((distance, len(bond.descendants)))
-            bonds[(distance, len(bond.descendants))] = bond
-        scored.sort()
-        bond_out = bonds[scored[-1]]
-        return bond_out
+            scored.append((distance, len(bond.descendants), bond))
+        scored.sort(key=lambda x: x[0])
+        return scored[-1][-1]
 
     def pickFirstLastAtoms(self) -> Tuple[Optional[Atom], Optional[Atom]]:
         """
@@ -359,7 +355,7 @@ class Molecule:
 
             neighbors = [na.index() for na in ra.iterateNeighbors()]
 
-            x, y, z = ra.xyz()
+            x, y, _ = ra.xyz()
 
             wrapped_atoms[idx] = Atom(
                 self.options,
@@ -584,21 +580,17 @@ class Molecule:
         self.tkmol.aromatize()
 
         all_rings = []
-        rings = {}
-        _all_rings = []
-        for key, ring in enumerate(self.tkmol.iterateSSSR()):
+
+        for ring in self.tkmol.iterateSSSR():
             # bond-order == 4 means "aromatic"; all rings bonds must be aromatic
             is_aromatic = all(bond.bondOrder() == 4 for bond in ring.iterateBonds())
-            all_rings.append((is_aromatic, key))
-            rings[(is_aromatic, key)] = ring
+            all_rings.append((is_aromatic, ring))
 
         # prefer aromatic rings to non-aromatic ones, so that double bonds on
         # fused rings go preferably into aromatic rings
-        all_rings.sort()
-        for i in all_rings:
-            _all_rings.append((i[0], rings[i]))
+        all_rings.sort(key=lambda x: x[0])
 
-        for is_aromatic, ring in reversed(_all_rings):
+        for is_aromatic, ring in reversed(all_rings):
             self.annotateRing(ring, is_aromatic)
 
     def scaleBonds(self) -> None:
@@ -650,7 +642,6 @@ class Molecule:
         # override some options
         params = dict(self.options)
         params["submol_name"] = None
-        # params['terse'] = False  # why?
         params["chemfig_command"] = True
 
         return cfm.format_output(params, self._rendered)

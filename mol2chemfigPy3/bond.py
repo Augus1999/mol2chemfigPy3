@@ -167,7 +167,7 @@ class Bond:
         if self.clockwise:  # assign only once
             return
 
-        center_dist, center_angle = compare_positions(
+        _, center_angle = compare_positions(
             self.end_atom.x, self.end_atom.y, center_x, center_y
         )
 
