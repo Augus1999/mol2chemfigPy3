@@ -31,7 +31,7 @@ setup(
     license="MIT licence",
     package_dir={"mol2chemfigPy3": "mol2chemfigPy3"},
     author="Nianze A. Tao",
-    author_email="TaoN@cardiff.ac.uk",
+    author_email="tao-nianze@hiroshima-u.ac.jp",
     packages=find_packages(),
     python_requires=">=3.7",
     install_requires=["epam.indigo"],

@@ -5,7 +5,7 @@ a python 3 version of mol2chemfig.
 mol2chemfig generates chemfig code from mol files.
 """
 import re
-from typing import Optional
+from typing import Optional, Any
 from .main import main
 from .processor import process
 from .common import program_version
@@ -14,9 +14,11 @@ __version__ = program_version
 __Author__ = "Nianze A. TAO"
 __all__ = ["main", "mol2chemfig", "__version__"]
 
+supported_file = (".gz", ".sdf", ".rdf", ".mol", ".rxn", ".txt", ".cml", ".mrv", ".xml")
+
 
 def mol2chemfig(
-    content: str,
+    content: Any,
     *args: str,
     rotate: float = 0.0,
     aromatic: bool = True,
@@ -53,7 +55,8 @@ def mol2chemfig(
         f' {"" if name is None else "-l "+name} {others}'
     )
     arg = re.sub(r"\s+", " ", arg).split()
-    if content.endswith((".mol", ".smi")):
+    content = str(content)
+    if content.endswith(supported_file):
         arg += ["-i", "file", content]
     else:
         try:

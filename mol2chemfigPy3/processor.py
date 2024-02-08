@@ -150,11 +150,6 @@ class Processor:
         # let toolkit parse the molecule, and process it
         tk_mol = self.parseMolecule()
 
-        # we now know how to deal with orphan atoms.
-        # atoms, bonds = tkmol.countAtoms(), tkmol.countBonds()
-        # if atoms <= 1 or bonds == 0:
-        #   raise common.MCFError, "Input contains no bonds---can't render structure"
-
         mol = molecule.Molecule(self.options, tk_mol)
 
         return mol
