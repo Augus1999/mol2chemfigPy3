@@ -14,7 +14,7 @@ __version__ = program_version
 __Author__ = "Nianze A. TAO"
 __all__ = ["main", "mol2chemfig", "__version__"]
 
-supported_file = ".gz .sdf .rdf .mol .rxn .txt .cml .mrv .xml .smi".split()
+supported_file = ".gz .sdf .rdf .mol .rxn .txt .cml .mrv .xml .smi"
 
 
 def mol2chemfig(
@@ -56,7 +56,7 @@ def mol2chemfig(
     )
     arg = re.sub(r"\s+", " ", arg).split()
     content = str(content)
-    if content.endswith(supported_file):
+    if content.endswith(tuple(supported_file.split())):
         arg += ["-i", "file", content]
     else:
         try:
