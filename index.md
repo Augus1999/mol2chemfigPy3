@@ -5,6 +5,7 @@
 ![OS](https://img.shields.io/badge/OS-Win%20|%20Linux%20|%20macOS-blue?color=00B16A)
 ![python](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10-blue.svg?color=dd9b65)
 ![black](https://img.shields.io/badge/code%20style-black-black)
+![pytest](https://github.com/Augus1999/mol2chemfigPy3/actions/workflows/pytest.yml/badge.svg)
 
 This is NOT an official version of mol2chemfig for python 3.
 
@@ -99,7 +100,9 @@ The static callgraph of this project is:
 
 ## Document
 
-See official document [mol2chemfig-doc.pdf (uwaterloo.ca)](http://chimpsky.uwaterloo.ca/m2cf_static/mol2chemfig-doc.pdf)
+~~See official document [mol2chemfig-doc.pdf (uwaterloo.ca)](http://chimpsky.uwaterloo.ca/m2cf_static/mol2chemfig-doc.pdf)~~
+
+The website seems down, so here is a mirror [mol2chemfig Documentation Version 1.5](https://mirror.ox.ac.uk/sites/ctan.org/graphics/mol2chemfig/mol2chemfig-doc.pdf)
 
 ## License
 
