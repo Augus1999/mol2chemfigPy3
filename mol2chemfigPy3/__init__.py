@@ -14,7 +14,7 @@ __version__ = program_version
 __Author__ = "Nianze A. TAO"
 __all__ = ["main", "mol2chemfig", "__version__"]
 
-supported_file = (".gz", ".sdf", ".rdf", ".mol", ".rxn", ".txt", ".cml", ".mrv", ".xml")
+supported_file = ".gz .sdf .rdf .mol .rxn .txt .cml .mrv .xml .smi".split()
 
 
 def mol2chemfig(
