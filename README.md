@@ -5,6 +5,7 @@
 ![OS](https://img.shields.io/badge/OS-Win%20|%20Linux%20|%20macOS-blue?color=00B16A)
 ![python](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10-blue.svg?color=dd9b65)
 ![black](https://img.shields.io/badge/code%20style-black-black)
+![pytest](https://github.com/Augus1999/mol2chemfigPy3/actions/workflows/pytest.yml/badge.svg)
 
 This is NOT an official version of mol2chemfig for python 3.
 
