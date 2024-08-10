@@ -6,13 +6,13 @@ return the result.
 import os.path
 import traceback
 from urllib import request
-from typing import Union, List, Tuple
+from typing import Union, Tuple, List, Any
 from indigo import Indigo, IndigoException, IndigoObject
 from . import common, options, molecule
 
 
 class HelpError(common.MCFError):
-    def __init__(self, text: any):
+    def __init__(self, text: Any):
         self.text = str(text)  # convert error messages to string
 
     def __str__(self):
@@ -28,7 +28,7 @@ class Processor:
         self,
         raw_args: Union[List, str, None],
         data: str,
-        form_fields: any,
+        form_fields: Any,
         program_name: str,
         web_form: bool,
         rpc: bool,
@@ -202,8 +202,8 @@ class Processor:
 
 def process(
     raw_args: Union[List, str, None] = None,
-    data: any = None,
-    form_fields: any = None,
+    data: Any = None,
+    form_fields: Any = None,
     program_name: str = "mol2chemfigPy3",
     web_form: bool = False,
     rpc: bool = False,

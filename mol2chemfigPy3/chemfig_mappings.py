@@ -118,7 +118,7 @@ atom_templates = dict(
         # one hydrogen
         one_h=dict(
             east=(r"%(element)sH^{%(charge)s}", 1),
-            h_west=(r"^{%(charge)s}H%(element)s", 3),
+            west=(r"^{%(charge)s}H%(element)s", 3),
             north=(r"\mcfaboveright{%(element)s}{H}{^{%(charge)s}}", 0),
             south=(r"\mcfbelowright{%(element)s}{H}{^{%(charge)s}}", 0),
         ),
@@ -262,7 +262,9 @@ def format_bond(
     return bond_code + modifier + specifiers
 
 
-def fill_atom(keys: Tuple, data: Dict, phantom: str, phantom_pos: int = 0) -> tuple:
+def fill_atom(
+    keys: Tuple[str, str, str], data: Dict, phantom: str, phantom_pos: int = 0
+) -> tuple:
     """
     helper for finalizing atom code. phantom_pos is the
     target position of a bond attaching to a phantom;
@@ -330,7 +332,6 @@ def format_atom(
     """
 
     _mt = macro_templates  # shortcuts
-    _at = atom_templates
 
     # collect elements in a dict that then is used to fill
     # the configured string templates.
@@ -474,7 +475,7 @@ def format_aromatic_ring(
     return ring_bond_code, ring_code, comment
 
 
-def strip_output(output_list: List) -> List:
+def strip_output(output_list: List[str]) -> List[str]:
     """
     remove white space and comments
 
@@ -505,7 +506,7 @@ def strip_output(output_list: List) -> List:
     return chunked
 
 
-def format_output(options: Dict, output_list: List) -> str:
+def format_output(options: Dict, output_list: List[str]) -> str:
     """
     optionally wrap the translated output into a command,
     to ease inclusion in LaTeX documents with \\input

@@ -15,7 +15,7 @@ that client code will have to do both.
 import getopt
 import re
 import textwrap
-from typing import Union, Optional, List, Tuple, Dict
+from typing import Union, Optional, Tuple, Any, List, Dict
 
 
 class OptionError(Exception):
@@ -85,7 +85,7 @@ class Option:
             return True
         return False
 
-    def validate_form_value(self, value: any) -> bool:
+    def validate_form_value(self, value: Any) -> bool:
         """
         validation of option value received through a
         web form. May need to be different from CLI,
@@ -96,7 +96,7 @@ class Option:
         """
         return self.validate(value)
 
-    def _validate(self, value: any) -> Tuple[bool, any]:
+    def _validate(self, value: Any) -> Tuple[bool, Any]:
         """
         no-op default
 
@@ -145,7 +145,7 @@ class Option:
 
         return h_wrap
 
-    def format_tag_value(self, value: any) -> str:
+    def format_tag_value(self, value: Any) -> str:
         """
         format the default value for insertion into form tag
 
@@ -156,7 +156,7 @@ class Option:
             return ""
         return str(value)
 
-    def format_tag(self, value: any = None) -> Tuple[str, str, str, str]:
+    def format_tag(self, value: Any = None) -> Tuple[str, str, str, str]:
         """
         render a html form tag
 
@@ -184,7 +184,7 @@ class BoolOption(Option):
         """
         return False
 
-    def validate(self, value: any = None) -> bool:
+    def validate(self, value: Any = None) -> bool:
         """
         value should be empty; we accept and discard it.
         we simply switch the default value.
@@ -195,7 +195,7 @@ class BoolOption(Option):
         self.value = not self.default
         return True
 
-    def validate_form_value(self, value: any) -> bool:
+    def validate_form_value(self, value: Any) -> bool:
         """
         if a value arrives through a web form, the box has been
         ticked, so we set to True regardless of default. The passed
@@ -258,7 +258,7 @@ class SelectOption(Option):
         """
         return True, value.lower()
 
-    def format_tag(self, value: any = None) -> Tuple[str, str, str, str]:
+    def format_tag(self, value: Any = None) -> Tuple[str, str, str, str]:
         """
         :param value: value
         :return: (key, tag, form text, help text)
@@ -294,7 +294,7 @@ class TypeOption(Option):
         r"""<input type="text" name="%(key)s" value="%(value)s" size="8"/>"""
     )
 
-    def _validate(self, value: any) -> Tuple[bool, any]:
+    def _validate(self, value: Any) -> Tuple[bool, Any]:
         """
         :param value: any value
         :return: (bool, value)

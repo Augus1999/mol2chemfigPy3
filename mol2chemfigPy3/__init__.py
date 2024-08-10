@@ -5,7 +5,8 @@ a python 3 version of mol2chemfig.
 mol2chemfig generates chemfig code from mol files.
 """
 import re
-from typing import Optional, Any
+from pathlib import Path
+from typing import Optional, Union
 from .main import main
 from .processor import process
 from .common import program_version
@@ -18,7 +19,7 @@ supported_file = ".gz .sdf .rdf .mol .rxn .txt .cml .mrv .xml .smi"
 
 
 def mol2chemfig(
-    content: Any,
+    content: Union[int, str, Path],
     *args: str,
     rotate: float = 0.0,
     aromatic: bool = True,
