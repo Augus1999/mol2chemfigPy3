@@ -6,7 +6,7 @@ this code will only make sense to you if you are familiar with
 the TeX syntax defined by the chemfig package.
 """
 import textwrap
-from typing import Union, Optional, List, Tuple, Dict
+from typing import Union, Optional, List, Tuple, Dict, Any
 
 BOND_CODE_WIDTH = 50  # space for bonds - generous upfront, will be trimmed at the end
 TERSE_LINE_WIDTH = 75  # in terse code format, force linebreaks
@@ -158,7 +158,7 @@ def format_angle(
     return prefix + str(angle % 360)
 
 
-def specifier_default(val: any, default: any) -> str:
+def specifier_default(val: Any, default: Any) -> str:
     """
     set bond specifier default values to ""
 
@@ -539,3 +539,7 @@ def format_output(options: Dict, output_list: List[str]) -> str:
         joiner = "\n"
 
     return joiner.join(output_list)
+
+
+if __name__ == "__main__":
+    ...

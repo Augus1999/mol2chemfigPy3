@@ -53,7 +53,7 @@ class Option:
 
         self.help_text = help_text
 
-    def _default(self) -> None:
+    def _default(self) -> Any:
         """
         give the default value, i.e., None
 
@@ -361,7 +361,7 @@ class OptionParser:
         self._options_by_name = {}
         self._options_by_key = {}
 
-    def append(self, option: any) -> None:
+    def append(self, option: Any) -> None:
         """
         add option
 
@@ -400,7 +400,7 @@ class OptionParser:
 
         return option_dict
 
-    def process_form_fields(self, fields: any) -> Tuple[Dict, List]:
+    def process_form_fields(self, fields: Any) -> Tuple[Dict, List]:
         """
         process options received through the web form.
         we don't look at the cargo data here at all.
@@ -500,3 +500,7 @@ class OptionParser:
         :return: [tag_1, tag_2,...]
         """
         return [opt.format_tag() for opt in self._options]
+
+
+if __name__ == "__main__":
+    ...

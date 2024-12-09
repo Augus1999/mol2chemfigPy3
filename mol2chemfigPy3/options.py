@@ -300,7 +300,7 @@ def getParser() -> OptionParser:
         Specify bonds that should be drawn on top of others they cross over.
         Give the start and the end atoms.
         Example for one bond: --cross-bond=5-6
-        Example for two bonds: --crossbond=4-8,12-13
+        Example for two bonds: --cross-bond=4-8,12-13
         """,
         )
     )

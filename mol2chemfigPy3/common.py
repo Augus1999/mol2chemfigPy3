@@ -2,9 +2,10 @@
 """
 common settings and a bit of infrastructure
 """
+from typing import Any
 from .options import getParser
 
-program_version = "1.5.10"
+program_version = "1.5.11"
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = (
@@ -78,7 +79,7 @@ class MCFError(Exception):
     this flags an anticipated error due to faulty user input.
     """
 
-    def __init__(self, text: any):
+    def __init__(self, text: Any):
         self.text = str(text)
 
     def __str__(self):
@@ -100,7 +101,7 @@ class Counter:
 
             self._d[val] += 1
 
-    def most_common(self) -> any:
+    def most_common(self) -> Any:
         """
         return the most common object
 
