@@ -1,15 +1,4 @@
-# mol2chemfigPy3
-
-[![PyPI](https://img.shields.io/pypi/v/mol2chemfigPy3?color=ff69b4)](https://pypi.org/project/mol2chemfigPy3/)
-[![Downloads](https://static.pepy.tech/personalized-badge/mol2chemfigpy3?period=total&units=international_system&left_color=black&right_color=green&left_text=Downloads)](https://pepy.tech/project/mol2chemfigpy3)
-![OS](https://img.shields.io/badge/OS-Win%20|%20Linux%20|%20macOS-blue?color=00B16A)
-![python](https://img.shields.io/badge/Python->3.8%20-blue.svg?color=dd9b65)
-![black](https://img.shields.io/badge/code%20style-black-black)
-![pytest](https://github.com/Augus1999/mol2chemfigPy3/actions/workflows/pytest.yml/badge.svg)
-
-This is NOT an official version of mol2chemfig for python 3.
-
-mol2chemfigPy3 is a translation from py2 to py3 based on
+`mol2chemfigPy3` is a translation from py2 to py3 based on
 old [mol2chemfig](http://chimpsky.uwaterloo.ca/mol2chemfig/download) version 1.5.
 
 ## Install
@@ -106,3 +95,6 @@ The website seems down, so here is a mirror [mol2chemfig Documentation Version 1
 
 MIT license
 
+## We stand with Ukraine
+
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
