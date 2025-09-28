@@ -4,13 +4,7 @@
 package main
 """
 import sys
-
-try:
-    from pip._vendor import colorama
-
-    colour = True
-except ImportError:
-    colour = False
+import colorama
 from .processor import process
 
 
@@ -21,12 +15,10 @@ def main(program_name: str = sys.argv[0]) -> None:
     :param program_name: program name
     :return: None
     """
-    if colour:
-        colorama.init()
+    colorama.just_fix_windows_console()
     success, result = process(raw_args=sys.argv[1:], program_name=program_name)
     if success:
         print(result.render_user())
     else:
         print(result)
-    if colour:
-        colorama.deinit()
+    colorama.deinit()

@@ -357,11 +357,11 @@ class OptionParser:
     """
 
     def __init__(self) -> None:
-        self._options = []
-        self._options_by_name = {}
-        self._options_by_key = {}
+        self._options: List[Option] = []
+        self._options_by_name: Dict[str, Option] = {}
+        self._options_by_key: Dict[str, Option] = {}
 
-    def append(self, option: Any) -> None:
+    def append(self, option: Option) -> None:
         """
         add option
 
@@ -400,7 +400,7 @@ class OptionParser:
 
         return option_dict
 
-    def process_form_fields(self, fields: Any) -> Tuple[Dict, List]:
+    def process_form_fields(self, fields: Dict) -> Tuple[Dict, List]:
         """
         process options received through the web form.
         we don't look at the cargo data here at all.
@@ -413,7 +413,7 @@ class OptionParser:
         """
         warnings = []
 
-        for key, value in list(fields.items()):
+        for key, value in fields.items():
             option = self._options_by_key[key]
             if not option.validate_form_value(value):
                 msg = f"Invalid value {value} for option {option.form_text} ignored"
