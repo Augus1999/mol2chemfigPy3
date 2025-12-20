@@ -35,7 +35,7 @@ setup(
     author_email="tao-nianze@hiroshima-u.ac.jp",
     packages=find_packages(),
     python_requires=">=3.7",
-    install_requires=["epam.indigo", "colorama>=0.4.6"],
+    install_requires=["epam.indigo", "colorama;platform_system=='Windows'"],
     project_urls={"Source": "https://github.com/Augus1999/mol2chemfigPy3"},
     classifiers=[
         "Development Status :: 5 - Production/Stable",

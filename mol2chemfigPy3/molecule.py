@@ -145,7 +145,7 @@ class Molecule:
         :return: fragments
         """
 
-        def split_pairs(pair_list: List) -> Tuple[List, List]:
+        def split_pairs(pair_list: List) -> Optional[Tuple[List, List]]:
             """
             break up pair_list into one list that contains all pairs
             that are connected, directly or indirectly, to the first
@@ -330,7 +330,7 @@ class Molecule:
 
         return entry_atom, exit_atom
 
-    def parseAtoms(self) -> Dict:
+    def parseAtoms(self) -> Dict[int, Atom]:
         """
         Read some attributes from the toolkit atom object
 
@@ -371,7 +371,7 @@ class Molecule:
 
         return wrapped_atoms
 
-    def parseBonds(self) -> Tuple[Dict, List]:
+    def parseBonds(self) -> Tuple[Dict[Tuple[int, int], Bond], List]:
         """
         read some bond attributes
 

@@ -4,8 +4,10 @@
 package main
 """
 import sys
-import colorama
+import platform
 from .processor import process
+
+_system = platform.system()
 
 
 def main(program_name: str = sys.argv[0]) -> None:
@@ -15,10 +17,17 @@ def main(program_name: str = sys.argv[0]) -> None:
     :param program_name: program name
     :return: None
     """
-    colorama.just_fix_windows_console()
+    if _system == "Windows":
+        import colorama
+
+        if hasattr(colorama, "just_fix_windows_console"):
+            colorama.just_fix_windows_console()
+        elif hasattr(colorama, "init"):
+            colorama.init()
     success, result = process(raw_args=sys.argv[1:], program_name=program_name)
     if success:
         print(result.render_user())
     else:
         print(result)
-    colorama.deinit()
+    if _system == "Windows":
+        colorama.deinit()

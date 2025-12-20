@@ -1,2 +1,2 @@
 epam.indigo
-colorama>=0.4.6
+colorama;platform_system=="Windows"

@@ -554,7 +554,7 @@ class DummyFirstBond(Bond):
     the molecule class.
     """
 
-    def __init__(self, options: dict, end_atom: Atom):
+    def __init__(self, options: Dict, end_atom: Atom):
         self.options = options
         self.end_atom = end_atom
         self.angle = None
