@@ -10,7 +10,7 @@
 
 * [Static callgraph](./section/4_callgraph.html)
 
-* [Background stroy](./section/5_background_story.md)
+* [Background story](./section/5_background_story.md)
 
 * <a href="https://raw.githubusercontent.com/Augus1999/mol2chemfigPy3/refs/heads/main/LICENSE" target="_blank">License</a>
 
