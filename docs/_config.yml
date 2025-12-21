@@ -1,6 +1,6 @@
-remote_theme: pages-themes/modernist@v0.2.0
+remote_theme: pages-themes/primer@v0.6.0
 plugins:
 - jekyll-remote-theme
-title: "mol2chemfigPy3"
-description: "A Python 3 version of mol2chemfig package"
-show_downloads: true
+title: "mol2chemfigPy3: A Python 3 version of mol2chemfig package"
+description: "Project page"
+show_downloads: false

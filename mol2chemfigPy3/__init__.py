@@ -31,12 +31,12 @@ def mol2chemfig(
     inline: bool = False,
 ) -> Optional[str]:
     """
-    wrapper of mol2chemfigPy3.process(.)
+    A wrapper of `~mol2chemfigPy3.process(...)`
 
-    :param content: chemical file name, InChem, SMILES, or Pubchem index
+    :param content: chemical file name, InChI, SMILES, or PubChem index
     :param rotate: rotation angle
     :param aromatic: whether drawing circle(s) in aromatic ring(s)
-    :param marker: mark atoms, e.g., with value 'a', atom 2 will be labeled @{a2}
+    :param marker: mark atoms, e.g., with value 'a', atom 2 will be labeled as @{a2}
     :param name: name of the molecule
     :param relative_angle: whether using relative bond angles
     :param show_carbon: whether show carbon symbol
