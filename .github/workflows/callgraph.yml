@@ -9,7 +9,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write
+  contents: read
   issues: none
 
 jobs:
@@ -33,3 +33,29 @@ jobs:
     - name: Build static call-graph
       run: |
         python docs/build_callgraph.py
+    - name: Check for Changes
+      id: check_changes
+      run: |
+        if [[ -n "$(git diff --exit-code)" ]]; then
+          echo "Changes detected."
+          echo "::set-output name=has_changes::true"
+        else
+          echo "No changes detected."
+          echo "::set-output name=has_changes::false"
+        fi
+    - name: Push to repository
+      if: steps.check_changes.outputs.has_changes == 'true'
+      run: |
+        # configure user
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+        # stage any file changes to be committed
+        git add .
+
+        # make commit with staged changes
+        git commit -m 'files changed'
+
+        # push the commit back up to source GitHub repository
+        git push
+        
