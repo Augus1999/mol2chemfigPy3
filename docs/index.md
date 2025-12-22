@@ -8,7 +8,7 @@
 
 * [Python API](./section//3_python_api.md)
 
-* [Static callgraph](./section/4_callgraph.html)
+* [Static callgraph](./section/4_callgraph.svg)
 
 * [Background story](./section/5_background_story.md)
 
