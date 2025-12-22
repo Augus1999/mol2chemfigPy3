@@ -30,4 +30,4 @@ jobs:
         python -m pip install git+https://github.com/Technologicat/pyan.git
     - name: Build static call-graph
       run: |
-        python doc/build_callgraph.py
+        python ../doc/build_callgraph.py
