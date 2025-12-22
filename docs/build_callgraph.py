@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# Author: Nianze A. TAO (Omozawa SUENO)
+"""
+Build static call-graph.
+"""
 import platform
 from glob import glob
 from pathlib import Path
