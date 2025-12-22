@@ -27,7 +27,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        sudo apt update
         python -m pip install git+https://github.com/Technologicat/pyan.git
+        sudo apt install graphviz
     - name: Build static call-graph
       run: |
         python docs/build_callgraph.py
