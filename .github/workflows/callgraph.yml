@@ -38,10 +38,10 @@ jobs:
       run: |
         if [[ -n "$(git diff --exit-code)" ]]; then
           echo "Changes detected."
-          echo "::set-output name=has_changes::true"
+          echo "has_changes=true" >> $GITHUB_OUTPUT
         else
           echo "No changes detected."
-          echo "::set-output name=has_changes::false"
+          echo "has_changes=false" >> $GITHUB_OUTPUT
         fi
     - name: Push to repository
       if: steps.check_changes.outputs.has_changes == 'true'
