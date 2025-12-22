@@ -44,19 +44,11 @@ jobs:
           echo "::set-output name=has_changes::false"
         fi
     - name: Push to repository
+    - uses: planetscale/ghcommit-action@v0.2.18
       if: steps.check_changes.outputs.has_changes == 'true'
-      run: |
-        # configure user
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-        git config --global commit.gpgsign true
-
-        # stage any file changes to be committed
-        git add .
-
-        # make commit with staged changes
-        git commit -m 'files changed'
-
-        # push the commit back up to source GitHub repository
-        git push
-        
+      with:
+          commit_message: "auto commit"
+          repo: ${{ github.repository }}
+          branch: ${{ github.head_ref || github.ref_name }}
+      env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
