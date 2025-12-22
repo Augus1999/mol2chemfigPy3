@@ -53,7 +53,7 @@ jobs:
         git add .
 
         # make commit with staged changes
-        git commit -m 'files changed'
+        git commit -m 'Updated call-graph'
 
         # push the commit back up to source GitHub repository
         git push
