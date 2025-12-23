@@ -5,10 +5,10 @@ name: callgraph
 on:
   push:
     branches: [ "main" ]
-    paths: [ "**/*.py" ]
+    paths: [ "mol2chemfigPy3/*.py", "docs/*.py" ]
   pull_request:
     branches: [ "main" ]
-    paths: [ "**/*.py" ]
+    paths: [ "mol2chemfigPy3/*.py", "docs/*.py" ]
 
 permissions:
   contents: write
