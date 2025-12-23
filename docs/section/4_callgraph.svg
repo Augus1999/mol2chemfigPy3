@@ -1211,7 +1211,7 @@
 <text text-anchor="middle" x="10135" y="-2956.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/molecule.py:337)</text>
 </g>
 <!-- mol2chemfigPy3__molecule__Molecule&#45;&gt;mol2chemfigPy3__molecule__Molecule__parseAtoms -->
-<g id="edge76" class="edge">
+<g id="edge77" class="edge">
 <title>mol2chemfigPy3__molecule__Molecule&#45;&gt;mol2chemfigPy3__molecule__Molecule__parseAtoms</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M3392.45,-3170.78C3479.17,-3217.01 3667.97,-3310.22 3840.49,-3345 4465.25,-3470.96 4637.03,-3364 5274.37,-3364 5274.37,-3364 5274.37,-3364 8159.06,-3364 8483.62,-3364 9308.87,-3398.35 9618.17,-3300 9818.83,-3236.2 10017.22,-3072.92 10097.16,-3001.88"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="10099.85,-3004.16 10104.97,-2994.89 10095.19,-2998.95 10099.85,-3004.16"/>
@@ -1302,7 +1302,7 @@
 <text text-anchor="middle" x="4310.94" y="-3046.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/molecule.py:644)</text>
 </g>
 <!-- mol2chemfigPy3__molecule__Molecule&#45;&gt;mol2chemfigPy3__molecule__Molecule__render_user -->
-<g id="edge77" class="edge">
+<g id="edge76" class="edge">
 <title>mol2chemfigPy3__molecule__Molecule&#45;&gt;mol2chemfigPy3__molecule__Molecule__render_user</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M3543.69,-3119.83C3634.21,-3109.4 3742.65,-3097.64 3840.49,-3089 3885.12,-3085.06 3932.17,-3081.38 3978.57,-3078.04"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="3979.04,-3081.51 3988.77,-3077.31 3978.54,-3074.53 3979.04,-3081.51"/>
@@ -1826,7 +1826,7 @@
 <text text-anchor="middle" x="12130.33" y="-127.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:222)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__BoolOption&#45;&gt;mol2chemfigPy3__optionparser__BoolOption__format_tag_value -->
-<g id="edge49" class="edge">
+<g id="edge47" class="edge">
 <title>mol2chemfigPy3__optionparser__BoolOption&#45;&gt;mol2chemfigPy3__optionparser__BoolOption__format_tag_value</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M11192.75,-328.19C11285.95,-287.27 11473.75,-210.25 11641.5,-175 11675.68,-167.82 11711.48,-162.01 11747.48,-157.33"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="11748.16,-160.77 11757.64,-156.04 11747.28,-153.82 11748.16,-160.77"/>
@@ -1839,7 +1839,7 @@
 <text text-anchor="middle" x="12130.33" y="-55.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:216)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__BoolOption&#45;&gt;mol2chemfigPy3__optionparser__BoolOption__long_getopt -->
-<g id="edge48" class="edge">
+<g id="edge49" class="edge">
 <title>mol2chemfigPy3__optionparser__BoolOption&#45;&gt;mol2chemfigPy3__optionparser__BoolOption__long_getopt</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M11173.93,-328.15C11257.11,-274.28 11455.67,-153.86 11641.5,-103 11669.19,-95.42 11698.07,-89.22 11727.35,-84.16"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="11728.01,-87.59 11737.29,-82.48 11726.85,-80.69 11728.01,-87.59"/>
@@ -1878,7 +1878,7 @@
 <text text-anchor="middle" x="12130.33" y="-271.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:198)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__BoolOption&#45;&gt;mol2chemfigPy3__optionparser__BoolOption__validate_form_value -->
-<g id="edge47" class="edge">
+<g id="edge48" class="edge">
 <title>mol2chemfigPy3__optionparser__BoolOption&#45;&gt;mol2chemfigPy3__optionparser__BoolOption__validate_form_value</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M11427.35,-333.76C11552.58,-324.71 11698.66,-314.14 11825.04,-305"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="11825.54,-308.48 11835.26,-304.27 11825.03,-301.5 11825.54,-308.48"/>
@@ -2081,7 +2081,7 @@
 <text text-anchor="middle" x="12130.33" y="-1208.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:360)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser____init__ -->
-<g id="edge62" class="edge">
+<g id="edge61" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser____init__</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9327.29,-1282.69C9422.72,-1294.08 9540.4,-1306.5 9646.17,-1313 9864.36,-1326.41 11396.06,-1350.52 11613.5,-1328 11757.21,-1313.12 11919.89,-1275.5 12023.46,-1248.86"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="12024.49,-1252.21 12033.3,-1246.32 12022.74,-1245.44 12024.49,-1252.21"/>
@@ -2094,7 +2094,7 @@
 <text text-anchor="middle" x="11132.67" y="-1280.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:365)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__append -->
-<g id="edge59" class="edge">
+<g id="edge66" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__append</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9359.28,-1281.86C9448.29,-1290.35 9552,-1298.84 9646.17,-1303 10006.82,-1318.95 10417.18,-1314.17 10715.08,-1306.56"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="10715.28,-1310.05 10725.18,-1306.3 10715.1,-1303.06 10715.28,-1310.05"/>
@@ -2107,7 +2107,7 @@
 <text text-anchor="middle" x="11132.67" y="-1208.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:501)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__form_tags -->
-<g id="edge67" class="edge">
+<g id="edge63" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__form_tags</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9477.32,-1277.01C9533.69,-1279.5 9591.57,-1281.66 9646.17,-1283 9753.88,-1285.65 10513.62,-1317.07 10615.84,-1283 10634.81,-1276.68 10633.11,-1263.03 10651.84,-1256 10671.93,-1248.46 10692.82,-1242.06 10714.15,-1236.67"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="10715.1,-1240.04 10723.98,-1234.26 10713.43,-1233.24 10715.1,-1240.04"/>
@@ -2120,7 +2120,7 @@
 <text text-anchor="middle" x="11132.67" y="-1064.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:459)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_for_getopt -->
-<g id="edge63" class="edge">
+<g id="edge60" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_for_getopt</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9617.08,-1259.89C10040.97,-1260.54 10595.83,-1258.41 10615.84,-1243 10663.67,-1206.15 10605.22,-1150.38 10651.84,-1112 10748.68,-1032.28 10897,-1033.69 11003.09,-1048.49"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="11002.82,-1051.99 11013.22,-1049.96 11003.82,-1045.06 11002.82,-1051.99"/>
@@ -2133,7 +2133,7 @@
 <text text-anchor="middle" x="10135" y="-946.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:468)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_for_lua -->
-<g id="edge66" class="edge">
+<g id="edge62" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_for_lua</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9176.51,-1231.12C9258.13,-1175.29 9457.61,-1047.51 9646.17,-994 9672.94,-986.4 9700.84,-980.16 9729.15,-975.05"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="9729.94,-978.47 9739.19,-973.29 9728.73,-971.57 9729.94,-978.47"/>
@@ -2146,7 +2146,7 @@
 <text text-anchor="middle" x="10135" y="-1162.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:480)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_help -->
-<g id="edge61" class="edge">
+<g id="edge65" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_help</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9350.65,-1233.9C9441.58,-1224.09 9549,-1213.15 9646.17,-1205 9692.95,-1201.07 9742.29,-1197.4 9790.89,-1194.05"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="9791.19,-1197.53 9800.93,-1193.36 9790.71,-1190.55 9791.19,-1197.53"/>
@@ -2159,7 +2159,7 @@
 <text text-anchor="middle" x="11132.67" y="-992.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:391)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__option_values -->
-<g id="edge58" class="edge">
+<g id="edge67" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__option_values</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9559.54,-1245.1C9588.85,-1244.35 9617.95,-1243.63 9646.17,-1243 9673.1,-1242.39 10595.21,-1245.32 10615.84,-1228 10680.98,-1173.29 10588.34,-1096.62 10651.84,-1040 10661.24,-1031.61 10675.09,-1024.71 10692.2,-1019.04"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="10693.51,-1022.3 10702.04,-1016.02 10691.46,-1015.61 10693.51,-1022.3"/>
@@ -2172,7 +2172,7 @@
 <text text-anchor="middle" x="10135" y="-1090.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:427)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__process_cli -->
-<g id="edge64" class="edge">
+<g id="edge59" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__process_cli</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9230.6,-1231.54C9331.7,-1203.64 9499.11,-1160.66 9646.17,-1138 9688.79,-1131.43 9733.71,-1126.06 9778.32,-1121.65"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="9778.82,-1125.12 9788.43,-1120.67 9778.14,-1118.15 9778.82,-1125.12"/>
@@ -2185,7 +2185,7 @@
 <text text-anchor="middle" x="10135" y="-1018.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:404)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__process_form_fields -->
-<g id="edge60" class="edge">
+<g id="edge64" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__process_form_fields</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9193.08,-1231.27C9284.47,-1188.05 9474.99,-1103.84 9646.17,-1066 9679,-1058.74 9713.34,-1052.87 9747.95,-1048.12"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="9748.75,-1051.55 9758.2,-1046.75 9747.83,-1044.61 9748.75,-1051.55"/>
@@ -2198,7 +2198,7 @@
 <text text-anchor="middle" x="11132.67" y="-1136.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:383)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__validKeys -->
-<g id="edge65" class="edge">
+<g id="edge58" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__validKeys</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M9610.72,-1262.81C9622.65,-1262.88 9634.49,-1262.94 9646.17,-1263 9700.04,-1263.27 10570.53,-1292.14 10615.84,-1263 10648.29,-1242.13 10620.19,-1206.07 10651.84,-1184 10745.08,-1118.96 10874.79,-1112.9 10975.85,-1121.49"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="10975.57,-1124.98 10985.84,-1122.39 10976.2,-1118.01 10975.57,-1124.98"/>
@@ -2250,7 +2250,7 @@
 <text text-anchor="middle" x="12130.33" y="-845.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:240)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__SelectOption&#45;&gt;mol2chemfigPy3__optionparser__SelectOption___default -->
-<g id="edge53" class="edge">
+<g id="edge54" class="edge">
 <title>mol2chemfigPy3__optionparser__SelectOption&#45;&gt;mol2chemfigPy3__optionparser__SelectOption___default</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M11427.35,-806.24C11552.58,-815.29 11698.66,-825.86 11825.04,-835"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="11825.03,-838.5 11835.26,-835.73 11825.54,-831.52 11825.03,-838.5"/>
@@ -2276,7 +2276,7 @@
 <text text-anchor="middle" x="12130.33" y="-701.8" font-family="Times,serif" font-size="14.00" fill="#000000">(mol2chemfigPy3/optionparser.py:260)</text>
 </g>
 <!-- mol2chemfigPy3__optionparser__SelectOption&#45;&gt;mol2chemfigPy3__optionparser__SelectOption__format_tag -->
-<g id="edge54" class="edge">
+<g id="edge53" class="edge">
 <title>mol2chemfigPy3__optionparser__SelectOption&#45;&gt;mol2chemfigPy3__optionparser__SelectOption__format_tag</title>
 <path fill="none" stroke="#838b8b" stroke-dasharray="5,2" d="M11427.35,-763.76C11552.58,-754.71 11698.66,-744.14 11825.04,-735"/>
 <polygon fill="#838b8b" stroke="#838b8b" points="11825.54,-738.48 11835.26,-734.27 11825.03,-731.5 11825.54,-738.48"/>
@@ -2398,19 +2398,19 @@
 <polygon fill="#000000" stroke="#000000" points="10317.1,-1209.23 10319.52,-1198.92 10311.19,-1205.47 10317.1,-1209.23"/>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser__process_cli&#45;&gt;mol2chemfigPy3__optionparser__OptionError -->
-<g id="edge195" class="edge">
+<g id="edge196" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser__process_cli&#45;&gt;mol2chemfigPy3__optionparser__OptionError</title>
 <path fill="none" stroke="#000000" d="M10568.72,-1090.23C10589.15,-1083.95 10605.45,-1075.99 10615.84,-1066 10718,-967.67 10549.71,-847.37 10651.84,-749 10810.68,-595.99 11421.1,-682.34 11641.5,-674 11695.78,-671.95 12578.33,-638.19 12619.17,-674 12670.39,-718.93 12589.3,-779.56 12639.17,-826 12749.32,-928.59 12936.31,-910.52 13053,-885.56"/>
 <polygon fill="#000000" stroke="#000000" points="13054,-888.92 13063.02,-883.36 13052.5,-882.08 13054,-888.92"/>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser__process_cli&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_for_getopt -->
-<g id="edge196" class="edge">
+<g id="edge194" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser__process_cli&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__format_for_getopt</title>
 <path fill="none" stroke="#000000" d="M10570.91,-1090.64C10609.23,-1089.64 10648.06,-1088.63 10686.46,-1087.63"/>
 <polygon fill="#000000" stroke="#000000" points="10686.84,-1091.12 10696.75,-1087.36 10686.66,-1084.12 10686.84,-1091.12"/>
 </g>
 <!-- mol2chemfigPy3__optionparser__OptionParser__process_cli&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__option_values -->
-<g id="edge194" class="edge">
+<g id="edge195" class="edge">
 <title>mol2chemfigPy3__optionparser__OptionParser__process_cli&#45;&gt;mol2chemfigPy3__optionparser__OptionParser__option_values</title>
 <path fill="none" stroke="#000000" d="M10541.94,-1087.61C10567.27,-1081.79 10592.1,-1074.67 10615.84,-1066 10634.37,-1059.23 10633.3,-1046.77 10651.84,-1040 10672.51,-1032.45 10694.02,-1026.07 10715.96,-1020.7"/>
 <polygon fill="#000000" stroke="#000000" points="10716.8,-1024.1 10725.73,-1018.39 10715.19,-1017.29 10716.8,-1024.1"/>
