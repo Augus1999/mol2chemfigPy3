@@ -17,6 +17,10 @@ This is not included in the original mol2chemfig.
 > > * __show\_carbon__ - whether to show carbon symbols
 > > * __show\_methyl__ - whether to show methyl symbols
 > > * __inline__ - inline mode: if `True` return the result else print the result
+> >
+> > Returns
+> >
+> > * LATEX `chemfig` code or error message if `inline=True` else `None`
 
 ### 1. basic usage
 
