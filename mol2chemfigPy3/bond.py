@@ -2,7 +2,7 @@
 """
 My name is Bond. JAMES Bond.
 """
-from typing import Optional, Union, Tuple, Dict
+from typing import Optional, Union, Tuple, Dict, Any
 from copy import deepcopy, copy
 from math import atan, tan, pi
 from indigo import Indigo
@@ -98,12 +98,12 @@ class Bond:
 
     def __init__(
         self,
-        options: Dict,
+        options: Dict[str, Any],
         start_atom: Atom,
         end_atom: Atom,
         bond_type: Optional[str] = None,
         stereo: int = 0,
-    ):
+    ) -> None:
 
         self.options = options
         self.start_atom = start_atom
@@ -181,7 +181,7 @@ class Bond:
         else:
             self.clockwise = -1
 
-    def clone(self):
+    def clone(self) -> "Bond":
         """
         deepcopy but keep original atoms
 
@@ -190,7 +190,7 @@ class Bond:
         c = copy(self)
         return c
 
-    def invert(self):
+    def invert(self) -> "Bond":
         """
         draw a bond backwards.
 
@@ -266,7 +266,7 @@ class Bond:
 
         return int(round(angles[0])), int(round(angles[-1]))
 
-    def upstream_angles(self) -> Dict:
+    def upstream_angles(self) -> Dict[str, Optional[int]]:
         """
         determine the narrowest upstream left and upstream right angle.
 
@@ -280,7 +280,7 @@ class Bond:
 
         return dict(left=first, right=last)
 
-    def downstream_angles(self) -> Dict:
+    def downstream_angles(self) -> Dict[str, Optional[int]]:
         """
         determine the narrowest downstream left and downstream right angle.
 
@@ -517,7 +517,7 @@ class Bond:
         :param comment_code: comment code
         :return: indent space + bond code + atom code
         """
-        stuff = (
+        stuff: str = (
             " " * self.options["indent"] * level
             + bond_code.rjust(cfm.BOND_CODE_WIDTH)
             + atom_code
@@ -554,7 +554,7 @@ class DummyFirstBond(Bond):
     the molecule class.
     """
 
-    def __init__(self, options: Dict, end_atom: Atom):
+    def __init__(self, options: Dict[str, Any], end_atom: Atom) -> None:
         self.options = options
         self.end_atom = end_atom
         self.angle = None
@@ -581,12 +581,12 @@ class AromaticRingBond(Bond):
 
     def __init__(
         self,
-        options: Dict,
+        options: Dict[str, Any],
         parent: Optional[Bond],
         angle: Union[int, float],
         length: Union[int, float],
         inner_r: Union[int, float],
-    ):
+    ) -> None:
         self.options = options
         self.angle = cfm.num_round(angle, 1) % 360
         if parent is not None:

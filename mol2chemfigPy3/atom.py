@@ -3,7 +3,7 @@
 define Atom object
 """
 import string
-from typing import Optional, Union, Dict, List, Tuple
+from typing import Optional, Union, Dict, List, Tuple, Any
 from . import chemfig_mappings as cfm
 
 # some atoms should carry their hydrogen to the left, rather than
@@ -43,7 +43,7 @@ class Atom:
 
     def __init__(
         self,
-        options: Dict,
+        options: Dict[str, Any],
         idx: int,
         x: Union[int, float],
         y: Union[int, float],
@@ -52,7 +52,7 @@ class Atom:
         charge: int,
         radical: int,
         neighbors: List[int],
-    ):
+    ) -> None:
         self.options = options
         self.idx = idx
         self.x = x
@@ -91,7 +91,9 @@ class Atom:
         angle = min(diff, 360 - diff)
         return (max(0, turf - angle)) ** 2
 
-    def _score_angles(self, choices: List[List], turf: int) -> List[str]:
+    def _score_angles(
+        self, choices: List[List[Union[int, str]]], turf: int
+    ) -> List[str]:
         """
         backend for score_angles
 

@@ -12,10 +12,10 @@ from . import common, options, molecule
 
 
 class HelpError(common.MCFError):
-    def __init__(self, text: Any):
+    def __init__(self, text: Any) -> None:
         self.text = str(text)  # convert error messages to string
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
 
@@ -26,13 +26,13 @@ class Processor:
 
     def __init__(
         self,
-        raw_args: Union[List, str, None],
+        raw_args: Union[List[str], str, None],
         data: Optional[str],
-        form_fields: Optional[Dict],
+        form_fields: Optional[Dict[str, Any]],
         program_name: str,
         web_form: bool,
         rpc: bool,
-    ):
+    ) -> None:
         self.raw_args = raw_args
         self.data = data
         self.form_fields = form_fields
@@ -85,7 +85,10 @@ class Processor:
             parsed_options, data_list = self.option_parser.process_cli(self.raw_args)
         except Exception as msg:
             if str(msg).endswith("not recognized"):  # get opt error
-                msg = f"{str(msg)}. Try {self.program_name} --help to see a list of available options."
+                msg = (
+                    f"{str(msg)}. Try {self.program_name} "
+                    "--help to see a list of available options."
+                )
             raise HelpError(msg)
 
         # if we get here, we have parsed options and a possibly empty data list
@@ -95,7 +98,7 @@ class Processor:
         # which we treat like an error
         if self.options["help"]:
             raise HelpError(self.help_text())
-        elif self.options["version"]:
+        if self.options["version"]:
             raise HelpError(self.version_text())
 
         if self.data is not None:
@@ -201,9 +204,9 @@ class Processor:
 
 
 def process(
-    raw_args: Union[List, str, None] = None,
+    raw_args: Union[List[str], str, None] = None,
     data: Optional[str] = None,
-    form_fields: Optional[Dict] = None,
+    form_fields: Optional[Dict[str, Any]] = None,
     program_name: str = "mol2chemfigPy3",
     web_form: bool = False,
     rpc: bool = False,

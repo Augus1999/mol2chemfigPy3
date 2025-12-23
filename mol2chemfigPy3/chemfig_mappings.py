@@ -6,7 +6,7 @@ this code will only make sense to you if you are familiar with
 the TeX syntax defined by the chemfig package.
 """
 import textwrap
-from typing import Union, Optional, List, Tuple, Dict, Any
+from typing import Union, Optional, List, Tuple, Dict, Any, Set
 
 BOND_CODE_WIDTH = 50  # space for bonds - generous upfront, will be trimmed at the end
 TERSE_LINE_WIDTH = 75  # in terse code format, force linebreaks
@@ -137,7 +137,9 @@ atom_templates = dict(
 
 
 def format_angle(
-    options: Dict, angle: Union[int, float], parent_angle: Union[int, float, None]
+    options: Dict[str, Any],
+    angle: Union[int, float],
+    parent_angle: Union[int, float, None],
 ) -> str:
     """
     format prefix and number for bond angle
@@ -175,7 +177,7 @@ def specifier_default(val: Any, default: Any) -> str:
 
 
 def format_bond(
-    options: Dict,
+    options: Dict[str, Any],
     angle: Union[int, float, None],
     parent_angle: Union[int, float, None],
     bond_type: str,
@@ -184,8 +186,8 @@ def format_bond(
     length: Union[int, float],
     departure: str,
     arrival: str,
-    tikz_styles: Union[set, Dict],
-    tikz_values: Union[set, Dict],
+    tikz_styles: Set[str],
+    tikz_values: Dict[str, int],
     marker: str,
 ) -> str:
     """
@@ -263,8 +265,11 @@ def format_bond(
 
 
 def fill_atom(
-    keys: Tuple[str, str, str], data: Dict, phantom: str, phantom_pos: int = 0
-) -> tuple:
+    keys: Tuple[str, str, str],
+    data: Dict[str, Union[str, int]],
+    phantom: str,
+    phantom_pos: int = 0,
+) -> Tuple[str, int, str, int]:
     """
     helper for finalizing atom code. phantom_pos is the
     target position of a bond attaching to a phantom;
@@ -300,7 +305,7 @@ def format_marker(marker: Optional[str]) -> Optional[str]:
 
 
 def format_atom(
-    options: Dict,
+    options: Dict[str, Any],
     idx: int,
     element: str,
     hydrogens: Optional[int],
@@ -309,7 +314,7 @@ def format_atom(
     first_quadrant: str,
     second_quadrant: str,
     charge_angle: Optional[str],
-) -> Tuple:
+) -> Tuple[str, int, str, int]:
     """
     render an atom with hydrogens and charges. Return
     - the chemfig code of the rendered atom
@@ -418,7 +423,7 @@ def format_atom(
     return fill_atom(keys, data, element_phantom)
 
 
-def format_atom_comment(options: Dict, idx: int) -> str:
+def format_atom_comment(options: Dict[str, Any], idx: int) -> str:
     """
     render an optional end-of-line comment after a regular atom
 
@@ -431,7 +436,7 @@ def format_atom_comment(options: Dict, idx: int) -> str:
     return str(idx)
 
 
-def format_closure_comment(options: Dict, idx: int) -> str:
+def format_closure_comment(options: Dict[str, Any], idx: int) -> str:
     """
     render an optional end of line comment after a ring-closing bond
 
@@ -445,7 +450,7 @@ def format_closure_comment(options: Dict, idx: int) -> str:
 
 
 def format_aromatic_ring(
-    options: Dict,
+    options: Dict[str, Any],
     angle: Union[int, float],
     parent_angle: Union[int, float, None],
     length: Union[int, float],
@@ -506,7 +511,7 @@ def strip_output(output_list: List[str]) -> List[str]:
     return chunked
 
 
-def format_output(options: Dict, output_list: List[str]) -> str:
+def format_output(options: Dict[str, Any], output_list: List[str]) -> str:
     """
     optionally wrap the translated output into a command,
     to ease inclusion in LaTeX documents with \\input

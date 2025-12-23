@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # parse a molfile molecule and render to chemfig code
 import math
-from typing import Optional, Union, Tuple, List, Dict
+from typing import Optional, Union, Tuple, List, Dict, Any
 from indigo import IndigoException, IndigoObject
 from . import chemfig_mappings as cfm
 from .common import MCFError, Counter
@@ -13,7 +13,7 @@ class Molecule:
     bond_scale = 1.0  # can be overridden by user option
     exit_bond = None  # the first bond in the tree that connects to the exit atom
 
-    def __init__(self, options: Dict, tkmol: IndigoObject):
+    def __init__(self, options: Dict[str, Any], tkmol: IndigoObject) -> None:
         self.options = options
         self.tkmol = tkmol
 
@@ -137,7 +137,7 @@ class Molecule:
             for atom in un_bonded:
                 self.link_atoms(anchor, atom)
 
-    def molecule_fragments(self) -> List:
+    def molecule_fragments(self) -> List[List[Tuple[int, int]]]:
         """
         identify unconnected fragments in the molecule.
         used by connect_fragments
@@ -145,7 +145,9 @@ class Molecule:
         :return: fragments
         """
 
-        def split_pairs(pair_list: List) -> Optional[Tuple[List, List]]:
+        def split_pairs(
+            pair_list: List[Tuple[int, int]],
+        ) -> Tuple[List[Tuple[int, int]], List[Tuple[int, int]]]:
             """
             break up pair_list into one list that contains all pairs
             that are connected, directly or indirectly, to the first
@@ -172,8 +174,7 @@ class Molecule:
                     _rest
                 ):  # no new pairs found in this loop iteration
                     return connected_pairs, unconnected
-                else:
-                    _rest = unconnected
+                _rest = unconnected
 
         fragments = []
 
@@ -181,7 +182,7 @@ class Molecule:
 
         if len(atom_pairs) == 0:
             return []
-        elif len(atom_pairs) == 1:
+        if len(atom_pairs) == 1:
             return [atom_pairs]
 
         while True:
@@ -190,10 +191,11 @@ class Molecule:
 
             if not rest:
                 return fragments
-            else:
-                atom_pairs = rest
+            atom_pairs = rest
 
-    def treebonds(self, root: bool = False) -> List:
+    def treebonds(
+        self, root: bool = False
+    ) -> List[Union[Bond, DummyFirstBond, AromaticRingBond]]:
         """
         return a list with all bonds in the molecule tree
 
@@ -275,10 +277,12 @@ class Molecule:
                 pseudo_bond.parent = self.exit_bond
                 self.exit_bond.descendants.append(pseudo_bond)
 
-            else:  # occasionally, the molecule's exit atom may be the starting point of the elevated bond
+            else:
+                # occasionally,
+                # the molecule's exit atom may be the starting point of the elevated bond
                 self.exit_bond.descendants.append(bond_copy)
 
-    def default_exit_bond(self) -> Bond:
+    def default_exit_bond(self) -> Union[Bond, AromaticRingBond]:
         """
         pick the bond and atom that is at the greatest distance from
         the entry atom along the parsed molecule tree. This
@@ -371,7 +375,12 @@ class Molecule:
 
         return wrapped_atoms
 
-    def parseBonds(self) -> Tuple[Dict[Tuple[int, int], Bond], List]:
+    def parseBonds(
+        self,
+    ) -> Tuple[
+        Dict[Tuple[int, int], Union[Bond, DummyFirstBond, AromaticRingBond]],
+        List[Tuple[int, int]],
+    ]:
         """
         read some bond attributes
 
@@ -402,7 +411,9 @@ class Molecule:
 
         return bonds, atom_pairs
 
-    def parseTree(self, start_atom: Optional[Atom], end_atom: Atom) -> Optional[Bond]:
+    def parseTree(
+        self, start_atom: Optional[Atom], end_atom: Atom
+    ) -> Optional[Union[Bond, DummyFirstBond, AromaticRingBond]]:
         """
         recurse over atoms in molecule to create a tree of bonds
 
@@ -458,7 +469,9 @@ class Molecule:
 
         return bond
 
-    def _getBond(self, tk_bond) -> Bond:
+    def _getBond(
+        self, tk_bond: IndigoObject
+    ) -> Union[Bond, DummyFirstBond, AromaticRingBond]:
         """
         helper for aromatizeRing: find bond in parse tree that
         corresponds to toolkit bond
@@ -476,7 +489,10 @@ class Molecule:
         return self.bonds[(end_idx, start_idx)]
 
     def aromatizeRing(
-        self, ring, center_x: Union[float, int], center_y: Union[float, int]
+        self,
+        ring: IndigoObject,
+        center_x: Union[float, int],
+        center_y: Union[float, int],
     ) -> None:
         """
         render a ring that is aromatic and is a regular polygon
@@ -508,7 +524,7 @@ class Molecule:
         arb = AromaticRingBond(self.options, bond, angle, outer_r, inner_r)
         bond.descendants.append(arb)
 
-    def annotateRing(self, ring, is_aromatic: bool) -> None:
+    def annotateRing(self, ring: IndigoObject, is_aromatic: bool) -> None:
         """
         determine center, symmetry and aromatic character of ring
         I wonder if indigo would tell us directly about these ...
@@ -539,8 +555,8 @@ class Molecule:
         bl_spread = (bl_max - min(bond_lengths)) / bl_max
 
         # determine ring center
-        center_x = sum([atom.x for atom in atoms]) / len(atoms)
-        center_y = sum([atom.y for atom in atoms]) / len(atoms)
+        center_x = sum(atom.x for atom in atoms) / len(atoms)
+        center_y = sum(atom.y for atom in atoms) / len(atoms)
 
         # compare distances from center. Also remember atoms and bond
         # angles; if the ring ends up being aromatized, we flag those
@@ -614,7 +630,7 @@ class Molecule:
         for bond in self.treebonds():
             bond.length = self.bond_scale * bond.length
 
-    def render(self) -> List:
+    def render(self) -> List[str]:
         """
         render molecule to chemfig
 
@@ -646,7 +662,12 @@ class Molecule:
 
         return cfm.format_output(params, self._rendered)
 
-    def _renderBranches(self, output: List, level: int, bonds: List) -> None:
+    def _renderBranches(
+        self,
+        output: List[str],
+        level: int,
+        bonds: List[Union[Bond, DummyFirstBond, AromaticRingBond]],
+    ) -> None:
         """
         render a list of branching bonds indented and inside enclosing brackets.
 
@@ -664,7 +685,7 @@ class Molecule:
 
     def _render(
         self,
-        output: List,
+        output: List[str],
         bond: Union[Bond, DummyFirstBond, AromaticRingBond],
         level: int,
     ) -> None:

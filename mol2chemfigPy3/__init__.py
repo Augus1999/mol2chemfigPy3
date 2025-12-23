@@ -15,7 +15,7 @@ __version__ = program_version
 __Author__ = "Nianze A. TAO"
 __all__ = ["main", "mol2chemfig", "__version__"]
 
-supported_file = ".gz .sdf .rdf .mol .rxn .txt .cml .mrv .xml .smi"
+_SUPPORTED_FILE = ".gz .sdf .rdf .mol .rxn .txt .cml .mrv .xml .smi"
 
 
 def mol2chemfig(
@@ -57,7 +57,7 @@ def mol2chemfig(
     )
     arg = re.sub(r"\s+", " ", arg).split()
     content = str(content)
-    if content.endswith(tuple(supported_file.split())):
+    if content.endswith(tuple(_SUPPORTED_FILE.split())):
         arg += ["-i", "file", content]
     else:
         try:
@@ -69,3 +69,4 @@ def mol2chemfig(
     if inline:
         return result.render_user() if success else result
     print(f'{result.render_user() if success else "Failed..."}')
+    return None

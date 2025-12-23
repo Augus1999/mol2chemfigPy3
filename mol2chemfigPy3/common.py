@@ -5,7 +5,7 @@ common settings and a bit of infrastructure
 from typing import Any
 from .options import getParser
 
-program_version = "1.5.13"
+program_version = "1.5.14"
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = (
@@ -41,17 +41,21 @@ Options:
 """
 
 
-def version_text(program_name="mol2chemfigPy3", version=program_version) -> str:
+def version_text(
+    program_name: str = "mol2chemfigPy3", version: str = program_version
+) -> str:
     return _version_blurb % locals()
 
 
-def help_text(program_name="mol2chemfigPy3", version=program_version) -> str:
+def help_text(
+    program_name: str = "mol2chemfigPy3", version: str = program_version
+) -> str:
     msg = _help_blurb % locals()
     msg += getParser().format_help(indent=32, linewidth=75, separator="")
     return msg
 
 
-def lua_version_text(program_name, client_version) -> str:
+def lua_version_text(program_name: str, client_version: str) -> str:
     server_version = program_version
     return _lua_version_blurb % locals()
 
@@ -79,10 +83,10 @@ class MCFError(Exception):
     this flags an anticipated error due to faulty user input.
     """
 
-    def __init__(self, text: Any):
+    def __init__(self, text: Any) -> None:
         self.text = str(text)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
 
@@ -92,11 +96,11 @@ class Counter:
     (which provides one in module collections)
     """
 
-    def __init__(self, lst: list):
+    def __init__(self, lst: list) -> None:
         self._d = {}
 
         for val in lst:
-            if not (val in self._d):
+            if not val in self._d:
                 self._d[val] = 0
 
             self._d[val] += 1

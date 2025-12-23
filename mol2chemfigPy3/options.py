@@ -260,7 +260,8 @@ def getParser() -> OptionParser:
             "submol-name",
             "l",
             key="submol_name",
-            help_text="If a name is given, wrap generated code into chemfig \\definesubmol{name}{...} command.",
+            help_text="If a name is given, wrap generated code into chemfig "
+            "\\definesubmol{name}{...} command.",
         )
     )
 
