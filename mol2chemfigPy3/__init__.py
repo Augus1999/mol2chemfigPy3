@@ -35,14 +35,24 @@ def mol2chemfig(
 
     :param content: chemical file name, InChI, SMILES, or PubChem index
     :param rotate: rotation angle
-    :param aromatic: whether drawing circle(s) in aromatic ring(s)
+    :param aromatic: whether to draw circle(s) in aromatic ring(s)
     :param marker: mark atoms, e.g., with value 'a', atom 2 will be labeled as @{a2}
     :param name: name of the molecule
-    :param relative_angle: whether using relative bond angles
-    :param show_carbon: whether show carbon symbol
-    :param show_methyl: whether show methyl symbol
+    :param relative_angle: whether to use relative bond angles
+    :param show_carbon: whether to show carbon symbol
+    :param show_methyl: whether to show methyl symbol
     :param inline: inline mode: if true return the result else print the result
-    :return: None or result
+    :type content: str | int | pathlib.Path
+    :type rotate: float
+    :type aromatic: bool
+    :type marker: str | None
+    :type name: str | None
+    :type relative_angle: bool
+    :type show_carbon: bool
+    :type show_methyl: bool
+    :type inline: bool
+    :return: LATEX `chemfig` code or error message
+    :rtype: str | None
     """
     assert isinstance(aromatic, bool), "This value should be in type Bool"
     assert isinstance(relative_angle, bool), "This value should be in type Bool"
