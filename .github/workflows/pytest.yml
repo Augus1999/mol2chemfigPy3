@@ -5,8 +5,10 @@ name: pytest
 on:
   push:
     branches: [ "main" ]
+    paths: [ "tests/*.py", "mol2chemfigPy3/*.py" ]
   pull_request:
     branches: [ "main" ]
+    paths: [ "tests/*.py", "mol2chemfigPy3/*.py" ]
 
 permissions:
   contents: read
