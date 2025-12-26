@@ -53,3 +53,13 @@ $ mol2chemfig -zw -i pubchem 996
 ```bash
 $ mol2chemfig -zw peniciling.mol
 ```
+
+#### 3.5 Lewis formulas
+
+⚠️ Since version 1.6 of ChemFig, the macro `\lewis` has been moved outside the main environment. If you got a `chemfig` code containing this macro, you need to input it first to avoid errors, e.g.
+
+```latex
+%\input{lewis} % version 1.6
+\input{chemfig-lewis} % version 1.6a+
+\chemfig{...}
+```
