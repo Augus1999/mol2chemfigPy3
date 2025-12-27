@@ -306,4 +306,15 @@ def getParser() -> OptionParser:
         )
     )
 
+    parser.append(
+        BoolOption(
+            "legacy-lewis",
+            "j",
+            key="legacy_lewis",
+            default=False,
+            help_text="Use legacy macro \\lewis{..} for ChemFig version < 1.6"
+            " to write Lewis formulas.",
+        )
+    )
+
     return parser

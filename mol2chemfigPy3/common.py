@@ -5,7 +5,7 @@ common settings and a bit of infrastructure
 from typing import Any
 from .options import getParser
 
-program_version = "1.5.14"
+program_version = "1.6.0"
 
 # pubchem url for retrieving sdf for numerical IDs
 pubchem_url = (

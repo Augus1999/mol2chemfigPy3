@@ -78,6 +78,14 @@ radical_templates = dict(
     south=r"\lewis{6%s,%s}",
 )
 
+radical_templates2 = dict(
+    # for ChemFig version >= 1.6
+    east=r"\charge{0=\%s}{%s}",
+    north=r"\charge{90=\%s}{%s}",
+    west=r"\charge{180=\%s}{%s}",
+    south=r"\charge{270=\%s}{%s}",
+)
+
 atom_templates = dict(
     # templates for atoms, specialized for different numbers and preferred
     # quadrants of attached hydrogen and charges
@@ -184,7 +192,7 @@ def format_bond(
     clockwise: int,
     is_last: bool,
     length: Union[int, float],
-    departure: str,
+    departure: Union[int, str, None],
     arrival: str,
     tikz_styles: Set[str],
     tikz_values: Dict[str, int],
@@ -337,6 +345,9 @@ def format_atom(
     """
 
     _mt = macro_templates  # shortcuts
+    _radical_templates = (
+        radical_templates if options["legacy_lewis"] else radical_templates2
+    )
 
     # collect elements in a dict that then is used to fill
     # the configured string templates.
@@ -353,7 +364,7 @@ def format_atom(
             radical_quadrant = second_quadrant
         else:
             radical_quadrant = first_quadrant
-        radical_element = radical_templates[radical_quadrant] % (
+        radical_element = _radical_templates[radical_quadrant] % (
             radical_symbol,
             element,
         )
