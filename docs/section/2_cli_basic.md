@@ -56,7 +56,7 @@ $ mol2chemfig -zw peniciling.mol
 
 #### 3.5 Lewis formulas
 
-⚠️ Since version 1.6 of ChemFig, the macro `\lewis` has been moved outside the main environment. If you got a `chemfig` code containing this macro, you need to input it first to avoid errors, e.g.
+⚠️ Since version 1.6 of ChemFig, the macro `\lewis` has been moved outside the main environment. If you got a `chemfig` code containing this macro, you need to <a href="https://ctan.org/tex-archive/macros/generic/chemfig" target="_blank">download <img src="../image/external_link.png" alt="open in new tab" width=15></a> and input it first to avoid errors, e.g.
 
 ```latex
 %\input{lewis} % version 1.6
