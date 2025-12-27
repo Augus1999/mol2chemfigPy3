@@ -18,7 +18,7 @@ html = pyan.create_callgraph(
     grouped=True,
     root=(cwd.parent / "mol2chemfigPy3").resolve().__str__(),
 )
-print(cwd_n := cwd.parent.resolve().__str__())
+cwd_n = cwd.parent.resolve().__str__()
 if platform.system() == "Windows":
     cwd_n = cwd_n.replace("/", "").replace("\\", "")
     html = html.replace(cwd_n + (a := "mol2chemfigPy3"), a + "/")
