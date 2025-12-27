@@ -47,18 +47,25 @@ jobs:
         fi
     - name: Push to repository
       if: steps.check_changes.outputs.has_changes == 'true'
-      run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-        git config --global user.signingkey "${{ secrets.NOREPLY_GPG_KEY_ID }}"
-        git config --global commit.gpgsign true
-        git config --global tag.gpgSign true
+    - uses: EndBug/add-and-commit@v9
+      with:
+        add: '.'
+        default_author: github_actor
+        message: 'Auto-updated call-graph'
+        pull: ''
+        push: true
+      #run: |
+      #  git config --global user.name "${{ github.actor }}"
+      #  git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      #  git config --global user.signingkey "${{ secrets.NOREPLY_GPG_KEY_ID }}"
+      #  git config --global commit.gpgsign true
+      #  git config --global tag.gpgSign true
 
         # stage any file changes to be committed
-        git add .
+      #  git add .
 
         # make commit with staged changes
-        git commit -m 'Updated call-graph'
+      #  git commit -m 'Updated call-graph'
 
         # push the commit back up to source GitHub repository
-        git push
+      #  git push
