@@ -1,7 +1,7 @@
 # mol2chemfigPy3
 
 [![PyPI](https://img.shields.io/pypi/v/mol2chemfigPy3?color=ff69b4)](https://pypi.org/project/mol2chemfigPy3/)
-![pytest](https://github.com/Augus1999/mol2chemfigPy3/actions/workflows/pytest.yml/badge.svg)
+![CI](https://github.com/Augus1999/mol2chemfigPy3/actions/workflows/pytest.yml/badge.svg)
 ![black](https://img.shields.io/badge/code%20style-black-black)
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 
@@ -74,7 +74,7 @@ $ mol2chemfig -zw peniciling.mol
 
 This is not included in the original Py2 version of mol2chemfig.
 
-> mol2chemfigPy3.___mol2chemfig___(content: _str_, *args: _str_, rotate: _float = 0.0_, aromatic: _bool = True_, marker: _Optional[str] = None_, name: _Optional[str] = None_, relative_angle: _bool = False_, show_carbon: _bool = False_, show_methyl: _bool = False_, inline: _bool = False_)
+> mol2chemfigPy3.___mol2chemfig___(content: _Union[str, int, pathlib.Path]_, *args: _str_, rotate: _float = 0.0_, aromatic: _bool = True_, marker: _Optional[str] = None_, name: _Optional[str] = None_, relative_angle: _bool = False_, show_carbon: _bool = False_, show_methyl: _bool = False_, inline: _bool = False_) &#8594; _Optional[str]_
 
 e. g.
 

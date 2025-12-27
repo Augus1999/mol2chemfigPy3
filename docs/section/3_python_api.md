@@ -1,6 +1,6 @@
 This is not included in the original mol2chemfig.
 
-> mol2chemfigPy3.___mol2chemfig___(content: _str_, *args: _str_, rotate: _float = 0.0_, aromatic: _bool = True_, marker: _Optional[str] = None_, name: _Optional[str] = None_, relative_angle: _bool = False_, show_carbon: _bool = False_, show_methyl: _bool = False_, inline: _bool = False_) &#8594; _Optional[str]_
+> mol2chemfigPy3.___mol2chemfig___(content: _Union[str, int, pathlib.Path]_, *args: _str_, rotate: _float = 0.0_, aromatic: _bool = True_, marker: _Optional[str] = None_, name: _Optional[str] = None_, relative_angle: _bool = False_, show_carbon: _bool = False_, show_methyl: _bool = False_, inline: _bool = False_) &#8594; _Optional[str]_
 
 &nbsp;&nbsp;&nbsp; A wrapper of `~mol2chemfigPy3.process(...)` function.
 
@@ -9,6 +9,7 @@ This is not included in the original mol2chemfig.
 > > Parameters
 > >
 > > * __content__ - chemical file name, InChI, SMILES, or PubChem index
+> > * __*args__ - any other CLI arguments, e.g., `"-r"`, `"-u"`, _etc_
 > > * __rotate__ - rotation angle
 > > * __aromatic__ - whether to draw circle(s) in aromatic ring(s)
 > > * __marker__ - mark atoms, e.g., with value 'a', atom 2 will be labeled as @{a2}
