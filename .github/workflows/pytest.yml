@@ -5,10 +5,10 @@ name: CI
 on:
   push:
     branches: [ "main" ]
-    paths: [ "tests/*.py", "mol2chemfigPy3/*.py", "setup.py" ]
+    paths: [ "tests/*.py", "mol2chemfigPy3/*.py", "setup.py", ".github/workflows/pytest.yml" ]
   pull_request:
     branches: [ "main" ]
-    paths: [ "tests/*.py", "mol2chemfigPy3/*.py", "setup.py" ]
+    paths: [ "tests/*.py", "mol2chemfigPy3/*.py", "setup.py", ".github/workflows/pytest.yml" ]
 
 permissions:
   contents: read
