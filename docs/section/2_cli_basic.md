@@ -20,7 +20,7 @@ $ mol2chemfig -h
 $ mol2chemfig -zw -i direct "C1=CC=C(C=C1)O"
 ```
 
-which will give you 
+which will give you
 
 ```latex
 \chemfig{OH-[:180,,1]=_[:240]-[:180]=_[:120]-[:60]=_(-[:300])}

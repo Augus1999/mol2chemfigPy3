@@ -45,7 +45,7 @@ def getParser() -> OptionParser:
             default="file",
             valid_range="direct file pubchem".split(),
             help_text="""
-        How to interpret the argument. 
+        How to interpret the argument.
         With 'file', mol2chemfig expects a filename.
         With 'direct', the argument is interpreted directly; don't forget to put quotes around it.
         With 'pubchem', the argument is treated as an identifier for the PubChem database.
@@ -169,7 +169,7 @@ def getParser() -> OptionParser:
             valid_range="keep add delete".split(),
             help_text="""
         How to deal with explicit hydrogen atoms.
-        One of 'keep', 'add' or 'delete'. 
+        One of 'keep', 'add' or 'delete'.
         Note that 'add' will also trigger calculation of new coordinates for the entire molecule.
         Option 'keep' does nothing.
         """,

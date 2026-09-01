@@ -1,2 +1,0 @@
-epam.indigo
-colorama;platform_system=="Windows"
