@@ -18,6 +18,29 @@ old [mol2chemfig](http://chimpsky.uwaterloo.ca/mol2chemfig/download) version 1.5
 $ pip install -U mol2chemfigPy3
 ```
 
+### install with a copy of this forked (downstream) repository
+
+This repository is a downstream fork relative to blessed repository
+currently archived by Augus1999.  Organized around a `pyproject.toml`
+file, runtime dependencies are declared in way that you may either
+use `build` as installed by `pip`, or `uv build` to obtain a .whl
+
+```bash
+python -m build .
+uv build .
+````
+
+in the local `dist/` folder.  The .whl then can be used as usual as
+a local reference (instead of PyPI).  Note that dependencies still
+are resolved from pypi.org, especially if you want to develop the
+module further, e.g.
+
+```bash
+pip install -e .[dev]
+```
+
+to collect for instance pytest.
+
 ## Usage
 
 ### Use in command line

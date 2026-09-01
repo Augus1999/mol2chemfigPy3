@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["mol2chemfigPy3"]
+
+[project]
+name = "mol2chemfigPy3"
+version = "1.6.1"
+requires-python = ">=3.11"
+authors = [
+    { name="Nianze A. Tao", email="tao-nianze@hiroshima-u.ac.jp" }
+]
+description = "The python 3 version of mol2chemfig package."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["Chemistry", "chemfig"]
+
+# https://pypi.org/classifiers/
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Education",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Chemistry",
+]
+
+dependencies = [
+    "epam.indigo>=1.46.0",
+    "colorama>=0.4.6; platform_system == 'Windows'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2.2.post1",
+    "pytest>=9.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+    "pytest>=9.1.1",
+]
+
+[project.urls]
+Homepage = "https://augus1999.github.io/mol2chemfigPy3/"
+Repository = "https://github.com/nbehrnd/mol2chemfigPy3"
+Upstream = "https://github.com/Augus1999/mol2chemfigPy3"
+
+[project.scripts]
+mol2chemfig = "mol2chemfigPy3.main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::pytest.PytestCacheWarning"]
+
+minversion = "9"
+log_level = "INFO"
+addopts = ["-ra"]
+
+#[tool.ruff]
+#line-length = 90
+#target-version = "py313"
+
+#[tool.ruff.lint]
+#select = ["E", "F", "I"]
+#ignore = ["E501"]
+
+#[tool.ruff.format]
+#quote-style = "double"
+#indent-style = "space"
+#skip-magic-trailing-comma = false
+
+#[tool.codespell]
+#skip = "*.smi"
